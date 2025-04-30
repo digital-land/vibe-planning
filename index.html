@@ -20,11 +20,22 @@
             /* Using GOV.UK font family instead */
         }
         
-        #map {
+        #map-container {
             position: relative;
-            width: 100%;
+            width: 100vw;
             height: 600px;
+            margin-left: calc(-50vw + 50%);
+            margin-right: calc(-50vw + 50%);
             margin-bottom: 30px;
+            margin-top: 30px;
+        }
+        
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
         }
         
         .control-panel {
@@ -148,10 +159,77 @@
         .leaflet-popup-tip {
             background: #00703c;
         }
+        
+        /* Animation styles */
+        @keyframes pulse {
+            0% { transform: scale(1); background-color: transparent; }
+            25% { transform: scale(1.4); background-color: #ffdd00; }
+            50% { transform: scale(1.6); background-color: #ffdd00; }
+            75% { transform: scale(1.4); background-color: #ffdd00; }
+            100% { transform: scale(1); background-color: transparent; }
+        }
+        
+        .pulse {
+            animation: pulse 1s ease-in-out;
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        /* House count achievement styles */
+        .goal-achieved {
+            background-color: #ffdd00 !important; /* GOV.UK yellow */
+            color: #0b0c0c !important; /* GOV.UK black */
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 4px;
+            box-shadow: 0 0 0 3px #ffdd00;
+            transition: all 0.3s ease;
+        }
+        
+        /* Goal celebration */
+        #celebration-banner {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #00703c;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            z-index: 9999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: transform 0.5s ease-in-out;
+            transform: translateY(-100%);
+        }
+        
+        #celebration-banner.show {
+            display: block;
+            transform: translateY(0);
+        }
+        
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+        }
     </style>
 </head>
 <body class="govuk-template__body">
     <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+    
+    <!-- Celebration elements -->
+    <div id="celebration-banner" role="alert">
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Goal Achieved!</h2>
+        <p class="govuk-body">You've successfully planned 100 houses. Well done!</p>
+    </div>
+    <canvas id="confetti-canvas"></canvas>
 
     <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
 
@@ -185,14 +263,16 @@
             <div class="govuk-panel govuk-panel--confirmation">
                 <h2 class="govuk-panel__title">Goal</h2>
                 <div class="govuk-panel__body govuk-!-font-size-27">
-                    Build 1000 houses
+                    Build 100 houses
                 </div>
                 <div class="govuk-panel__body govuk-!-font-size-19">
-                    Current progress: <span id="houses-count">0</span> / 1000
+                    Current progress: <span id="houses-count">0</span> / 100
                 </div>
             </div>
             
-            <div class="govuk-!-margin-top-6" id="map"></div>
+            <div class="govuk-!-margin-top-6" id="map-container">
+                <div id="map"></div>
+            </div>
     
     <!-- Leaflet JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -458,7 +538,7 @@
             }
         }
         
-        // Function to count and update the number of housing units
+        // Function to count and update the number of housing units with animation
         function updateHousesCount() {
             // Each grid square designated as housing counts as 10 houses
             const housesPerSquare = 10;
@@ -471,17 +551,172 @@
             // Calculate total houses
             const totalHouses = housingSquares * housesPerSquare;
             
-            // Update the display
-            document.getElementById('houses-count').textContent = totalHouses;
+            // Get current displayed value
+            const housesCountElement = document.getElementById('houses-count');
+            const currentValue = parseInt(housesCountElement.textContent, 10) || 0;
             
-            // Check if goal is met
-            if (totalHouses >= 1000) {
-                document.getElementById('houses-count').classList.add('govuk-!-font-weight-bold');
-                document.getElementById('houses-count').style.color = '#00703c';
-            } else {
-                document.getElementById('houses-count').classList.remove('govuk-!-font-weight-bold');
-                document.getElementById('houses-count').style.color = '';
+            // If value has changed, animate the counter
+            if (currentValue !== totalHouses) {
+                // Make counter more visually noticeable by applying pulse before starting animation
+                housesCountElement.classList.add('pulse');
+                
+                // A brief pause to ensure the pulse is noticed
+                setTimeout(() => {
+                    // Animate counter
+                    animateCounter(currentValue, totalHouses, housesCountElement);
+                    
+                    // Remove pulse after animation completes
+                    setTimeout(() => {
+                        housesCountElement.classList.remove('pulse');
+                    }, 1000);
+                    
+                    // Check if goal is newly met (crossing the threshold)
+                    if (currentValue < 100 && totalHouses >= 100) {
+                        celebrateGoalAchieved();
+                    }
+                }, 100);
             }
+            
+            // Update styling based on goal status
+            if (totalHouses >= 100) {
+                housesCountElement.classList.add('goal-achieved');
+            } else {
+                housesCountElement.classList.remove('goal-achieved');
+            }
+        }
+        
+        // Animate counter from start to end value
+        function animateCounter(start, end, element) {
+            const duration = 1000; // 1 second animation
+            const stepTime = 20;
+            const steps = duration / stepTime;
+            const increment = (end - start) / steps;
+            let current = start;
+            let step = 0;
+            
+            const timer = setInterval(() => {
+                step++;
+                current += increment;
+                
+                if (step >= steps) {
+                    clearInterval(timer);
+                    current = end;
+                }
+                
+                element.textContent = Math.round(current);
+            }, stepTime);
+        }
+        
+        // Celebration when goal is achieved
+        function celebrateGoalAchieved() {
+            // Show the celebration banner with animation
+            const banner = document.getElementById('celebration-banner');
+            banner.classList.add('show');
+            
+            // Hide after 5 seconds
+            setTimeout(() => {
+                banner.classList.remove('show');
+            }, 5000);
+            
+            // Launch confetti
+            launchConfetti();
+        }
+        
+        // Confetti animation for celebration
+        function launchConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            // Confetti colors - GOV.UK colors
+            const colors = ['#00703c', '#1d70b8', '#f3f2f1', '#ffdd00'];
+            
+            // Confetti particles
+            const confetti = [];
+            const confettiCount = 200;
+            const gravity = 0.5;
+            const terminalVelocity = 5;
+            const drag = 0.075;
+            
+            // Create confetti pieces
+            for (let i = 0; i < confettiCount; i++) {
+                // Distribute confetti across the top of the screen
+                confetti.push({
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    dimensions: {
+                        x: Math.random() * 10 + 5,
+                        y: Math.random() * 4 + 8
+                    },
+                    position: {
+                        x: Math.random() * canvas.width,
+                        // Distribute starting positions across the top quarter of the screen
+                        y: Math.random() * canvas.height * -0.25
+                    },
+                    rotation: Math.random() * 2 * Math.PI,
+                    scale: Math.random() * 0.8 + 0.2, // More varied sizes
+                    velocity: {
+                        x: Math.random() * 25 - 12.5,
+                        y: Math.random() * 25 + 10 // Higher velocity variation for spreading
+                    }
+                });
+            }
+            
+            // Animation loop
+            let animationFrame = null;
+            const render = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                let remainingConfetti = 0;
+                
+                confetti.forEach((confetto, index) => {
+                    let width = confetto.dimensions.x * confetto.scale;
+                    let height = confetto.dimensions.y * confetto.scale;
+                    
+                    // Move confetti with gravity and drag
+                    confetto.velocity.x -= confetto.velocity.x * drag;
+                    confetto.velocity.y = Math.min(confetto.velocity.y + gravity, terminalVelocity);
+                    confetto.velocity.x += Math.random() > 0.5 ? Math.random() : -Math.random();
+                    
+                    confetto.position.x += confetto.velocity.x;
+                    confetto.position.y += confetto.velocity.y;
+                    confetto.rotation += 0.01;
+                    
+                    // If confetti is still on screen, render it
+                    if (confetto.position.y <= canvas.height) {
+                        remainingConfetti++;
+                        
+                        ctx.save();
+                        ctx.translate(confetto.position.x, confetto.position.y);
+                        ctx.rotate(confetto.rotation);
+                        
+                        ctx.fillStyle = confetto.color;
+                        ctx.fillRect(-width / 2, -height / 2, width, height);
+                        
+                        ctx.restore();
+                    }
+                });
+                
+                // Continue animation if there's confetti on screen
+                if (remainingConfetti > 0) {
+                    animationFrame = requestAnimationFrame(render);
+                } else {
+                    cancelAnimationFrame(animationFrame);
+                    // Clean up canvas when done
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            };
+            
+            // Start animation
+            animationFrame = requestAnimationFrame(render);
+            
+            // Stop confetti after 6 seconds regardless
+            setTimeout(() => {
+                if (animationFrame) {
+                    cancelAnimationFrame(animationFrame);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }, 6000);
         }
         
         // Update grid layer
