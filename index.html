@@ -75,17 +75,23 @@
         }
         
         button {
-            padding: 6px 12px;
-            background-color: #4CAF50;
+            padding: 10px 15px;
+            background-color: #00703c;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 0;
             cursor: pointer;
             margin-top: 5px;
+            font-family: "GDS Transport", arial, sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 1.1875;
+            box-shadow: 0 2px 0 #002d18;
+            text-align: center;
         }
         
         button:hover {
-            background-color: #45a049;
+            background-color: #005a30;
         }
         
         .legend {
@@ -104,6 +110,43 @@
             height: 15px;
             margin-right: 5px;
             vertical-align: middle;
+        }
+        
+        /* GOV.UK style for leaflet popups */
+        .leaflet-popup-content-wrapper {
+            border-radius: 0;
+            padding: 0;
+            box-shadow: 0 5px 10px rgba(0,0,0,.1);
+        }
+        
+        .leaflet-popup-content {
+            margin: 0;
+            padding: 15px;
+            font-family: "GDS Transport", arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .leaflet-popup-content table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        .leaflet-popup-content th {
+            text-align: left;
+            font-weight: 700;
+            padding: 5px 10px 5px 0;
+            vertical-align: top;
+            width: 40%;
+        }
+        
+        .leaflet-popup-content td {
+            padding: 5px 0;
+            vertical-align: top;
+        }
+        
+        .leaflet-popup-tip {
+            background: #00703c;
         }
     </style>
 </head>
@@ -259,17 +302,18 @@
         function styleFeature(feature) {
             const coverage = feature.properties["green-belt"];
             
+            // Using GOV.UK color palette
             const style = {
-                weight: 1,
-                opacity: 1,
-                color: '#666',
+                weight: 0.5, // Thinner border for subtlety
+                opacity: 0.3, // Lower opacity for subtle borders
+                color: '#505a5f', // GOV.UK dark grey for subtle borders
                 fillOpacity: 0.7
             };
             
             if (coverage !== undefined && coverage >= 0.1) {
-                style.fillColor = "green";
+                style.fillColor = "#00703c"; // GOV.UK green - used for green belt areas
             } else {
-                style.fillColor = "blue";
+                style.fillColor = "#f3f2f1"; // GOV.UK light grey - for non-green belt areas
             }
             
             return style;
