@@ -87,20 +87,25 @@ def create_grid_from_boundary(boundary_file, cell_width_meters, cell_height_mete
             col_indices.append(i)
             
             cell_id += 1
-    
+
     # Create GeoDataFrame with UTM CRS
     data = {
         'id': ids,
     }
     
     grid_gdf = gpd.GeoDataFrame(data, geometry=geometries, crs=utm_crs)
-    
+
     # Calculate the area of each grid cell
     grid_gdf['cell_area'] = grid_gdf.geometry.area
     
     # Get the boundary polygon
     boundary_polygon = boundary_utm.geometry.unary_union
-    
+
+    grid_gdf['clipped_geometry'] = grid_gdf.geometry.intersection(boundary_polygon)
+    grid_gdf = grid_gdf[~grid_gdf['clipped_geometry'].is_empty].copy()
+    grid_gdf['geometry'] = grid_gdf['clipped_geometry']
+    grid_gdf = grid_gdf.drop(columns=['clipped_geometry'])
+        
     # Reset index and re-number IDs after filtering
     grid_gdf = grid_gdf.reset_index(drop=True)
     grid_gdf['id'] = range(len(grid_gdf))
@@ -165,6 +170,7 @@ def main():
     )
     
     # Save to GeoJSON
+    grid_gdf.geometry = grid_gdf.geometry.set_precision(grid_size=0.000001)
     grid_gdf.to_file(args.output, driver='GeoJSON')
     print(f"Grid saved to {args.output}")
 
