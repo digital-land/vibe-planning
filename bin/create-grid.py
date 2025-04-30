@@ -91,8 +91,6 @@ def create_grid_from_boundary(boundary_file, cell_width_meters, cell_height_mete
     # Create GeoDataFrame with UTM CRS
     data = {
         'id': ids,
-        'row': row_indices,
-        'column': col_indices
     }
     
     grid_gdf = gpd.GeoDataFrame(data, geometry=geometries, crs=utm_crs)
@@ -103,22 +101,9 @@ def create_grid_from_boundary(boundary_file, cell_width_meters, cell_height_mete
     # Get the boundary polygon
     boundary_polygon = boundary_utm.geometry.unary_union
     
-    # Calculate intersection with boundary and its area
-    grid_gdf['boundary_intersection'] = grid_gdf.geometry.intersection(boundary_polygon)
-    grid_gdf['boundary_area'] = grid_gdf['boundary_intersection'].area
-    
-    # Calculate boundary coverage percentage
-    grid_gdf['boundary_pct'] = (grid_gdf['boundary_area'] / grid_gdf['cell_area']) * 100
-    
-    # Filter cells based on minimum boundary coverage
-    grid_gdf = grid_gdf[grid_gdf['boundary_pct'] >= min_coverage_pct].copy()
-    
     # Reset index and re-number IDs after filtering
     grid_gdf = grid_gdf.reset_index(drop=True)
     grid_gdf['id'] = range(len(grid_gdf))
-    
-    # Clean up intermediate columns
-    grid_gdf = grid_gdf.drop(columns=['boundary_intersection', 'boundary_area'])
     
     # Calculate coverage for another polygon if specified
     if coverage_polygon_file:
@@ -140,27 +125,17 @@ def create_grid_from_boundary(boundary_file, cell_width_meters, cell_height_mete
         grid_gdf['coverage_intersection'] = grid_gdf.geometry.intersection(coverage_polygon)
         grid_gdf['coverage_area'] = grid_gdf['coverage_intersection'].area
         
-        # Calculate coverage percentage
-        grid_gdf['coverage_pct'] = (grid_gdf['coverage_area'] / grid_gdf['cell_area']) * 100
-        
-        # Round to 2 decimal places
-        grid_gdf['coverage_pct'] = grid_gdf['coverage_pct'].round(2)
-        
         # Clean up intermediate columns
-        grid_gdf = grid_gdf.drop(columns=['coverage_intersection', 'coverage_area'])
+        grid_gdf = grid_gdf.drop(columns=['coverage_intersection'])
     
     # Convert back to WGS84 (EPSG:4326) for GeoJSON output
     grid_gdf_wgs84 = grid_gdf.to_crs("EPSG:4326")
     
-    # Transfer the area information in square meters
-    grid_gdf_wgs84['area_m2'] = grid_gdf['cell_area'].round(2)
-    
     # Transfer the coverage percentage if it exists
-    if 'coverage_pct' in grid_gdf.columns:
-        grid_gdf_wgs84['coverage_pct'] = grid_gdf['coverage_pct']
-    
-    # Transfer the boundary coverage percentage
-    grid_gdf_wgs84['boundary_pct'] = grid_gdf['boundary_pct'].round(2)
+    if 'coverage_area' in grid_gdf.columns:
+        grid_gdf_wgs84['green-belt'] = grid_gdf['coverage_area']
+
+    grid_gdf_wgs84 = grid_gdf_wgs84.drop(columns=['coverage_area'])
     
     # Clean up unwanted columns
     if 'cell_area' in grid_gdf_wgs84.columns:
@@ -188,14 +163,6 @@ def main():
         args.min_coverage,
         args.coverage_file
     )
-    
-    # Report statistics
-    print(f"Created {len(grid_gdf)} grid cells")
-    print(f"Cell size: {args.cell_width}m x {args.cell_height}m")
-    
-    if 'coverage_pct' in grid_gdf.columns:
-        avg_coverage = grid_gdf['coverage_pct'].mean()
-        print(f"Average coverage: {avg_coverage:.2f}%")
     
     # Save to GeoJSON
     grid_gdf.to_file(args.output, driver='GeoJSON')
