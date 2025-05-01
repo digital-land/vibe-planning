@@ -2,7 +2,7 @@
 
 * How could consulting on a local plan be different in the age of AI?
 * Could we have a consulation which is about offering solutions to meeting the housing need?
-* Could this process
+* Could the consultation process allow people to upvote, or build on other people's ideas?
 
 Can we enable "vibe planning"?
 
