@@ -1,6 +1,6 @@
 CACHE_DIR=var/cache/
 
-.PRECIOUS: $(CACHE_DIR)
+.PRECIOUS: *
 
 REGION=E12000003
 
@@ -14,6 +14,9 @@ GRIDS=\
 	grid/E60000065.geojson\
 	grid/E60000068.geojson
 
+# Just Kirklees for now ..
+GRIDS=\
+	grid/E60000070.geojson
 
 
 all:: 	$(GRIDS)
@@ -24,12 +27,17 @@ grid/%.geojson: var/grid/$(notdir %).geojson
 	sed -e 's/ //g' < var/$@ > $@
 
 
-var/grid/%.geojson:	$(CACHE_DIR)statistical-geography/$(notdir %).geojson $(CACHE_DIR)green-belt/$(notdir %).geojson bin/create-grid.py
+var/grid/%.geojson:	\
+	$(CACHE_DIR)statistical-geography/$(notdir %).geojson \
+	$(CACHE_DIR)built-up-area/$(notdir %).geojson \
+	$(CACHE_DIR)green-belt/$(notdir %).geojson \
+	bin/create-grid.py 
 	@mkdir -p $(dir $@)
 	bin/create-grid.py \
 		--cell_width 100 --cell_height 100 \
 		--boundary var/cache/statistical-geography/$(notdir $@) \
 		--coverage_file var/cache/green-belt/$(notdir $@) \
+		       var/cache/built-up-area/$(notdir $@) \
 		--output $@ \
 
 
@@ -38,10 +46,14 @@ $(CACHE_DIR)statistical-geography/%.geojson:
 	@mkdir -p $(dir $@)
 	curl -qLfs 'https://www.planning.data.gov.uk/curie/statistical-geography:$(@F)' > $@
 
-# download green-belt within the LPA boundary
+# download coverage file within the LPA boundary
 $(CACHE_DIR)green-belt/%.geojson:
 	@mkdir -p $(dir $@)
 	curl -qLfs 'https://www.planning.data.gov.uk/entity.geojson?dataset=green-belt&geometry_curie=statistical-geography:$(basename $(@F))' > $@
+
+$(CACHE_DIR)built-up-area/%.geojson:
+	@mkdir -p $(dir $@)
+	curl -qLfs 'https://www.planning.data.gov.uk/entity.geojson?dataset=built-up-area&geometry_curie=statistical-geography:$(basename $(@F))' > $@
 
 var/region.json:
 	curl -qLfs 'https://www.planning.data.gov.uk/entity.json?dataset=local-planning-authority&field=name&field=reference&field=end-date&limit=100&geometry_curie=statistical-geography:$(REGION)' > $@

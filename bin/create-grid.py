@@ -1,12 +1,13 @@
 #! /usr/bin/env python3
 
+from os.path import dirname, basename
 import geopandas as gpd
-import pandas as pd
 from shapely.geometry import box
 import numpy as np
 import argparse
 from pyproj import CRS, Transformer
 import math
+
 
 def find_suitable_utm_zone(lon, lat):
     """Find the most suitable UTM zone for a given location"""
@@ -16,8 +17,7 @@ def find_suitable_utm_zone(lon, lat):
         epsg += 100
     return f"EPSG:{epsg}"
 
-def create_grid_from_boundary(boundary_file, cell_width_meters, cell_height_meters, 
-                              min_coverage_pct=0.0, coverage_polygon_file=None):
+def create_grid_from_boundary(boundary_file, cell_width_meters, cell_height_meters, coverage_polygon_files):
     """
     Create a grid of rectangular cells within a boundary polygon
     
@@ -26,11 +26,12 @@ def create_grid_from_boundary(boundary_file, cell_width_meters, cell_height_mete
     - cell_width_meters: Width of each cell in meters
     - cell_height_meters: Height of each cell in meters
     - min_coverage_pct: Minimum percentage of cell that must be within boundary to be included
-    - coverage_polygon_file: Optional file with polygons to calculate coverage for
+    - coverage_polygon_files: Optional list of files with polygons to calculate coverage for
     
     Returns:
     - GeoDataFrame containing grid cells as Polygon geometries
     """
+
     # Load the boundary file
     boundary_gdf = gpd.read_file(boundary_file)
     
@@ -95,9 +96,6 @@ def create_grid_from_boundary(boundary_file, cell_width_meters, cell_height_mete
     
     grid_gdf = gpd.GeoDataFrame(data, geometry=geometries, crs=utm_crs)
 
-    # Calculate the area of each grid cell
-    grid_gdf['cell_area'] = grid_gdf.geometry.area
-    
     # Get the boundary polygon
     boundary_polygon = boundary_utm.geometry.unary_union
 
@@ -110,8 +108,13 @@ def create_grid_from_boundary(boundary_file, cell_width_meters, cell_height_mete
     grid_gdf = grid_gdf.reset_index(drop=True)
     grid_gdf['id'] = range(len(grid_gdf))
     
-    # Calculate coverage for another polygon if specified
-    if coverage_polygon_file:
+    names = []
+    for coverage_polygon_file in coverage_polygon_files:
+        print("coverage_polygon_file")
+        name = basename(dirname(coverage_polygon_file))
+        names.append(name)
+        print(names)
+
         # Load the coverage polygons
         coverage_gdf = gpd.read_file(coverage_polygon_file)
         
@@ -128,7 +131,7 @@ def create_grid_from_boundary(boundary_file, cell_width_meters, cell_height_mete
         
         # Calculate intersection with coverage polygons and its area
         grid_gdf['coverage_intersection'] = grid_gdf.geometry.intersection(coverage_polygon)
-        grid_gdf['coverage_area'] = grid_gdf['coverage_intersection'].area
+        grid_gdf[name] = grid_gdf['coverage_intersection'].area
         
         # Clean up intermediate columns
         grid_gdf = grid_gdf.drop(columns=['coverage_intersection'])
@@ -136,16 +139,11 @@ def create_grid_from_boundary(boundary_file, cell_width_meters, cell_height_mete
     # Convert back to WGS84 (EPSG:4326) for GeoJSON output
     grid_gdf_wgs84 = grid_gdf.to_crs("EPSG:4326")
     
-    # Transfer the coverage percentage if it exists
-    if 'coverage_area' in grid_gdf.columns:
-        grid_gdf_wgs84['green-belt'] = grid_gdf['coverage_area']
+    # Transfer the coverages
+    for name in names:
+        if name in grid_gdf.columns:
+            grid_gdf_wgs84[name] = grid_gdf[name]
 
-    grid_gdf_wgs84 = grid_gdf_wgs84.drop(columns=['coverage_area'])
-    
-    # Clean up unwanted columns
-    if 'cell_area' in grid_gdf_wgs84.columns:
-        grid_gdf_wgs84 = grid_gdf_wgs84.drop(columns=['cell_area'])
-    
     return grid_gdf_wgs84
 
 def main():
@@ -153,20 +151,19 @@ def main():
     parser.add_argument('--boundary', type=str, required=True, help='Path to boundary polygon file')
     parser.add_argument('--cell_width', type=float, required=True, help='Cell width in meters')
     parser.add_argument('--cell_height', type=float, required=True, help='Cell height in meters')
-    parser.add_argument('--min_coverage', type=float, default=0.0, 
-                        help='Minimum percentage of cell that must be within boundary (0-100)')
-    parser.add_argument('--coverage_file', type=str, help='Optional file with polygons to calculate coverage for')
+    parser.add_argument('--coverage_file', type=str, help='Optional file with polygons to calculate coverage for', action='append', nargs='+')
     parser.add_argument('--output', type=str, default='grid_boundary.geojson', help='Output GeoJSON file')
     
     args = parser.parse_args()
+
+    print(args.coverage_file)
     
     # Create grid within boundary with cell dimensions in meters
     grid_gdf = create_grid_from_boundary(
         args.boundary, 
         args.cell_width, 
         args.cell_height,
-        args.min_coverage,
-        args.coverage_file
+        args.coverage_file[0]
     )
     
     # Save to GeoJSON
