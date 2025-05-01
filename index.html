@@ -305,6 +305,19 @@
             <div class="govuk-!-margin-top-6" id="map-container">
                 <div id="map"></div>
             </div>
+
+            <!-- Plan submission section -->
+            <div class="govuk-width-container govuk-!-margin-top-6 govuk-!-margin-bottom-6">
+                <form id="plan-submit-form" class="govuk-form-group" autocomplete="off" style="max-width: 700px; margin: 0 auto;">
+                    <h2 class="govuk-heading-m">Explain why you chose this plan</h2>
+                    <span class="govuk-hint">Submitting your plan will add it to the list of plans created by the public</span>
+                    <textarea class="govuk-textarea" id="plan-explanation" name="plan-explanation" rows="5" style="margin-bottom: 20px;"></textarea>
+                    <div class="govuk-button-group">
+                        <button type="submit" class="govuk-button">Submit</button>
+                        <a href="other-plans.html" class="govuk-button govuk-button--secondary" style="margin-left: 10px;">See other plans</a>
+                    </div>
+                </form>
+            </div>
     
     <!-- Leaflet JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -420,8 +433,28 @@
         const toggleButton = document.getElementById('toggle-highlight');
         const fileInput = document.getElementById('geojson-file');
         
+        // Helper to get fill color by status
+        function getFillColor(status) {
+            switch(status) {
+                case 'green-belt': return "#00703c";
+                case 'non-green-belt': return "#f3f2f1";
+                case 'housing': return "#1d70b8";
+                case 'commercial': return "#942514";
+                default: return "#f3f2f1";
+            }
+        }
         // Function to style GeoJSON features
         function styleFeature(feature) {
+            // Highlight if selected
+            if (selectedFeatureIds && selectedFeatureIds.includes(feature.properties.id)) {
+                return {
+                    weight: 2,
+                    color: '#ffdd00', // Yellow border
+                    fillOpacity: 0.9,
+                    fillColor: getFillColor(feature.properties.status),
+                    opacity: 1
+                };
+            }
             // Using GOV.UK color palette
             const style = {
                 weight: 0.5, // Thinner border for subtlety
@@ -462,9 +495,97 @@
         }
         
         // Function to add popup information with controls to change land status
+        // --- Prevent double-click zoom when shift is held ---
+        map.on('dblclick', function(e) {
+            if (isShiftDown) {
+                e.originalEvent.preventDefault();
+            }
+        });
         function onEachFeature(feature, layer) {
-            if (feature.properties) {
-                layer.on('click', function() {
+            // Prevent zoom on feature double-click
+            layer.on('dblclick', function(e) {
+                e.originalEvent.preventDefault();
+            });
+            // Multi-select with shift+click
+            layer.on('click', function(e) {
+                if (isShiftDown) {
+                    // Toggle selection
+                    if (!selectedFeatureIds.includes(feature.properties.id)) {
+                        selectedFeatureIds.push(feature.properties.id);
+                    } else {
+                        selectedFeatureIds = selectedFeatureIds.filter(id => id !== feature.properties.id);
+                    }
+                    updateGridLayer();
+                    // Show mass update button if >0
+                    if (selectedFeatureIds.length > 0) {
+                        massUpdateBtn.style.display = 'block';
+                    } else {
+                        massUpdateBtn.style.display = 'none';
+                    }
+                    return;
+                } else {
+                    // Clear selection if not shift
+                    selectedFeatureIds = [];
+                    massUpdateBtn.style.display = 'none';
+                    updateGridLayer();
+
+                    // --- Popup logic (single click, not shift) ---
+                    if (feature.properties) {
+                        // Initialize status if it doesn't exist yet
+                        if (!feature.properties.status) {
+                            // Set default status based on green-belt value
+                            if (feature.properties["green-belt"] >= 0.1) {
+                                feature.properties.status = 'green-belt';
+                            } else {
+                                feature.properties.status = 'non-green-belt';
+                            }
+                        }
+                        let popupContent = '<div class="govuk-form-group">';
+                        popupContent += '<table class="govuk-table">';
+                        popupContent += '<tbody class="govuk-table__body">';
+                        // Show ID and coordinates
+                        popupContent += `<tr class="govuk-table__row"><th class="govuk-table__header">ID:</th><td class="govuk-table__cell">${feature.properties.id}</td></tr>`;
+                        // Current status
+                        popupContent += `<tr class="govuk-table__row"><th class="govuk-table__header">Current Status:</th><td class="govuk-table__cell">${formatStatus(feature.properties.status)}</td></tr>`;
+                        popupContent += '</tbody></table>';
+                        // Add status change controls
+                        popupContent += '<fieldset class="govuk-fieldset">';
+                        popupContent += '<legend class="govuk-fieldset__legend">Change status to:</legend>';
+                        popupContent += '<div class="govuk-radios govuk-radios--small">';
+                        // Radio buttons for each possible status
+                        const statuses = [
+                            {value: 'green-belt', label: 'Green Belt', color: '#00703c'},
+                            {value: 'non-green-belt', label: 'Non-Green Belt', color: '#f3f2f1'},
+                            {value: 'housing', label: 'Housing', color: '#1d70b8'},
+                            {value: 'commercial', label: 'Commercial', color: '#942514'}
+                        ];
+                        statuses.forEach((status, index) => {
+                            popupContent += `
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="status-${feature.properties.id}-${index}" 
+                                    name="status-${feature.properties.id}" type="radio" value="${status.value}" 
+                                    ${feature.properties.status === status.value ? 'checked' : ''}>
+                                <label class="govuk-label govuk-radios__label" for="status-${feature.properties.id}-${index}">
+                                    <span style="background-color:${status.color};width:12px;height:12px;display:inline-block;margin-right:5px;"></span>
+                                    ${status.label}
+                                </label>
+                            </div>`;
+                        });
+                        popupContent += '</div>';
+                        popupContent += '</fieldset>';
+                        // Add update button
+                        popupContent += `<button class="govuk-button govuk-button--secondary govuk-!-margin-top-3" 
+                            data-module="govuk-button" onclick="updateStatus(${feature.properties.id})">
+                            Update
+                        </button>`;
+                        popupContent += '</div>';
+                        const popup = L.popup()
+                            .setLatLng(layer.getBounds().getCenter())
+                            .setContent(popupContent)
+                            .openOn(map);
+                    }
+                }
+
                     // Initialize status if it doesn't exist yet
                     if (!feature.properties.status) {
                         // Set default status based on green-belt value
@@ -529,7 +650,6 @@
                         .setContent(popupContent)
                         .openOn(map);
                 });
-            }
         }
 
         // Helper function to format status for display
@@ -798,6 +918,107 @@
                 updateHousesCount();
              })
             .catch(error => console.error('Error loading example data:', error));
+    </script>
+    <!-- Mass Update Modal -->
+    <div id="mass-update-modal" class="govuk-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:20000; align-items:center; justify-content:center;">
+      <div style="background:white; padding:32px; border-radius:8px; min-width:320px; max-width:90vw; margin:auto;">
+        <h2 class="govuk-heading-m">Update Category for Selected Boxes</h2>
+        <form id="mass-update-form">
+          <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend">Set new category:</legend>
+            <div class="govuk-radios govuk-radios--small">
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="mass-status-green-belt" name="mass-status" type="radio" value="green-belt">
+                <label class="govuk-label govuk-radios__label" for="mass-status-green-belt">
+                  <span style="background-color:#00703c;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Green Belt
+                </label>
+              </div>
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="mass-status-non-green-belt" name="mass-status" type="radio" value="non-green-belt">
+                <label class="govuk-label govuk-radios__label" for="mass-status-non-green-belt">
+                  <span style="background-color:#f3f2f1;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Non-Green Belt
+                </label>
+              </div>
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="mass-status-housing" name="mass-status" type="radio" value="housing">
+                <label class="govuk-label govuk-radios__label" for="mass-status-housing">
+                  <span style="background-color:#1d70b8;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Housing
+                </label>
+              </div>
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="mass-status-commercial" name="mass-status" type="radio" value="commercial">
+                <label class="govuk-label govuk-radios__label" for="mass-status-commercial">
+                  <span style="background-color:#942514;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Commercial
+                </label>
+              </div>
+            </div>
+          </fieldset>
+          <div style="margin-top:20px;">
+            <button type="submit" class="govuk-button govuk-!-margin-right-2">Update Selected</button>
+            <button type="button" class="govuk-button govuk-button--secondary" onclick="closeMassUpdateModal()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+    // --- Multi-select state ---
+    let selectedFeatureIds = [];
+    let isShiftDown = false;
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Shift') {
+            isShiftDown = true;
+        }
+    });
+    document.addEventListener('keyup', function(e) {
+        if (e.key === 'Shift') {
+            isShiftDown = false;
+        }
+    });
+
+    // --- Add a floating button for mass update ---
+    let massUpdateBtn = document.createElement('button');
+    massUpdateBtn.innerText = 'Mass Update Category';
+    massUpdateBtn.className = 'govuk-button govuk-button--secondary';
+    massUpdateBtn.style.position = 'fixed';
+    massUpdateBtn.style.bottom = '32px';
+    massUpdateBtn.style.right = '32px';
+    massUpdateBtn.style.zIndex = 20001;
+    massUpdateBtn.style.display = 'none';
+    massUpdateBtn.onclick = function() {
+        if (selectedFeatureIds.length > 0) openMassUpdateModal();
+    };
+    document.body.appendChild(massUpdateBtn);
+
+    // --- Modal logic ---
+    function openMassUpdateModal() {
+        document.getElementById('mass-update-modal').style.display = 'flex';
+    }
+    function closeMassUpdateModal() {
+        document.getElementById('mass-update-modal').style.display = 'none';
+        selectedFeatureIds = [];
+        updateGridLayer();
+        massUpdateBtn.style.display = 'none';
+    }
+    document.getElementById('mass-update-form').onsubmit = function(e) {
+        e.preventDefault();
+        const newStatus = document.querySelector('input[name="mass-status"]:checked');
+        if (!newStatus) return;
+        massUpdateStatus(newStatus.value);
+        closeMassUpdateModal();
+    };
+    // --- Mass update function ---
+    function massUpdateStatus(newStatus) {
+        if (!gridData) return;
+        gridData.features.forEach(f => {
+            if (selectedFeatureIds.includes(f.properties.id)) {
+                f.properties.status = newStatus;
+            }
+        });
+        updateGridLayer();
+        if (typeof updateHousesCount === 'function') updateHousesCount();
+    }
     </script>
 </body>
 </html>
