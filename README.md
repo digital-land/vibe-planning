@@ -7,11 +7,16 @@
 Can we enable "vibe planning"?
 
 # Demo roadmap
-- a free text box below with the title Explain why you chose this plan
-- Submit button
-- Help text to say: Submitting your plan will add it to the list of plans created by the public 
-- fake button saying See other plans - to a blank page that just says something like: Here you would be able to see, comment on and up vote other people’s suggested plans
-- Something to suggest how to extend other scearios from the LPA or the community
+* a free text box below "Explain why you chose this plan"
+* Link / text box: "Work with our AI to generate your proposal"
+* "Submit your proposal" button
+* Content: Submitting your plan will add it to the list of propsals created by the public 
+* Link to "see modify and support proposals from our planners and the rest of the community"
+* Radio button for mode of selecting cells:
+   * Housing
+   * Commercial
+   * Undeveloped
+* Histogram of total area (built-up, green-belt, released for housing) updated as you select cells
 
 # Data roadmap
 
