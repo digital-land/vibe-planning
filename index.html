@@ -117,7 +117,9 @@
             margin-bottom: 10px;
         }
         
+        /* Use GOV.UK button classes instead of custom styles */
         button {
+            /* These styles are only applied to buttons without govuk-button class */
             padding: 10px 15px;
             background-color: #00703c;
             color: white;
@@ -259,7 +261,7 @@
     <!-- Celebration elements -->
     <div id="celebration-banner" role="alert">
         <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Goal Achieved!</h2>
-        <p class="govuk-body">You've successfully planned 100 houses. Well done!</p>
+        <p class="govuk-body">You've successfully planned 1,000 homes for your new community. Well done!</p>
     </div>
     <canvas id="confetti-canvas"></canvas>
 
@@ -288,17 +290,73 @@
     </header>
 
     <div class="govuk-width-container">
-        <main class="govuk-main-wrapper" id="main-content" role="main">
-            <h1 class="govuk-heading-xl">Planning Map</h1>
+        <main class="govuk-main-wrapper" id="main-content">
+            <h1 class="govuk-heading-xl">Vibe Planning</h1>
+            <p class="govuk-body-l">Explore and modify land use for planning.</p>
             
-            <!-- Goal Section -->
-            <div class="govuk-panel govuk-panel--confirmation">
-                <h2 class="govuk-panel__title">Goal</h2>
-                <div class="govuk-panel__body govuk-!-font-size-27">
-                    Build 100 houses
+            <!-- Scenario & Goals Section -->
+            <div class="govuk-panel govuk-!-margin-bottom-6" style="background-color: #f3f2f1; color: #0b0c0c;">
+                <h2 class="govuk-panel__title govuk-heading-m govuk-!-text-align-left">Planning Scenario Goals</h2>
+                
+                <div class="govuk-grid-row govuk-!-margin-top-6">
+                    <!-- Development Needs -->
+                    <div class="govuk-grid-column-one-half">
+                        <div class="govuk-!-text-align-left">
+                            <h3 class="govuk-heading-m">Development Needs</h3>
+                            <ul class="govuk-list govuk-body">
+                                <li><strong>1,000</strong> new homes (~2.2 people per home)</li>
+                                <li><strong>200</strong> affordable homes</li>
+                                <li><strong>14,000 sq m</strong> of new employment and retail space</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Infrastructure Needs -->
+                    <div class="govuk-grid-column-one-half">
+                        <div class="govuk-!-text-align-left">
+                            <h3 class="govuk-heading-m">Infrastructure Needs</h3>
+                            <ul class="govuk-list govuk-body">
+                                <li><strong>1</strong> new primary school</li>
+                                <li><strong>1</strong> new GP practice</li>
+                                <li>Capacity for <strong>1,500</strong> new car journeys</li>
+                                <li><strong>16,000 sq m</strong> of parks (10% of space)</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="govuk-panel__body govuk-!-font-size-19">
-                    Current progress: <span id="houses-count">0</span> / 100
+            </div>
+            
+            <!-- Current Progress Section -->
+            <div class="govuk-!-margin-bottom-6 govuk-!-padding-4" style="background-color: #f3f2f1; color: #0b0c0c;">
+                <h3 class="govuk-heading-m">Current Progress</h3>
+                <div class="govuk-grid-row govuk-!-margin-top-4">
+                    <div class="govuk-grid-column-one-third">
+                        <div class="govuk-!-padding-top-0">
+                            <p class="govuk-body govuk-!-margin-bottom-0">Housing goal</p>
+                            <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-bottom-2">
+                                <p class="govuk-heading-xl govuk-!-margin-bottom-0" style="color: #1d70b8;"><span id="houses-count">0</span></p>
+                                <p class="govuk-body-s govuk-!-margin-bottom-0">homes built out of 1,000</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="govuk-grid-column-one-third">
+                        <div class="govuk-!-padding-top-0">
+                            <p class="govuk-body govuk-!-margin-bottom-0">Progress</p>
+                            <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-bottom-2">
+                                <p class="govuk-heading-xl govuk-!-margin-bottom-0" style="color: #00703c;"><span id="progress-percentage">0</span>%</p>
+                                <p class="govuk-body-s govuk-!-margin-bottom-0">complete</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="govuk-grid-column-one-third">
+                        <div class="govuk-!-padding-top-0">
+                            <p class="govuk-body govuk-!-margin-bottom-0">Required</p>
+                            <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-bottom-2">
+                                <p class="govuk-heading-xl govuk-!-margin-bottom-0" style="color: #942514;"><span id="houses-remaining">1,000</span></p>
+                                <p class="govuk-body-s govuk-!-margin-bottom-0">homes remaining</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -325,7 +383,7 @@
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" id="category-green-belt" name="selected-category" type="radio" value="green-belt">
                                 <label class="govuk-label govuk-radios__label" for="category-green-belt">
-                                    <span style="background-color:#00703c;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Green Belt
+                                    <span style="background-color:#505a5f;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Green Belt
                                 </label>
                             </div>
                             <div class="govuk-radios__item">
@@ -695,9 +753,20 @@
             // Calculate total houses
             const totalHouses = housingSquares * housesPerSquare;
             
-            // Get current displayed value
+            // Calculate percentage (out of 1000 houses goal)
+            const goalTarget = 1000;
+            const percentage = Math.min(100, Math.floor((totalHouses / goalTarget) * 100));
+            
+            // Calculate remaining houses
+            const remainingHouses = Math.max(0, goalTarget - totalHouses);
+            
+            // Get current displayed values
             const housesCountElement = document.getElementById('houses-count');
+            const percentageElement = document.getElementById('progress-percentage');
+            const housesRemainingElement = document.getElementById('houses-remaining');
             const currentValue = parseInt(housesCountElement.textContent, 10) || 0;
+            const currentPercentage = parseInt(percentageElement.textContent, 10) || 0;
+            const currentRemaining = parseInt(housesRemainingElement.textContent, 10) || goalTarget;
             
             // If value has changed, animate the counter
             if (currentValue !== totalHouses) {
@@ -709,21 +778,28 @@
                     // Animate counter
                     animateCounter(currentValue, totalHouses, housesCountElement);
                     
+                    // Animate percentage
+                    animateCounter(currentPercentage, percentage, percentageElement);
+                    
+                    // Animate remaining houses
+                    animateCounter(currentRemaining, remainingHouses, housesRemainingElement);
+                    
                     // Remove pulse after animation completes
                     setTimeout(() => {
                         housesCountElement.classList.remove('pulse');
                     }, 1000);
                     
                     // Check if goal is newly met (crossing the threshold)
-                    if (currentValue < 100 && totalHouses >= 100) {
+                    if (currentValue < goalTarget && totalHouses >= goalTarget) {
                         celebrateGoalAchieved();
                     }
                 }, 100);
             }
             
             // Update styling based on goal status
-            if (totalHouses >= 100) {
+            if (totalHouses >= goalTarget) {
                 housesCountElement.classList.add('goal-achieved');
+                housesRemainingElement.textContent = '0'; // Ensure it shows zero when goal is met
             } else {
                 housesCountElement.classList.remove('goal-achieved');
             }
@@ -954,7 +1030,7 @@
               <div class="govuk-radios__item">
                 <input class="govuk-radios__input" id="mass-status-green-belt" name="mass-status" type="radio" value="green-belt">
                 <label class="govuk-label govuk-radios__label" for="mass-status-green-belt">
-                  <span style="background-color:#00703c;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Green Belt
+                  <span style="background-color:#505a5f;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Green Belt
                 </label>
               </div>
               <div class="govuk-radios__item">
