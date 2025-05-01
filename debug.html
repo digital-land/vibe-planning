@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe planning</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .control-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 250px;
+        }
+        
+        .control-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .control-item {
+            margin-bottom: 15px;
+        }
+        
+        .color-picker {
+            width: 40px;
+            height: 25px;
+            padding: 0;
+            border: none;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        
+        label {
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+        }
+        
+        .coverage-value {
+            font-weight: bold;
+        }
+        
+        .file-input {
+            margin-bottom: 10px;
+        }
+        
+        button {
+            padding: 6px 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .legend {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .legend-item {
+            margin-bottom: 5px;
+        }
+        
+        .legend-color {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    
+    <!-- Leaflet JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    
+    <script>
+        // Initialize the map
+        const map = L.map('map').setView([0, 0], 2);
+        
+        // Add base layers
+        const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 19,
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        });
+        
+        // Add layer control
+        const baseLayers = {
+            "OpenStreetMap": osm,
+            "Satellite": satellite
+        };
+        
+        L.control.layers(baseLayers).addTo(map);
+        
+        // Initialize variables
+        let gridLayer = null;
+        let gridData = null;
+        let highlightEnabled = true;
+        
+        // Get DOM elements
+        const thresholdSlider = document.getElementById('coverage-threshold');
+        const thresholdValue = document.getElementById('threshold-value');
+        const highlightColorPicker = document.getElementById('highlight-color');
+        const defaultColorPicker = document.getElementById('default-color');
+        const toggleButton = document.getElementById('toggle-highlight');
+        const fileInput = document.getElementById('geojson-file');
+        
+        // Function to style GeoJSON features
+        function styleFeature(feature) {
+            const coverage = feature.properties["green-belt"];
+            
+            const style = {
+                weight: 1,
+                opacity: 1,
+                color: '#666',
+                fillOpacity: 0.7
+            };
+            
+            if (coverage !== undefined && coverage >= 0.1) {
+                style.fillColor = "green";
+            } else {
+                style.fillColor = "blue";
+            }
+            
+            return style;
+        }
+        
+        // Function to add popup information
+        function onEachFeature(feature, layer) {
+            if (feature.properties) {
+                let popupContent = '<table>';
+                
+                Object.keys(feature.properties).forEach(key => {
+                    // Skip geometry-related properties
+                    if (key !== 'geometry') {
+                        popupContent += `<tr><th>${key}:</th><td>${feature.properties[key]}</td></tr>`;
+                    }
+                });
+                
+                popupContent += '</table>';
+                layer.bindPopup(popupContent);
+            }
+        }
+        
+        // Update grid layer
+        function updateGridLayer() {
+            if (!gridData) return;
+            
+            if (gridLayer) {
+                map.removeLayer(gridLayer);
+            }
+            
+            gridLayer = L.geoJSON(gridData, {
+                style: styleFeature,
+                onEachFeature: onEachFeature
+            }).addTo(map);
+        }
+        
+        // Load GeoJSON data from file
+        function loadGeoJSONFile(file) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    gridData = JSON.parse(e.target.result);
+                    updateGridLayer();
+                    
+                    // Zoom to the data
+                    if (gridLayer) {
+                        map.fitBounds(gridLayer.getBounds());
+                    }
+                } catch (error) {
+                    console.error("Error parsing GeoJSON:", error);
+                    alert("Error loading GeoJSON file. Please check the console for details.");
+                }
+            };
+            
+            reader.readAsText(file);
+        }
+        
+        fetch('grid/E60000070.geojson')
+            .then(response => response.json())
+            .then(data => {
+                gridData = data;
+                updateGridLayer();
+                map.fitBounds(gridLayer.getBounds());
+             })
+            .catch(error => console.error('Error loading example data:', error));
+    </script>
+</body>
+</html>
