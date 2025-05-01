@@ -429,6 +429,187 @@
             height: 24px;
             filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
         }
+        
+        /* AI Suggestion Button Styles */
+        #ai-buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0 40px 0;
+        }
+        
+        #ai-suggestion-button {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #00703c 70%, #4c2c92 100%);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: "GDS Transport", arial, sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 112, 60, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #ai-suggestion-button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(60deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(30deg);
+            transition: 0.5s;
+            opacity: 0;
+        }
+        
+        #ai-suggestion-button:hover {
+            background: linear-gradient(135deg, #00582e 70%, #2e1a58 100%);
+            box-shadow: 0 6px 16px rgba(0, 112, 60, 0.4);
+        }
+        
+        #ai-suggestion-button:hover::after {
+            left: 100%;
+            opacity: 1;
+        }
+        
+        #ai-suggestion-button svg {
+            margin-right: 10px;
+            width: 24px;
+            height: 24px;
+            filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
+        }
+        
+        /* AI Plan Suggestion Modal Styles */
+        #ai-suggestion-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            overflow-y: auto;
+        }
+        
+        #ai-suggestion-content {
+            position: relative;
+            background-color: #f3f2f1;
+            margin: 5% auto;
+            padding: 30px;
+            width: 70%;
+            max-width: 800px;
+            border-radius: 5px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            font-family: "GDS Transport", arial, sans-serif;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        #ai-suggestion-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #505a5f;
+        }
+        
+        #ai-suggestion-title {
+            color: #00703c;
+            border-left: 5px solid #00703c;
+            padding-left: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .ai-suggestion-section {
+            margin-bottom: 20px;
+        }
+        
+        .suggested-plan-details {
+            background-color: white;
+            padding: 20px;
+            border-left: 4px solid #00703c;
+            margin-bottom: 15px;
+        }
+        
+        .plan-comparison {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .plan-stat {
+            flex: 1;
+            min-width: 200px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        
+        .plan-stat h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #f3f2f1;
+            padding-bottom: 5px;
+        }
+        
+        .plan-action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        /* Original Local Plan Modal Styles */
+        #original-plan-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            overflow-y: auto;
+        }
+        
+        #original-plan-content {
+            position: relative;
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            width: 80%;
+            max-width: 1000px;
+            border-radius: 5px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            font-family: "GDS Transport", arial, sans-serif;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        #original-plan-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #505a5f;
+        }
+        
+        #original-plan-title {
+            color: #1d70b8;
+            margin-bottom: 25px;
+        }
     </style>
 </head>
 <body class="govuk-template__body">
@@ -473,6 +654,116 @@
             <div class="ai-feedback-section fade-in" style="--delay: 6.5s;">
                 <p class="govuk-body">Consider making adjustments to address the identified issues while maintaining the strengths of your current plan.</p>
                 <p class="govuk-body">This analysis is based on standard planning best practices and may not account for all local factors.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- AI Suggestion Modal -->
+    <div id="ai-suggestion-modal">
+        <div id="ai-suggestion-content">
+            <span id="ai-suggestion-close" onclick="closeAiSuggestion()">&times;</span>
+            <h2 id="ai-suggestion-title" class="govuk-heading-l typing-effect">AI Alternative Plan Suggestion</h2>
+            
+            <div class="ai-suggestion-section">
+                <p class="govuk-body fade-in" style="--delay: 1s;">I've generated an alternative layout that optimizes your plan by grouping similar categories together. This creates more efficient zones and improves access to services.</p>
+            </div>
+            
+            <div class="suggested-plan-details fade-in" style="--delay: 2s;">
+                <h3 class="govuk-heading-m">Features of this Alternative Plan:</h3>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li><strong>Clustered Housing:</strong> Housing areas are grouped together with nearby amenities</li>
+                    <li><strong>Distributed Commercial:</strong> Retail and employment spaces are spread across multiple smaller hubs</li>
+                    <li><strong>Strategic Services:</strong> Schools and GP practices are positioned at optimal distances between housing clusters</li>
+                    <li><strong>Green Belt Preservation:</strong> Green belt areas maintained with improved ecological connectivity</li>
+                    <li><strong>Built-up Area Management:</strong> Development concentrated in appropriate zones</li>
+                </ul>
+            </div>
+            
+            <div class="fade-in" style="--delay: 3s;">
+                <h3 class="govuk-heading-m">Comparison to Current Plan:</h3>
+                <div class="plan-comparison">
+                    <div class="plan-stat">
+                        <h4>Housing</h4>
+                        <p>Same number of homes but in more efficient clusters with better access to services</p>
+                    </div>
+                    <div class="plan-stat">
+                        <h4>Commercial</h4>
+                        <p>Equal space distributed across 3 neighborhood centers instead of 1 concentrated area</p>
+                    </div>
+                    <div class="plan-stat">
+                        <h4>Services</h4>
+                        <p>Schools and GP practices relocated to serve more residents within shorter distances</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="plan-action-buttons fade-in" style="--delay: 4s;">
+                <button class="govuk-button" onclick="applyAiSuggestion()">Apply This Plan</button>
+                <button class="govuk-button govuk-button--secondary" onclick="closeAiSuggestion()">Keep Current Plan</button>
+            </div>
+            
+            <div class="ai-suggestion-section fade-in" style="--delay: 5s;">
+                <p class="govuk-body">Note: This is an AI-generated suggestion. You can apply it directly or use it as inspiration to adjust your current plan.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Original Local Plan Modal -->
+    <div id="original-plan-modal">
+        <div id="original-plan-content">
+            <span id="original-plan-close" onclick="closeOriginalPlan()">&times;</span>
+            <h2 id="original-plan-title" class="govuk-heading-l">Original Local Plan</h2>
+            
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <div class="govuk-panel govuk-panel--confirmation">
+                        <h3 class="govuk-panel__title">Approved Local Plan 2023-2038</h3>
+                        <div class="govuk-panel__body">
+                            Strategic development framework for sustainable growth
+                        </div>
+                    </div>
+                    
+                    <h3 class="govuk-heading-m govuk-!-margin-top-6">Development Strategy</h3>
+                    <p class="govuk-body">The Local Plan provides a clear framework for future growth and development across the area up to 2038. It aims to meet the identified needs for new homes, jobs and infrastructure, while protecting the area's valuable natural and built environment.</p>
+                    
+                    <div class="govuk-inset-text">
+                        <p>The plan allocates land for 10,000 new homes, 500,000 sqm of employment space, and supporting infrastructure including schools, healthcare facilities, and transport improvements.</p>
+                    </div>
+                    
+                    <h3 class="govuk-heading-m">Key Development Principles</h3>
+                    <ul class="govuk-list govuk-list--bullet">
+                        <li>Focus development in and around existing urban centers to maximize sustainability</li>
+                        <li>Protect green belt land while allowing strategic releases where necessary</li>
+                        <li>Create mixed-use neighborhoods with good access to services</li>
+                        <li>Provide a range of housing types and tenures to meet diverse needs</li>
+                        <li>Deliver employment opportunities alongside residential development</li>
+                        <li>Ensure timely provision of infrastructure to support new growth</li>
+                    </ul>
+                </div>
+                
+                <div class="govuk-grid-column-one-third">
+                    <div class="govuk-!-padding-5" style="background-color: #f3f2f1;">
+                        <h3 class="govuk-heading-s">Housing</h3>
+                        <p class="govuk-body-s">10,000 new homes across the plan period</p>
+                        
+                        <h3 class="govuk-heading-s">Employment</h3>
+                        <p class="govuk-body-s">500,000 sqm of commercial and retail space</p>
+                        
+                        <h3 class="govuk-heading-s">Education</h3>
+                        <p class="govuk-body-s">5 new primary schools and 1 secondary school</p>
+                        
+                        <h3 class="govuk-heading-s">Healthcare</h3>
+                        <p class="govuk-body-s">3 new GP practices and extended hospital facilities</p>
+                        
+                        <h3 class="govuk-heading-s">Green Space</h3>
+                        <p class="govuk-body-s">20% of development area reserved for green space</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="govuk-!-margin-top-6">
+                <button class="govuk-button" onclick="applyOriginalPlan()">Apply Original Plan</button>
+                <button class="govuk-button govuk-button--secondary" onclick="closeOriginalPlan()">Close</button>
             </div>
         </div>
     </div>
@@ -666,13 +957,28 @@
             <div id="map"></div>
         </div>
 
-        <!-- AI Analysis Button -->
-        <div id="ai-button-container" class="govuk-width-container">
+        <!-- Planning and AI Buttons -->
+        <div id="ai-buttons-container" class="govuk-width-container">
+            <button id="original-plan-button" class="govuk-button govuk-button--secondary" onclick="showOriginalPlan()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="3" y1="9" x2="21" y2="9"></line>
+                    <line x1="9" y1="21" x2="9" y2="9"></line>
+                </svg>
+                View Original Local Plan
+            </button>
             <button id="ai-button" class="govuk-button" onclick="showAiFeedback()">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21.87 10.42c-.15-.4-.43-.72-.8-.94l-1.74-1.06c-.13-1.05-.53-2.06-1.19-2.96L19 3.5c.14-.46.1-.98-.1-1.42-.41-.84-1.42-1.19-2.26-.78L14.29 2.4c-.85-.39-1.77-.6-2.7-.6-.93 0-1.85.21-2.7.6L6.56 1.3c-.85-.4-1.85-.06-2.25.79-.2.44-.24.96-.1 1.42l.85 1.96c-.65.9-1.05 1.9-1.18 2.96L2.14 9.48c-.37.23-.65.54-.8.94-.35.88.09 1.88.97 2.22l1.69 1c.07 1.34.41 2.64 1.03 3.81L4 19.5c-.11.35-.1.75.04 1.09.33.87 1.28 1.32 2.15.98l2-1.08c1.61.7 3.41.69 5.02 0l2 1.08c.86.34 1.81-.1 2.14-.98.15-.34.16-.74.05-1.09l-1.03-2.05c.63-1.18.97-2.47 1.03-3.81l1.7-1c.87-.35 1.3-1.34.97-2.22zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"></path>
                 </svg>
                 Ask AI for Plan Analysis
+            </button>
+            <button id="ai-suggestion-button" class="govuk-button" onclick="showAiSuggestion()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline>
+                    <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+                </svg>
+                Get AI Plan Suggestion
             </button>
         </div>
 
@@ -1541,11 +1847,412 @@
         document.getElementById('ai-feedback-modal').style.display = 'none';
     }
     
+    // --- AI Plan Suggestion functions ---
+    function showAiSuggestion() {
+        // Display the AI suggestion modal with animation effects
+        const modal = document.getElementById('ai-suggestion-modal');
+        modal.style.display = 'flex';
+        
+        // Reset animations for repeated viewing
+        document.querySelectorAll('.typing-effect').forEach(el => {
+            el.style.animation = 'none';
+            el.offsetHeight; // Trigger reflow
+            el.style.animation = null;
+        });
+        
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.opacity = '0';
+            el.offsetHeight; // Trigger reflow
+            el.style.animation = null;
+        });
+        
+        // Reset action buttons if they were changed in a previous attempt
+        const planActionButtons = document.querySelector('.plan-action-buttons');
+        if (planActionButtons) {
+            planActionButtons.innerHTML = `
+                <button class="govuk-button" onclick="applyAiSuggestion()">Apply This Plan</button>
+                <button class="govuk-button govuk-button--secondary" onclick="closeAiSuggestion()">Keep Current Plan</button>
+            `;
+        }
+    }
+    
+    function closeAiSuggestion() {
+        // Hide the modal
+        const modal = document.getElementById('ai-suggestion-modal');
+        if (modal) {
+            modal.style.display = 'none';
+            
+            // Make sure we immediately update the map
+            if (gridData) {
+                console.log('Forcing map refresh after modal close');
+                // Use setTimeout to ensure the DOM update happens before we refresh the map
+                setTimeout(() => {
+                    updateGridLayer(false);
+                }, 100);
+            }
+        }
+    }
+    
+    function applyAiSuggestion() {
+        if (!gridData) {
+            console.error('No grid data available');
+            return;
+        }
+        
+        try {
+            console.log('Starting to apply AI suggestion...');
+            
+            // Store current grid state before making changes
+            const previousGridState = JSON.parse(JSON.stringify(gridData));
+            
+            // Step 1: Reset all statuses
+            gridData.features.forEach(feature => {
+                // Clear existing status assignments
+                feature.properties.status = null;
+            });
+            
+            // Step 2: Create distinct regions based on geographic coordinates
+            console.log('Creating optimized plan...');
+            createOptimizedPlan(gridData.features);
+            
+            // Step 3: Update the map with the new plan
+            console.log('Updating grid layer and counts...');
+            updateGridLayer(false);
+            updateHousesCount();
+            
+            // Show a message in the modal about applying the plan
+            const planActionButtons = document.querySelector('.plan-action-buttons');
+            planActionButtons.innerHTML = '<p class="govuk-body govuk-!-font-weight-bold">Alternative plan applied successfully!</p>';
+            
+            // Close the modal after a delay
+            setTimeout(() => {
+                closeAiSuggestion();
+                // Force another update to ensure the map reflects changes
+                updateGridLayer(false);
+            }, 2000);
+            
+            console.log('AI suggestion applied successfully');
+        } catch (error) {
+            console.error('Error applying AI suggestion:', error);
+            alert('There was an error applying the AI suggestion. Please try again.');
+        }
+    }
+    
+    // Function to create an optimized plan with a coherent spatial allocation
+    function createOptimizedPlan(features) {
+        // Get geographic bounds of the area
+        const bounds = getBounds(features);
+        const xRange = bounds.maxX - bounds.minX;
+        const yRange = bounds.maxY - bounds.minY;
+        
+        // Create spatial regions
+        const numRegions = 4;
+        const regions = [];
+        
+        // Divide the map into quadrants (creating 4 distinct regions)
+        for (let i = 0; i < numRegions; i++) {
+            regions.push([]);
+        }
+        
+        // Group features into regions based on their position
+        features.forEach(feature => {
+            // Use first point of polygon to determine position
+            const center = getFeatureCenter(feature);
+            
+            // Normalize coordinates to 0-1 range
+            const xNorm = (center.x - bounds.minX) / xRange;
+            const yNorm = (center.y - bounds.minY) / yRange;
+            
+            // Assign to quadrant (0: top-left, 1: top-right, 2: bottom-left, 3: bottom-right)
+            let regionIndex;
+            if (xNorm < 0.5) {
+                if (yNorm < 0.5) regionIndex = 0;
+                else regionIndex = 2;
+            } else {
+                if (yNorm < 0.5) regionIndex = 1;
+                else regionIndex = 3;
+            }
+            
+            regions[regionIndex].push(feature);
+        });
+        
+        // For each region, create a balanced development plan
+        regions.forEach((region, idx) => {
+            const greenBeltFeatures = [];
+            const developableFeatures = [];
+            
+            // Separate green belt from developable areas
+            region.forEach(feature => {
+                if (feature.properties['green-belt'] && feature.properties['green-belt'] > 5000) {
+                    greenBeltFeatures.push(feature);
+                } else {
+                    developableFeatures.push(feature);
+                }
+            });
+            
+            // Apply zoning to each region (vary the allocation pattern by region)
+            applyZoning(developableFeatures, idx);
+            
+            // Ensure green belt areas are preserved
+            greenBeltFeatures.forEach(feature => {
+                feature.properties.status = null;
+            });
+        });
+    }
+    
+    // Apply zoning to a region with different patterns based on region index
+    function applyZoning(features, regionIndex) {
+        if (features.length === 0) return;
+        
+        // Sort features based on their position for more coherent zoning
+        const sortedFeatures = sortFeaturesByPosition(features, regionIndex);
+        
+        // Calculate allocations based on developable area
+        const totalFeatures = sortedFeatures.length;
+        
+        // Different regions get different ratios to create distinct neighborhood patterns
+        let housingRatio, commercialRatio, schoolRatio, gpRatio;
+        
+        switch (regionIndex) {
+            case 0: // Top-left: Housing-focused with basic services
+                housingRatio = 0.75;
+                commercialRatio = 0.1;
+                schoolRatio = 0.07;
+                gpRatio = 0.05;
+                break;
+            case 1: // Top-right: Mixed use with strong commercial
+                housingRatio = 0.45;
+                commercialRatio = 0.4;
+                schoolRatio = 0.08;
+                gpRatio = 0.07;
+                break;
+            case 2: // Bottom-left: Balanced neighborhood
+                housingRatio = 0.6;
+                commercialRatio = 0.2;
+                schoolRatio = 0.1;
+                gpRatio = 0.1;
+                break;
+            case 3: // Bottom-right: Service-rich area
+                housingRatio = 0.55;
+                commercialRatio = 0.3;
+                schoolRatio = 0.08;
+                gpRatio = 0.07;
+                break;
+        }
+        
+        // Calculate counts for each category
+        const housingCount = Math.max(3, Math.floor(totalFeatures * housingRatio));
+        const commercialCount = Math.max(2, Math.floor(totalFeatures * commercialRatio));
+        const schoolCount = Math.max(1, Math.floor(totalFeatures * schoolRatio));
+        const gpCount = Math.max(1, Math.floor(totalFeatures * gpRatio));
+        
+        // Create contiguous zones by assigning categories in blocks
+        let index = 0;
+        
+        // Housing zones in contiguous blocks (create multiple neighborhoods)
+        const housingBlocks = Math.min(3, Math.floor(housingCount / 4));
+        const housesPerBlock = Math.floor(housingCount / housingBlocks);
+        
+        for (let block = 0; block < housingBlocks; block++) {
+            const startIdx = Math.floor(index + (block * totalFeatures / housingBlocks));
+            for (let i = 0; i < housesPerBlock && (startIdx + i) < sortedFeatures.length; i++) {
+                if (sortedFeatures[startIdx + i]) {
+                    sortedFeatures[startIdx + i].properties.status = 'housing';
+                }
+            }
+        }
+        
+        // Fill in remaining housing to reach target
+        let housesAssigned = housingBlocks * housesPerBlock;
+        while (housesAssigned < housingCount && index < sortedFeatures.length) {
+            if (!sortedFeatures[index].properties.status) {
+                sortedFeatures[index].properties.status = 'housing';
+                housesAssigned++;
+            }
+            index++;
+        }
+        
+        // Commercial zones (create multiple smaller commercial centers)
+        const commercialCenters = Math.min(3, Math.floor(commercialCount / 2));
+        const storesPerCenter = Math.floor(commercialCount / commercialCenters);
+        
+        for (let center = 0; center < commercialCenters; center++) {
+            // Position commercial centers relative to housing zones
+            const startPosition = Math.floor((center + 1) * totalFeatures / (commercialCenters + 1));
+            let commercialAssigned = 0;
+            
+            // Create a small cluster of commercial properties
+            for (let i = 0; i < storesPerCenter && (startPosition + i) < sortedFeatures.length; i++) {
+                if (sortedFeatures[startPosition + i] && !sortedFeatures[startPosition + i].properties.status) {
+                    sortedFeatures[startPosition + i].properties.status = 'commercial';
+                    commercialAssigned++;
+                }
+            }
+        }
+        
+        // Schools placed strategically near housing but not all in the same area
+        let schoolsAssigned = 0;
+        for (let i = 0; i < schoolCount; i++) {
+            const position = Math.floor((i + 1) * totalFeatures / (schoolCount + 1));
+            if (position < sortedFeatures.length && !sortedFeatures[position].properties.status) {
+                sortedFeatures[position].properties.status = 'primary-school';
+                schoolsAssigned++;
+            }
+        }
+        
+        // GP practices also strategically placed
+        let gpsAssigned = 0;
+        for (let i = 0; i < gpCount; i++) {
+            const position = Math.floor((i + 0.5) * totalFeatures / (gpCount + 1));
+            if (position < sortedFeatures.length && !sortedFeatures[position].properties.status) {
+                sortedFeatures[position].properties.status = 'gp-practice';
+                gpsAssigned++;
+            }
+        }
+        
+        // Fill any remaining unassigned features with housing or commercial to ensure complete coverage
+        for (let i = 0; i < sortedFeatures.length; i++) {
+            if (!sortedFeatures[i].properties.status) {
+                if (Math.random() < 0.8) { // 80% chance of housing for remaining areas
+                    sortedFeatures[i].properties.status = 'housing';
+                } else {
+                    sortedFeatures[i].properties.status = 'commercial';
+                }
+            }
+        }
+    }
+    
+    // Helper function to get geographic bounds of features
+    function getBounds(features) {
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        
+        features.forEach(feature => {
+            const coords = feature.geometry.coordinates[0]; // First polygon ring
+            coords.forEach(coord => {
+                minX = Math.min(minX, coord[0]);
+                minY = Math.min(minY, coord[1]);
+                maxX = Math.max(maxX, coord[0]);
+                maxY = Math.max(maxY, coord[1]);
+            });
+        });
+        
+        return { minX, minY, maxX, maxY };
+    }
+    
+    // Helper function to get center of a feature
+    function getFeatureCenter(feature) {
+        const coords = feature.geometry.coordinates[0]; // First polygon ring
+        let sumX = 0, sumY = 0;
+        
+        coords.forEach(coord => {
+            sumX += coord[0];
+            sumY += coord[1];
+        });
+        
+        return {
+            x: sumX / coords.length,
+            y: sumY / coords.length
+        };
+    }
+    
+    // Sort features based on their position (different sort for each region)
+    function sortFeaturesByPosition(features, regionIndex) {
+        return features.sort((a, b) => {
+            const centerA = getFeatureCenter(a);
+            const centerB = getFeatureCenter(b);
+            
+            // Different sorting strategies for each region to create varied patterns
+            switch (regionIndex) {
+                case 0: // Top left: sort by X then Y
+                    return centerA.x - centerB.x || centerA.y - centerB.y;
+                case 1: // Top right: sort by Y then X
+                    return centerA.y - centerB.y || centerA.x - centerB.x;
+                case 2: // Bottom left: sort by distance from corner
+                    const distA = Math.sqrt(Math.pow(centerA.x, 2) + Math.pow(centerA.y, 2));
+                    const distB = Math.sqrt(Math.pow(centerB.x, 2) + Math.pow(centerB.y, 2));
+                    return distA - distB;
+                case 3: // Bottom right: sort by alternating X and Y bands
+                    const bandA = Math.floor(centerA.y * 5) % 2 === 0 ? 
+                        centerA.x : -centerA.x;
+                    const bandB = Math.floor(centerB.y * 5) % 2 === 0 ? 
+                        centerB.x : -centerB.x;
+                    return bandA - bandB;
+                default:
+                    return 0;
+            }
+        });
+    }
+    
     // Close the modal if user clicks outside the content area
     window.addEventListener('click', function(event) {
-        const modal = document.getElementById('ai-feedback-modal');
-        if (event.target === modal) {
+        const feedbackModal = document.getElementById('ai-feedback-modal');
+        const suggestionModal = document.getElementById('ai-suggestion-modal');
+        
+        if (event.target === feedbackModal) {
             closeAiFeedback();
+        } else if (event.target === suggestionModal) {
+            closeAiSuggestion();
+        }
+    });
+    
+    // --- Original Local Plan functions ---
+    function showOriginalPlan() {
+        // Display the original plan modal
+        const modal = document.getElementById('original-plan-modal');
+        modal.style.display = 'flex';
+    }
+    
+    function closeOriginalPlan() {
+        document.getElementById('original-plan-modal').style.display = 'none';
+    }
+    
+    // Store a backup of the initial grid state when the page first loads
+    let initialGridState = null;
+    
+    // Store the initial state after grid data is loaded
+    const originalStoreGridState = function() {
+        if (gridData && !initialGridState) {
+            initialGridState = JSON.parse(JSON.stringify(gridData));
+            console.log('Original plan state saved');
+        }
+    };
+    
+    // Apply the original planner's local plan
+    function applyOriginalPlan() {
+        if (!initialGridState) {
+            alert('Original plan data is not available');
+            return;
+        }
+        
+        // Restore the grid data to its initial state
+        gridData = JSON.parse(JSON.stringify(initialGridState));
+        
+        // Update the map with the original plan
+        updateGridLayer(false);
+        updateHousesCount();
+        
+        // Show a message in the modal about applying the plan
+        const buttons = document.querySelector('#original-plan-modal .govuk-!-margin-top-6');
+        buttons.innerHTML = '<p class="govuk-body govuk-!-font-weight-bold">Original plan restored successfully!</p>';
+        
+        // Close the modal after a delay
+        setTimeout(() => {
+            closeOriginalPlan();
+        }, 2000);
+    }
+    
+    // Close modals if user clicks outside content areas
+    window.addEventListener('click', function(event) {
+        const feedbackModal = document.getElementById('ai-feedback-modal');
+        const suggestionModal = document.getElementById('ai-suggestion-modal');
+        const originalPlanModal = document.getElementById('original-plan-modal');
+        
+        if (event.target === feedbackModal) {
+            closeAiFeedback();
+        } else if (event.target === suggestionModal) {
+            closeAiSuggestion();
+        } else if (event.target === originalPlanModal) {
+            closeOriginalPlan();
         }
     });
     
@@ -1553,7 +2260,19 @@
     window.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             closeAiFeedback();
+            closeAiSuggestion();
+            closeOriginalPlan();
         }
+    });
+    
+    // Store the original plan state when grid data is first loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add a hook to store the original state once grid data is loaded
+        const originalLoadGridData = window.loadGridData;
+        window.loadGridData = function(data) {
+            originalLoadGridData(data);
+            originalStoreGridState();
+        };
     });
     </script>
 </body>
