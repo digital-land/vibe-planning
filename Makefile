@@ -12,9 +12,7 @@ GRIDS=\
 	grid/E60000056.geojson\
 	grid/E60000064.geojson\
 	grid/E60000065.geojson\
-	grid/E60000068.geojson\
-	grid/E60000052.geojson\
-	grid/E60000336.geojson
+	grid/E60000068.geojson
 
 
 
