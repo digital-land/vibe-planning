@@ -20,12 +20,14 @@ Can we enable "vibe planning"?
 
 # Data roadmap
 
-* <s>build grid for an LPAs</s>
+* <s>build grid for more LPAs</s>
 * <s>add area of green-belt in each cell</s>
 * <s>build data for all of the LPAs surrounding Leeds</s>
 * add [built-up areas](https://www.planning.data.gov.uk/map/?dataset=built-up-area)
 * find target housing numbers
 * connectivity of each cell to an existing school
+
+https://digital-land.github.io/vibe-planning/debug.html
 
 # Rebuilding the data
 
