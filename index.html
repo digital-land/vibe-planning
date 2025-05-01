@@ -398,8 +398,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     
     <script>
-        // Initialize the map
-        const map = L.map('map').setView([0, 0], 2);
+        // Initialize the map with doubleClickZoom disabled
+        const map = L.map('map', {
+            doubleClickZoom: false // Disable double click zoom completely
+        }).setView([0, 0], 2);
         
         // Add base layers
         const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -495,10 +497,20 @@
         }
         
         // Function to add popup information with controls to change land status
-        // --- Prevent double-click zoom when shift is held ---
+        // --- Prevent any zoom-related actions when shift is held ---
         map.on('dblclick', function(e) {
             if (isShiftDown) {
                 e.originalEvent.preventDefault();
+                e.originalEvent.stopPropagation();
+            }
+        });
+        
+        // Also prevent zoom on single click when shift is down
+        map.on('click', function(e) {
+            if (isShiftDown) {
+                e.originalEvent.preventDefault();
+                e.originalEvent.stopPropagation();
+                return false;
             }
         });
         function onEachFeature(feature, layer) {
@@ -509,6 +521,9 @@
             // Multi-select with shift+click
             layer.on('click', function(e) {
                 if (isShiftDown) {
+                    // Prevent zoom behavior when shift is held
+                    e.originalEvent.preventDefault();
+                    e.originalEvent.stopPropagation();
                     // Toggle selection
                     if (!selectedFeatureIds.includes(feature.properties.id)) {
                         selectedFeatureIds.push(feature.properties.id);
@@ -969,11 +984,27 @@
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Shift') {
             isShiftDown = true;
+            // Disable zoom when shift is pressed
+            map.scrollWheelZoom.disable();
+            map.dragging.disable();
+            // Also temporarily disable any click zoom
+            if (map.options.zoomSnap) {
+                map._originalZoomSnap = map.options.zoomSnap;
+                map.options.zoomSnap = 0;
+            }
         }
     });
     document.addEventListener('keyup', function(e) {
         if (e.key === 'Shift') {
             isShiftDown = false;
+            // Re-enable zoom when shift is released
+            map.scrollWheelZoom.enable();
+            map.dragging.enable();
+            // Restore original zoom snap setting
+            if (map._originalZoomSnap !== undefined) {
+                map.options.zoomSnap = map._originalZoomSnap;
+                delete map._originalZoomSnap;
+            }
         }
     });
 
