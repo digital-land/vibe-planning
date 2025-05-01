@@ -1,14 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" class="govuk-template">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Vibe planning - GOV.UK</title>
-    
-    <!-- GOV.UK Design System -->
-    <link rel="shortcut icon" href="/assets/govuk/assets/images/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="/assets/govuk/govuk-frontend.min.css">
+    <title>Vibe planning</title>
     
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
@@ -17,25 +12,15 @@
         body {
             margin: 0;
             padding: 0;
-            /* Using GOV.UK font family instead */
-        }
-        
-        #map-container {
-            position: relative;
-            width: 100vw;
-            height: 600px;
-            margin-left: calc(-50vw + 50%);
-            margin-right: calc(-50vw + 50%);
-            margin-bottom: 30px;
-            margin-top: 30px;
+            font-family: Arial, sans-serif;
         }
         
         #map {
             position: absolute;
+            top: 0;
+            bottom: 0;
             width: 100%;
             height: 100%;
-            left: 0;
-            top: 0;
         }
         
         .control-panel {
@@ -86,23 +71,17 @@
         }
         
         button {
-            padding: 10px 15px;
-            background-color: #00703c;
+            padding: 6px 12px;
+            background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 0;
+            border-radius: 4px;
             cursor: pointer;
             margin-top: 5px;
-            font-family: "GDS Transport", arial, sans-serif;
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 1.1875;
-            box-shadow: 0 2px 0 #002d18;
-            text-align: center;
         }
         
         button:hover {
-            background-color: #005a30;
+            background-color: #45a049;
         }
         
         .legend {
@@ -122,232 +101,10 @@
             margin-right: 5px;
             vertical-align: middle;
         }
-        
-        /* GOV.UK style for leaflet popups */
-        .leaflet-popup-content-wrapper {
-            border-radius: 0;
-            padding: 0;
-            box-shadow: 0 5px 10px rgba(0,0,0,.1);
-        }
-        
-        .leaflet-popup-content {
-            margin: 0;
-            padding: 15px;
-            font-family: "GDS Transport", arial, sans-serif;
-            font-size: 16px;
-            line-height: 1.5;
-        }
-        
-        .leaflet-popup-content table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        
-        .leaflet-popup-content th {
-            text-align: left;
-            font-weight: 700;
-            padding: 5px 10px 5px 0;
-            vertical-align: top;
-            width: 40%;
-        }
-        
-        .leaflet-popup-content td {
-            padding: 5px 0;
-            vertical-align: top;
-        }
-        
-        .leaflet-popup-tip {
-            background: #00703c;
-        }
-        
-        /* Animation styles */
-        @keyframes pulse {
-            0% { transform: scale(1); background-color: transparent; }
-            25% { transform: scale(1.4); background-color: #ffdd00; }
-            50% { transform: scale(1.6); background-color: #ffdd00; }
-            75% { transform: scale(1.4); background-color: #ffdd00; }
-            100% { transform: scale(1); background-color: transparent; }
-        }
-        
-        .pulse {
-            animation: pulse 1s ease-in-out;
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-        
-        /* House count achievement styles */
-        .goal-achieved {
-            background-color: #ffdd00 !important; /* GOV.UK yellow */
-            color: #0b0c0c !important; /* GOV.UK black */
-            font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 4px;
-            box-shadow: 0 0 0 3px #ffdd00;
-            transition: all 0.3s ease;
-        }
-        
-        /* Goal celebration */
-        #celebration-banner {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background-color: #00703c;
-            color: white;
-            text-align: center;
-            padding: 15px;
-            z-index: 9999;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            transition: transform 0.5s ease-in-out;
-            transform: translateY(-100%);
-        }
-        
-        #celebration-banner.show {
-            display: block;
-            transform: translateY(0);
-        }
-        
-        #confetti-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9998;
-        }
     </style>
 </head>
-<body class="govuk-template__body">
-    <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
-    
-    <!-- Celebration elements -->
-    <div id="celebration-banner" role="alert">
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Goal Achieved!</h2>
-        <p class="govuk-body">You've successfully planned 100 houses. Well done!</p>
-    </div>
-    <canvas id="confetti-canvas"></canvas>
-
-    <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
-
-    <header class="govuk-header" role="banner" data-module="govuk-header">
-        <div class="govuk-header__container govuk-width-container">
-            <div class="govuk-header__logo">
-                <a href="https://www.gov.uk/" class="govuk-header__link govuk-header__link--homepage">
-                    <span class="govuk-header__logotype">
-                        <svg aria-hidden="true" focusable="false" class="govuk-header__logotype-crown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 30" height="30" width="32">
-                            <path fill="currentColor" fill-rule="evenodd" d="M22.6 10.4c-1 .4-2-.1-2.4-1-.4-.9.1-2 1-2.4.9-.4 2 .1 2.4 1s-.1 2-1 2.4m-5.9 6.7c-.9.4-2-.1-2.4-1-.4-.9.1-2 1-2.4.9-.4 2 .1 2.4 1s-.1 2-1 2.4m10.8-3.7c-1 .4-2-.1-2.4-1-.4-.9.1-2 1-2.4.9-.4 2 .1 2.4 1s-.2 2-1 2.4m3.3 4.8c-1 .4-2-.1-2.4-1-.4-.9.1-2 1-2.4.9-.4 2 .1 2.4 1s-.2 2-1 2.4M17 4.7l2.3 1.2V2.5l-2.3.7-.2-.2.9-3h-3.4l.9 3-.2.2c-.1.1-2.3-.7-2.3-.7v3.4L15 4.7c.1.1.1.2.2.2l-1.3 4c-.1.2-.1.4-.1.6 0 1.1.8 2 1.9 2.2h.7c1-.2 1.9-1.1 1.9-2.1 0-.2 0-.4-.1-.6l-1.3-4c-.1-.2 0-.2.1-.3m-7.6 5.7c.9.4 2-.1 2.4-1 .4-.9-.1-2-1-2.4-.9-.4-2 .1-2.4 1s.1 2 1 2.4m-5 3c.9.4 2-.1 2.4-1 .4-.9-.1-2-1-2.4-.9-.4-2 .1-2.4 1s.1 2 1 2.4m-3.2 4.8c.9.4 2-.1 2.4-1 .4-.9-.1-2-1-2.4-.9-.4-2 .1-2.4 1s.1 2 1 2.4m14.8 11c4.4 0 8.6.3 12.3.8 1.1-4.5 2.4-7 3.7-8.8l-2.5-.9c.2 1.3.3 1.9 0 2.7-.4-.4-.8-1.1-1.1-2.3l-1.2 4c.7-.5 1.3-.8 2-.9-1.1 2.5-2.6 3.1-3.5 3-1.1-.2-1.7-1.2-1.5-2.1.3-1.2 1.5-1.5 2.1-.1 1.1-2.3-.8-3-2-2.3 1.9-1.9 2.1-3.5.6-5.6-2.1 1.6-2.1 3.2-1.2 5.5-1.2-1.4-3.2-.6-2.5 1.6.9-1.4 2.1-.5 1.9.8-.2 1.1-1.7 2.1-3.5 1.9-2.7-.2-2.9-2.1-2.9-3.6.7-.1 1.9.5 2.9 1.9l.4-4.3c-1.1 1.1-2.1 1.4-3.2 1.4.4-1.2 2.1-3 2.1-3h-5.4s1.7 1.9 2.1 3c-1.1 0-2.1-.2-3.2-1.4l.4 4.3c1-1.4 2.2-2 2.9-1.9-.1 1.5-.2 3.4-2.9 3.6-1.9.2-3.4-.8-3.5-1.9-.2-1.3 1-2.2 1.9-.8.7-2.3-1.2-3-2.5-1.6.9-2.2.9-3.9-1.2-5.5-1.5 2-1.3 3.7.6 5.6-1.2-.7-3.1.1-2 2.3.6-1.4 1.8-1.1 2.1.1.2.9-.3 1.9-1.5 2.1-.9.2-2.4-.5-3.5-3 .6.1 1.3.4 2 .9l-1.2-4c-.3 1.1-.7 1.9-1.1 2.3-.3-.8-.2-1.4 0-2.7l-2.5.9C.9 25.3 2.2 27.8 3.3 32.3c3.7-.5 7.9-.8 12.3-.8"></path>
-                        </svg>
-                        <span class="govuk-header__logotype-text">
-                            GOV.UK
-                        </span>
-                    </span>
-                </a>
-            </div>
-            <div class="govuk-header__content">
-                <a href="/" class="govuk-header__link govuk-header__service-name">
-                    Vibe Planning
-                </a>
-            </div>
-        </div>
-    </header>
-
-    <div class="govuk-width-container">
-        <main class="govuk-main-wrapper" id="main-content" role="main">
-            <h1 class="govuk-heading-xl">Planning Map</h1>
-            
-            <!-- Goal Section -->
-            <div class="govuk-panel govuk-panel--confirmation">
-                <h2 class="govuk-panel__title">Goal</h2>
-                <div class="govuk-panel__body govuk-!-font-size-27">
-                    Build 100 houses
-                </div>
-                <div class="govuk-panel__body govuk-!-font-size-19">
-                    Current progress: <span id="houses-count">0</span> / 100
-                </div>
-            </div>
-            
-            <div class="govuk-!-margin-top-6" id="map-container">
-                <div id="map"></div>
-            </div>
-    
-    <!-- Leaflet JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-    
-            <div class="govuk-grid-row">
-                <div class="govuk-grid-column-full">
-                    <div class="govuk-inset-text">
-                        <h3 class="govuk-heading-m">Interactive Planning Map</h3>
-                        <p class="govuk-body">Click on map areas to view detailed information about green belt coverage.</p>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <footer class="govuk-footer" role="contentinfo">
-        <div class="govuk-width-container">
-            <div class="govuk-footer__meta">
-                <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
-                    <h2 class="govuk-visually-hidden">Support links</h2>
-                    <ul class="govuk-footer__inline-list">
-                        <li class="govuk-footer__inline-list-item">
-                            <a class="govuk-footer__link" href="#">
-                                Help
-                            </a>
-                        </li>
-                        <li class="govuk-footer__inline-list-item">
-                            <a class="govuk-footer__link" href="#">
-                                Privacy
-                            </a>
-                        </li>
-                        <li class="govuk-footer__inline-list-item">
-                            <a class="govuk-footer__link" href="#">
-                                Cookies
-                            </a>
-                        </li>
-                    </ul>
-                    <svg
-                        aria-hidden="true"
-                        focusable="false"
-                        class="govuk-footer__licence-logo"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 483.2 195.7"
-                        height="17"
-                        width="41"
-                    >
-                        <path
-                            fill="currentColor"
-                            d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145"
-                        ></path>
-                    </svg>
-                    <span class="govuk-footer__licence-description">
-                        All content is available under the
-                        <a
-                            class="govuk-footer__link"
-                            href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
-                            rel="license"
-                        >Open Government Licence v3.0</a>, except where otherwise stated
-                    </span>
-                </div>
-                <div class="govuk-footer__meta-item">
-                    <a
-                        class="govuk-footer__link govuk-footer__copyright-logo"
-                        href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/"
-                    >© Crown copyright</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- GOV.UK JavaScript -->
-    <script src="/assets/govuk/govuk-frontend.min.js"></script>
-    <script>
-        window.GOVUKFrontend.initAll();
-    </script>
+<body>
+    <div id="map"></div>
     
     <!-- Leaflet JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -390,333 +147,39 @@
         
         // Function to style GeoJSON features
         function styleFeature(feature) {
-            // Using GOV.UK color palette
+            const coverage = feature.properties["green-belt"];
+            
             const style = {
-                weight: 0.5, // Thinner border for subtlety
-                opacity: 0.3, // Lower opacity for subtle borders
-                color: '#505a5f', // GOV.UK dark grey for subtle borders
+                weight: 1,
+                opacity: 1,
+                color: '#666',
                 fillOpacity: 0.7
             };
             
-            // Initialize status if it doesn't exist yet
-            if (!feature.properties.status) {
-                // Set default status based on green-belt value
-                if (feature.properties["green-belt"] >= 0.1) {
-                    feature.properties.status = 'green-belt';
-                } else {
-                    feature.properties.status = 'non-green-belt';
-                }
-            }
-            
-            // Set color based on status
-            switch(feature.properties.status) {
-                case 'green-belt':
-                    style.fillColor = "#00703c"; // GOV.UK green
-                    break;
-                case 'non-green-belt':
-                    style.fillColor = "#f3f2f1"; // GOV.UK light grey
-                    break;
-                case 'housing':
-                    style.fillColor = "#1d70b8"; // GOV.UK blue
-                    break;
-                case 'commercial':
-                    style.fillColor = "#942514"; // GOV.UK red
-                    break;
-                default:
-                    style.fillColor = "#f3f2f1"; // Default to light grey
+            if (coverage !== undefined && coverage >= 0.1) {
+                style.fillColor = "green";
+            } else {
+                style.fillColor = "blue";
             }
             
             return style;
         }
         
-        // Function to add popup information with controls to change land status
+        // Function to add popup information
         function onEachFeature(feature, layer) {
             if (feature.properties) {
-                layer.on('click', function() {
-                    // Initialize status if it doesn't exist yet
-                    if (!feature.properties.status) {
-                        // Set default status based on green-belt value
-                        if (feature.properties["green-belt"] >= 0.1) {
-                            feature.properties.status = 'green-belt';
-                        } else {
-                            feature.properties.status = 'non-green-belt';
-                        }
-                    }
-                    
-                    let popupContent = '<div class="govuk-form-group">'
-                    popupContent += '<table class="govuk-table">';
-                    popupContent += '<tbody class="govuk-table__body">';
-                    
-                    // Show ID and coordinates
-                    popupContent += `<tr class="govuk-table__row"><th class="govuk-table__header">ID:</th><td class="govuk-table__cell">${feature.properties.id}</td></tr>`;
-                    
-                    // Current status
-                    popupContent += `<tr class="govuk-table__row"><th class="govuk-table__header">Current Status:</th><td class="govuk-table__cell">${formatStatus(feature.properties.status)}</td></tr>`;
-                    
-                    popupContent += '</tbody></table>';
-                    
-                    // Add status change controls
-                    popupContent += '<fieldset class="govuk-fieldset">';
-                    popupContent += '<legend class="govuk-fieldset__legend">Change status to:</legend>';
-                    popupContent += '<div class="govuk-radios govuk-radios--small">';
-                    
-                    // Radio buttons for each possible status
-                    const statuses = [
-                        {value: 'green-belt', label: 'Green Belt', color: '#00703c'},
-                        {value: 'non-green-belt', label: 'Non-Green Belt', color: '#f3f2f1'},
-                        {value: 'housing', label: 'Housing', color: '#1d70b8'},
-                        {value: 'commercial', label: 'Commercial', color: '#942514'}
-                    ];
-                    
-                    statuses.forEach((status, index) => {
-                        popupContent += `
-                        <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="status-${feature.properties.id}-${index}" 
-                                name="status-${feature.properties.id}" type="radio" value="${status.value}" 
-                                ${feature.properties.status === status.value ? 'checked' : ''}>
-                            <label class="govuk-label govuk-radios__label" for="status-${feature.properties.id}-${index}">
-                                <span style="background-color:${status.color};width:12px;height:12px;display:inline-block;margin-right:5px;"></span>
-                                ${status.label}
-                            </label>
-                        </div>`;
-                    });
-                    
-                    popupContent += '</div>';
-                    popupContent += '</fieldset>';
-                    
-                    // Add update button
-                    popupContent += `<button class="govuk-button govuk-button--secondary govuk-!-margin-top-3" 
-                        data-module="govuk-button" onclick="updateStatus(${feature.properties.id})">
-                        Update
-                    </button>`;
-                    
-                    popupContent += '</div>';
-                    
-                    const popup = L.popup()
-                        .setLatLng(layer.getBounds().getCenter())
-                        .setContent(popupContent)
-                        .openOn(map);
-                });
-            }
-        }
-
-        // Helper function to format status for display
-        function formatStatus(status) {
-            switch(status) {
-                case 'green-belt': return 'Green Belt';
-                case 'non-green-belt': return 'Non-Green Belt';
-                case 'housing': return 'Housing';
-                case 'commercial': return 'Commercial';
-                default: return status;
-            }
-        }
-
-        // Function to update the status when the user clicks the Update button
-        function updateStatus(featureId) {
-            // Find the selected radio button
-            const selectedRadio = document.querySelector(`input[name="status-${featureId}"]:checked`);
-            
-            if (selectedRadio) {
-                const newStatus = selectedRadio.value;
+                let popupContent = '<table>';
                 
-                // Find the feature in the gridData
-                const feature = gridData.features.find(f => f.properties.id === featureId);
-                
-                if (feature) {
-                    // Update the feature's status
-                    feature.properties.status = newStatus;
-                    
-                    // Update the map
-                    updateGridLayer();
-                    
-                    // Update the houses count
-                    updateHousesCount();
-                    
-                    // Close the popup
-                    map.closePopup();
-                }
-            }
-        }
-        
-        // Function to count and update the number of housing units with animation
-        function updateHousesCount() {
-            // Each grid square designated as housing counts as 10 houses
-            const housesPerSquare = 10;
-            
-            // Count housing squares
-            const housingSquares = gridData.features.filter(feature => 
-                feature.properties.status === 'housing'
-            ).length;
-            
-            // Calculate total houses
-            const totalHouses = housingSquares * housesPerSquare;
-            
-            // Get current displayed value
-            const housesCountElement = document.getElementById('houses-count');
-            const currentValue = parseInt(housesCountElement.textContent, 10) || 0;
-            
-            // If value has changed, animate the counter
-            if (currentValue !== totalHouses) {
-                // Make counter more visually noticeable by applying pulse before starting animation
-                housesCountElement.classList.add('pulse');
-                
-                // A brief pause to ensure the pulse is noticed
-                setTimeout(() => {
-                    // Animate counter
-                    animateCounter(currentValue, totalHouses, housesCountElement);
-                    
-                    // Remove pulse after animation completes
-                    setTimeout(() => {
-                        housesCountElement.classList.remove('pulse');
-                    }, 1000);
-                    
-                    // Check if goal is newly met (crossing the threshold)
-                    if (currentValue < 100 && totalHouses >= 100) {
-                        celebrateGoalAchieved();
-                    }
-                }, 100);
-            }
-            
-            // Update styling based on goal status
-            if (totalHouses >= 100) {
-                housesCountElement.classList.add('goal-achieved');
-            } else {
-                housesCountElement.classList.remove('goal-achieved');
-            }
-        }
-        
-        // Animate counter from start to end value
-        function animateCounter(start, end, element) {
-            const duration = 1000; // 1 second animation
-            const stepTime = 20;
-            const steps = duration / stepTime;
-            const increment = (end - start) / steps;
-            let current = start;
-            let step = 0;
-            
-            const timer = setInterval(() => {
-                step++;
-                current += increment;
-                
-                if (step >= steps) {
-                    clearInterval(timer);
-                    current = end;
-                }
-                
-                element.textContent = Math.round(current);
-            }, stepTime);
-        }
-        
-        // Celebration when goal is achieved
-        function celebrateGoalAchieved() {
-            // Show the celebration banner with animation
-            const banner = document.getElementById('celebration-banner');
-            banner.classList.add('show');
-            
-            // Hide after 5 seconds
-            setTimeout(() => {
-                banner.classList.remove('show');
-            }, 5000);
-            
-            // Launch confetti
-            launchConfetti();
-        }
-        
-        // Confetti animation for celebration
-        function launchConfetti() {
-            const canvas = document.getElementById('confetti-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            
-            // Confetti colors - GOV.UK colors
-            const colors = ['#00703c', '#1d70b8', '#f3f2f1', '#ffdd00'];
-            
-            // Confetti particles
-            const confetti = [];
-            const confettiCount = 200;
-            const gravity = 0.5;
-            const terminalVelocity = 5;
-            const drag = 0.075;
-            
-            // Create confetti pieces
-            for (let i = 0; i < confettiCount; i++) {
-                // Distribute confetti across the top of the screen
-                confetti.push({
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    dimensions: {
-                        x: Math.random() * 10 + 5,
-                        y: Math.random() * 4 + 8
-                    },
-                    position: {
-                        x: Math.random() * canvas.width,
-                        // Distribute starting positions across the top quarter of the screen
-                        y: Math.random() * canvas.height * -0.25
-                    },
-                    rotation: Math.random() * 2 * Math.PI,
-                    scale: Math.random() * 0.8 + 0.2, // More varied sizes
-                    velocity: {
-                        x: Math.random() * 25 - 12.5,
-                        y: Math.random() * 25 + 10 // Higher velocity variation for spreading
-                    }
-                });
-            }
-            
-            // Animation loop
-            let animationFrame = null;
-            const render = () => {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                let remainingConfetti = 0;
-                
-                confetti.forEach((confetto, index) => {
-                    let width = confetto.dimensions.x * confetto.scale;
-                    let height = confetto.dimensions.y * confetto.scale;
-                    
-                    // Move confetti with gravity and drag
-                    confetto.velocity.x -= confetto.velocity.x * drag;
-                    confetto.velocity.y = Math.min(confetto.velocity.y + gravity, terminalVelocity);
-                    confetto.velocity.x += Math.random() > 0.5 ? Math.random() : -Math.random();
-                    
-                    confetto.position.x += confetto.velocity.x;
-                    confetto.position.y += confetto.velocity.y;
-                    confetto.rotation += 0.01;
-                    
-                    // If confetti is still on screen, render it
-                    if (confetto.position.y <= canvas.height) {
-                        remainingConfetti++;
-                        
-                        ctx.save();
-                        ctx.translate(confetto.position.x, confetto.position.y);
-                        ctx.rotate(confetto.rotation);
-                        
-                        ctx.fillStyle = confetto.color;
-                        ctx.fillRect(-width / 2, -height / 2, width, height);
-                        
-                        ctx.restore();
+                Object.keys(feature.properties).forEach(key => {
+                    // Skip geometry-related properties
+                    if (key !== 'geometry') {
+                        popupContent += `<tr><th>${key}:</th><td>${feature.properties[key]}</td></tr>`;
                     }
                 });
                 
-                // Continue animation if there's confetti on screen
-                if (remainingConfetti > 0) {
-                    animationFrame = requestAnimationFrame(render);
-                } else {
-                    cancelAnimationFrame(animationFrame);
-                    // Clean up canvas when done
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                }
-            };
-            
-            // Start animation
-            animationFrame = requestAnimationFrame(render);
-            
-            // Stop confetti after 6 seconds regardless
-            setTimeout(() => {
-                if (animationFrame) {
-                    cancelAnimationFrame(animationFrame);
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                }
-            }, 6000);
+                popupContent += '</table>';
+                layer.bindPopup(popupContent);
+            }
         }
         
         // Update grid layer
@@ -761,9 +224,6 @@
                 gridData = data;
                 updateGridLayer();
                 map.fitBounds(gridLayer.getBounds());
-                
-                // Initialize the houses count
-                updateHousesCount();
              })
             .catch(error => console.error('Error loading example data:', error));
     </script>
