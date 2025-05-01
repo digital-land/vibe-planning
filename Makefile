@@ -6,7 +6,7 @@ GRIDS=\
 
 all:: 	$(GRIDS)
 
-grid/E60000070.geojson: $(CACHE_DIR)E60000070.geojson $(CACHE_DIR)green-belt/E60000070.geojson
+grid/E60000070.geojson: $(CACHE_DIR)E60000070.geojson $(CACHE_DIR)green-belt/E60000070.geojson bin/create-grid.py
 	@mkdir -p $(dir $@)
 	bin/create-grid.py \
 		--cell_width 100 --cell_height 100 \
