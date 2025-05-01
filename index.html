@@ -275,6 +275,160 @@
             pointer-events: none;
             z-index: 9998;
         }
+        
+        /* AI Feedback Modal Styles */
+        #ai-feedback-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            overflow-y: auto;
+        }
+        
+        #ai-feedback-content {
+            position: relative;
+            background-color: #f3f2f1;
+            margin: 5% auto;
+            padding: 30px;
+            width: 70%;
+            max-width: 800px;
+            border-radius: 5px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            font-family: "GDS Transport", arial, sans-serif;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        #ai-feedback-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #505a5f;
+        }
+        
+        #ai-feedback-title {
+            color: #1d70b8;
+            border-left: 5px solid #1d70b8;
+            padding-left: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .ai-feedback-section {
+            margin-bottom: 20px;
+        }
+        
+        .ai-feedback-list {
+            background-color: white;
+            padding: 20px;
+            border-left: 4px solid;
+            margin-bottom: 15px;
+        }
+        
+        .ai-feedback-list.improvements {
+            border-color: #d4351c;
+        }
+        
+        .ai-feedback-list.positives {
+            border-color: #00703c;
+        }
+        
+        .ai-feedback-list h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        
+        .ai-feedback-list ul {
+            margin-bottom: 0;
+        }
+        
+        .ai-feedback-list li {
+            margin-bottom: 8px;
+        }
+        
+        /* AI typing effect */
+        .typing-effect {
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 0;
+            letter-spacing: 0.1em;
+            animation: typing 3.5s steps(40, end);
+            max-width: 100%;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn ease 2s forwards;
+            animation-delay: var(--delay, 0s);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        #ai-button-container {
+            margin: 20px 0 40px 0;
+            text-align: center;
+        }
+        
+        #ai-button {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #1d70b8 70%, #4c2c92 100%);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: "GDS Transport", arial, sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(76, 44, 146, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #ai-button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(60deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(30deg);
+            transition: 0.5s;
+            opacity: 0;
+        }
+        
+        #ai-button:hover {
+            background: linear-gradient(135deg, #003078 70%, #2e1a58 100%);
+            box-shadow: 0 6px 16px rgba(76, 44, 146, 0.4);
+        }
+        
+        #ai-button:hover::after {
+            left: 100%;
+            opacity: 1;
+        }
+        
+        #ai-button svg {
+            margin-right: 10px;
+            width: 24px;
+            height: 24px;
+            filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
+        }
     </style>
 </head>
 <body class="govuk-template__body">
@@ -286,6 +440,44 @@
         <p class="govuk-body">You've successfully planned 1,000 homes for your new community. Well done!</p>
     </div>
     <canvas id="confetti-canvas"></canvas>
+    
+    <!-- AI Feedback Modal -->
+    <div id="ai-feedback-modal">
+        <div id="ai-feedback-content">
+            <span id="ai-feedback-close" onclick="closeAiFeedback()">&times;</span>
+            <h2 id="ai-feedback-title" class="govuk-heading-l typing-effect">AI Plan Analysis</h2>
+            <div class="ai-feedback-section">
+                <p class="govuk-body fade-in" style="--delay: 1s;">After analyzing your current plan, I've evaluated how it balances different interests and needs within the development area.</p>
+                <p class="govuk-body fade-in" style="--delay: 2s;">Overall, your plan shows a good attempt at balancing various planning priorities. Here's my detailed assessment:</p>
+            </div>
+            <div class="ai-feedback-list improvements fade-in" style="--delay: 3.5s;">
+                <h3 class="govuk-heading-m">Areas for Improvement</h3>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>Housing is farther than the national average from schools, which may create accessibility issues for families</li>
+                    <li>Commercial space is too focused in one area and should be spread out to create multiple neighborhood centers</li>
+                    <li>Large areas focused solely on housing puts pressure on public services</li>
+                    <li>Green space connectivity could be improved to create wildlife corridors</li>
+                    <li>Some built-up areas appear to encroach on flood-prone zones</li>
+                </ul>
+            </div>
+            <div class="ai-feedback-list positives fade-in" style="--delay: 5s;">
+                <h3 class="govuk-heading-m">Positive Aspects</h3>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>Good overall housing density that meets development targets</li>
+                    <li>Effective preservation of most green belt areas</li>
+                    <li>Sensible placement of GP practices relative to population density</li>
+                    <li>Mixed-use development in central areas promotes walkability</li>
+                    <li>Retail spaces are generally accessible from residential areas</li>
+                </ul>
+            </div>
+            <div class="ai-feedback-section fade-in" style="--delay: 6.5s;">
+                <p class="govuk-body">Consider making adjustments to address the identified issues while maintaining the strengths of your current plan.</p>
+                <p class="govuk-body">This analysis is based on standard planning best practices and may not account for all local factors.</p>
+            </div>
+        </div>
+    </div>
+    
+
 
     <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
 
@@ -472,6 +664,16 @@
         
         <div id="map-container" class="govuk-!-margin-top-4">
             <div id="map"></div>
+        </div>
+
+        <!-- AI Analysis Button -->
+        <div id="ai-button-container" class="govuk-width-container">
+            <button id="ai-button" class="govuk-button" onclick="showAiFeedback()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21.87 10.42c-.15-.4-.43-.72-.8-.94l-1.74-1.06c-.13-1.05-.53-2.06-1.19-2.96L19 3.5c.14-.46.1-.98-.1-1.42-.41-.84-1.42-1.19-2.26-.78L14.29 2.4c-.85-.39-1.77-.6-2.7-.6-.93 0-1.85.21-2.7.6L6.56 1.3c-.85-.4-1.85-.06-2.25.79-.2.44-.24.96-.1 1.42l.85 1.96c-.65.9-1.05 1.9-1.18 2.96L2.14 9.48c-.37.23-.65.54-.8.94-.35.88.09 1.88.97 2.22l1.69 1c.07 1.34.41 2.64 1.03 3.81L4 19.5c-.11.35-.1.75.04 1.09.33.87 1.28 1.32 2.15.98l2-1.08c1.61.7 3.41.69 5.02 0l2 1.08c.86.34 1.81-.1 2.14-.98.15-.34.16-.74.05-1.09l-1.03-2.05c.63-1.18.97-2.47 1.03-3.81l1.7-1c.87-.35 1.3-1.34.97-2.22zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"></path>
+                </svg>
+                Ask AI for Plan Analysis
+            </button>
         </div>
 
             <!-- Plan submission section -->
@@ -1314,6 +1516,45 @@
         updateGridLayer(true); // This is a selection update
         if (typeof updateHousesCount === 'function') updateHousesCount();
     }
+    
+    // --- AI Feedback functions ---
+    function showAiFeedback() {
+        // Display the AI feedback modal with animation effects
+        const modal = document.getElementById('ai-feedback-modal');
+        modal.style.display = 'flex';
+        
+        // Reset animations for repeated viewing
+        document.querySelectorAll('.typing-effect').forEach(el => {
+            el.style.animation = 'none';
+            el.offsetHeight; // Trigger reflow
+            el.style.animation = null;
+        });
+        
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.opacity = '0';
+            el.offsetHeight; // Trigger reflow
+            el.style.animation = null;
+        });
+    }
+    
+    function closeAiFeedback() {
+        document.getElementById('ai-feedback-modal').style.display = 'none';
+    }
+    
+    // Close the modal if user clicks outside the content area
+    window.addEventListener('click', function(event) {
+        const modal = document.getElementById('ai-feedback-modal');
+        if (event.target === modal) {
+            closeAiFeedback();
+        }
+    });
+    
+    // Close with escape key
+    window.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeAiFeedback();
+        }
+    });
     </script>
 </body>
 </html>
