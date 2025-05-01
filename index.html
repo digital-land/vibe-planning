@@ -6,9 +6,41 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Vibe planning - GOV.UK</title>
     
+    <!-- Base URL script to handle both local and GitHub Pages environments -->
+    <script>
+        // Determine the base URL for assets
+        (function() {
+            // This function sets a global baseUrl variable that can be used throughout the application
+            window.baseUrl = '';
+            
+            // Get the current path
+            var path = window.location.pathname;
+            
+            // Check if we're on GitHub Pages (or any non-root deployment)
+            // Extract the base part of the path (everything before the last directory)
+            var pathParts = path.split('/');
+            if (pathParts.length > 2) {
+                // Remove the last part (assuming it's index.html or empty)
+                pathParts.pop();
+                // Join the remaining parts to form the base URL
+                window.baseUrl = pathParts.join('/');
+                // If we're at the root of a directory, baseUrl might end up empty
+                if (window.baseUrl === '') {
+                    window.baseUrl = '/';
+                } else if (!window.baseUrl.endsWith('/')) {
+                    window.baseUrl += '/';
+                }
+            } else {
+                window.baseUrl = '/';
+            }
+            
+            console.log('Base URL detected:', window.baseUrl);
+        })();
+    </script>
+    
     <!-- GOV.UK Design System -->
-    <link rel="shortcut icon" href="/assets/govuk/assets/images/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="/assets/govuk/govuk-frontend.min.css">
+    <link rel="shortcut icon" href="assets/govuk/assets/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="assets/govuk/govuk-frontend.min.css">
     
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
