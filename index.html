@@ -218,9 +218,9 @@
         /* Animation styles */
         @keyframes pulse {
             0% { transform: scale(1); background-color: transparent; }
-            25% { transform: scale(1.4); background-color: #ffdd00; }
-            50% { transform: scale(1.6); background-color: #ffdd00; }
-            75% { transform: scale(1.4); background-color: #ffdd00; }
+            25% { transform: scale(1.4); background-color: #00703c; }
+            50% { transform: scale(1.6); background-color: #00703c; }
+            75% { transform: scale(1.4); background-color: #00703c; }
             100% { transform: scale(1); background-color: transparent; }
         }
         
@@ -232,16 +232,17 @@
             font-weight: bold;
         }
         
-        /* House count achievement styles */
+        /* Achievement styles for each category */
         .goal-achieved {
-            background-color: #ffdd00 !important; /* GOV.UK yellow */
-            color: #0b0c0c !important; /* GOV.UK black */
+            background-color: #00703c !important; /* GOV.UK green */
+            color: white !important; /* White text for better contrast on green */
             font-weight: bold;
             padding: 3px 8px;
             border-radius: 4px;
-            box-shadow: 0 0 0 3px #ffdd00;
             transition: all 0.3s ease;
         }
+        
+        /* No specific outline styles for goal achievement */
         
         /* Goal celebration */
         #celebration-banner {
@@ -350,32 +351,52 @@
             <!-- Current Progress Section -->
             <div class="govuk-!-margin-bottom-6 govuk-!-padding-4" style="background-color: #f3f2f1; color: #0b0c0c;">
                 <h3 class="govuk-heading-m">Current Progress</h3>
-                <div class="govuk-grid-row govuk-!-margin-top-4">
-                    <div class="govuk-grid-column-one-third">
+                
+                <!-- All Statistics in One Line -->
+                <div class="govuk-grid-row govuk-!-margin-top-4 govuk-!-margin-bottom-6">
+                    <div class="govuk-grid-column-one-quarter">
                         <div class="govuk-!-padding-top-0">
-                            <p class="govuk-body govuk-!-margin-bottom-0">Housing goal</p>
+                            <p class="govuk-body govuk-!-margin-bottom-0">Housing</p>
                             <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-bottom-2">
-                                <p class="govuk-heading-xl govuk-!-margin-bottom-0" style="color: #1d70b8;"><span id="houses-count">0</span></p>
-                                <p class="govuk-body-s govuk-!-margin-bottom-0">homes built out of 1,000</p>
+                                <p class="govuk-heading-l govuk-!-margin-bottom-0" style="color: #1d70b8;"><span id="houses-count">0</span></p>
+                                <p class="govuk-body-s govuk-!-margin-bottom-0">homes of 1,000</p>
                             </div>
                         </div>
                     </div>
-                    <div class="govuk-grid-column-one-third">
+                    <div class="govuk-grid-column-one-quarter">
                         <div class="govuk-!-padding-top-0">
-                            <p class="govuk-body govuk-!-margin-bottom-0">Progress</p>
+                            <p class="govuk-body govuk-!-margin-bottom-0">Retail & Employment</p>
                             <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-bottom-2">
-                                <p class="govuk-heading-xl govuk-!-margin-bottom-0" style="color: #00703c;"><span id="progress-percentage">0</span>%</p>
-                                <p class="govuk-body-s govuk-!-margin-bottom-0">complete</p>
+                                <p class="govuk-heading-l govuk-!-margin-bottom-0" style="color: #942514;"><span id="retail-count">0</span></p>
+                                <p class="govuk-body-s govuk-!-margin-bottom-0">sq m of 14,000</p>
                             </div>
                         </div>
                     </div>
-                    <div class="govuk-grid-column-one-third">
+                    <div class="govuk-grid-column-one-quarter">
                         <div class="govuk-!-padding-top-0">
-                            <p class="govuk-body govuk-!-margin-bottom-0">Required</p>
+                            <p class="govuk-body govuk-!-margin-bottom-0">Primary Schools</p>
                             <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-bottom-2">
-                                <p class="govuk-heading-xl govuk-!-margin-bottom-0" style="color: #942514;"><span id="houses-remaining">1,000</span></p>
-                                <p class="govuk-body-s govuk-!-margin-bottom-0">homes remaining</p>
+                                <p class="govuk-heading-l govuk-!-margin-bottom-0" style="color: #28a197;"><span id="school-count">0</span></p>
+                                <p class="govuk-body-s govuk-!-margin-bottom-0">of 1 required</p>
                             </div>
+                        </div>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <div class="govuk-!-padding-top-0">
+                            <p class="govuk-body govuk-!-margin-bottom-0">GP Practices</p>
+                            <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-bottom-2">
+                                <p class="govuk-heading-l govuk-!-margin-bottom-0" style="color: #5694ca;"><span id="gp-count">0</span></p>
+                                <p class="govuk-body-s govuk-!-margin-bottom-0">of 1 required</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Overall Progress Bar -->
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-full">
+                        <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-4" style="background-color: #1d70b8; color: white;">
+                            <p class="govuk-heading-m govuk-!-margin-bottom-0" style="color: white;">Overall Progress: <span id="progress-percentage" style="color: white;">0</span>%</p>
                         </div>
                     </div>
                 </div>
@@ -657,6 +678,12 @@
                 case 'commercial':
                     style.fillColor = "#942514"; // GOV.UK red
                     break;
+                case 'primary-school':
+                    style.fillColor = "#28a197"; // Turquoise for Primary School
+                    break;
+                case 'gp-practice':
+                    style.fillColor = "#5694ca"; // Light blue for GP Practice
+                    break;
                 default:
                     style.fillColor = "#f3f2f1"; // Default to light grey
             }
@@ -773,68 +800,135 @@
             }
         }
         
-        // Function to count and update the number of housing units with animation
+        // Function to count and update the progress for all categories with animation
         function updateHousesCount() {
-            // Each grid square designated as housing counts as 10 houses
-            const housesPerSquare = 10;
+            // Define constants for each category goal
+            const HOUSING_GOAL = 1000;
+            const RETAIL_GOAL = 14000;
+            const SCHOOL_GOAL = 1;
+            const GP_GOAL = 1;
             
-            // Count housing squares
+            // Define multipliers for each category per grid square
+            const housesPerSquare = 10;
+            const retailSpacePerSquare = 1000; // 1000 sq m per retail square
+            const schoolsPerSquare = 1; // 1 school per square
+            const gpPerSquare = 1; // 1 GP practice per square
+            
+            // Count squares by category
             const housingSquares = gridData.features.filter(feature => 
                 feature.properties.status === 'housing'
             ).length;
             
-            // Calculate total houses
+            const retailSquares = gridData.features.filter(feature => 
+                feature.properties.status === 'commercial' // 'commercial' is the value for Retail and Employment
+            ).length;
+            
+            const schoolSquares = gridData.features.filter(feature => 
+                feature.properties.status === 'primary-school'
+            ).length;
+            
+            const gpSquares = gridData.features.filter(feature => 
+                feature.properties.status === 'gp-practice'
+            ).length;
+            
+            // Calculate totals
             const totalHouses = housingSquares * housesPerSquare;
+            const totalRetailSpace = retailSquares * retailSpacePerSquare;
+            const totalSchools = schoolSquares * schoolsPerSquare;
+            const totalGps = gpSquares * gpPerSquare;
             
-            // Calculate percentage (out of 1000 houses goal)
-            const goalTarget = 1000;
-            const percentage = Math.min(100, Math.floor((totalHouses / goalTarget) * 100));
+            // Calculate percentages
+            const housingPercentage = Math.min(100, Math.floor((totalHouses / HOUSING_GOAL) * 100));
+            const retailPercentage = Math.min(100, Math.floor((totalRetailSpace / RETAIL_GOAL) * 100));
+            const schoolPercentage = Math.min(100, Math.floor((totalSchools / SCHOOL_GOAL) * 100));
+            const gpPercentage = Math.min(100, Math.floor((totalGps / GP_GOAL) * 100));
             
-            // Calculate remaining houses
-            const remainingHouses = Math.max(0, goalTarget - totalHouses);
+            // Calculate overall progress (average of all percentages)
+            const overallProgress = Math.floor((housingPercentage + retailPercentage + schoolPercentage + gpPercentage) / 4);
+            
+            // Get DOM elements
+            // Key stat elements
+            const housesCountElement = document.getElementById('houses-count');
+            const retailCountElement = document.getElementById('retail-count');
+            const schoolCountElement = document.getElementById('school-count');
+            const gpCountElement = document.getElementById('gp-count');
+            
+            // Overall progress element
+            const progressPercentageElement = document.getElementById('progress-percentage');
             
             // Get current displayed values
-            const housesCountElement = document.getElementById('houses-count');
-            const percentageElement = document.getElementById('progress-percentage');
-            const housesRemainingElement = document.getElementById('houses-remaining');
-            const currentValue = parseInt(housesCountElement.textContent, 10) || 0;
-            const currentPercentage = parseInt(percentageElement.textContent, 10) || 0;
-            const currentRemaining = parseInt(housesRemainingElement.textContent, 10) || goalTarget;
+            const currentHouses = parseInt(housesCountElement.textContent, 10) || 0;
+            const currentRetailSpace = parseInt(retailCountElement.textContent, 10) || 0;
+            const currentSchools = parseInt(schoolCountElement.textContent, 10) || 0;
+            const currentGps = parseInt(gpCountElement.textContent, 10) || 0;
+            const currentOverallPercentage = parseInt(progressPercentageElement.textContent, 10) || 0;
             
-            // If value has changed, animate the counter
-            if (currentValue !== totalHouses) {
-                // Make counter more visually noticeable by applying pulse before starting animation
+            // Apply pulse animation to elements that have changed
+            if (currentSchools !== totalSchools) {
+                schoolCountElement.classList.add('pulse');
+            }
+            if (currentGps !== totalGps) {
+                gpCountElement.classList.add('pulse');
+            }
+            if (currentHouses !== totalHouses) {
                 housesCountElement.classList.add('pulse');
-                
-                // A brief pause to ensure the pulse is noticed
-                setTimeout(() => {
-                    // Animate counter
-                    animateCounter(currentValue, totalHouses, housesCountElement);
-                    
-                    // Animate percentage
-                    animateCounter(currentPercentage, percentage, percentageElement);
-                    
-                    // Animate remaining houses
-                    animateCounter(currentRemaining, remainingHouses, housesRemainingElement);
-                    
-                    // Remove pulse after animation completes
-                    setTimeout(() => {
-                        housesCountElement.classList.remove('pulse');
-                    }, 1000);
-                    
-                    // Check if goal is newly met (crossing the threshold)
-                    if (currentValue < goalTarget && totalHouses >= goalTarget) {
-                        celebrateGoalAchieved();
-                    }
-                }, 100);
+            }
+            if (currentRetailSpace !== totalRetailSpace) {
+                retailCountElement.classList.add('pulse');
             }
             
+            // Animate all counters
+            setTimeout(() => {
+                // Animate stat counters
+                animateCounter(currentHouses, totalHouses, housesCountElement);
+                animateCounter(currentRetailSpace, totalRetailSpace, retailCountElement);
+                animateCounter(currentSchools, totalSchools, schoolCountElement);
+                animateCounter(currentGps, totalGps, gpCountElement);
+                
+                // Animate Overall Progress
+                animateCounter(currentOverallPercentage, overallProgress, progressPercentageElement);
+                
+                // Check if overall goal is newly met
+                if (currentOverallPercentage < 100 && overallProgress >= 100) {
+                    celebrateGoalAchieved();
+                }
+                
+                // Remove pulse animation after 1 second
+                setTimeout(() => {
+                    schoolCountElement.classList.remove('pulse');
+                    gpCountElement.classList.remove('pulse');
+                    housesCountElement.classList.remove('pulse');
+                    retailCountElement.classList.remove('pulse');
+                }, 1000);
+            }, 100);
+            
             // Update styling based on goal status
-            if (totalHouses >= goalTarget) {
+            // Housing
+            if (totalHouses >= HOUSING_GOAL) {
                 housesCountElement.classList.add('goal-achieved');
-                housesRemainingElement.textContent = '0'; // Ensure it shows zero when goal is met
             } else {
                 housesCountElement.classList.remove('goal-achieved');
+            }
+            
+            // Retail
+            if (totalRetailSpace >= RETAIL_GOAL) {
+                retailCountElement.classList.add('goal-achieved');
+            } else {
+                retailCountElement.classList.remove('goal-achieved');
+            }
+            
+            // Schools
+            if (totalSchools >= SCHOOL_GOAL) {
+                schoolCountElement.classList.add('goal-achieved');
+            } else {
+                schoolCountElement.classList.remove('goal-achieved');
+            }
+            
+            // GPs
+            if (totalGps >= GP_GOAL) {
+                gpCountElement.classList.add('goal-achieved');
+            } else {
+                gpCountElement.classList.remove('goal-achieved');
             }
         }
         
