@@ -148,7 +148,8 @@
         
         // Function to style GeoJSON features
         function styleFeature(feature) {
-            const coverage = feature.properties["green-belt"];
+            const green = feature.properties["green-belt"];
+            const built = feature.properties["built-up-area"];
             
             const style = {
                 weight: 1,
@@ -157,8 +158,10 @@
                 fillOpacity: 0.7
             };
             
-            if (coverage !== undefined && coverage >= 0.1) {
+            if (green !== undefined && green >= 100) {
                 style.fillColor = "green";
+            } else if (built !== undefined && built >= 100) {
+                style.fillColor = "red";
             } else {
                 style.fillColor = "blue";
             }

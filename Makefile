@@ -53,7 +53,7 @@ $(CACHE_DIR)green-belt/%.geojson:
 
 $(CACHE_DIR)built-up-area/%.geojson:
 	@mkdir -p $(dir $@)
-	curl -qLfs 'https://www.planning.data.gov.uk/entity.geojson?dataset=built-up-area&geometry_curie=statistical-geography:$(basename $(@F))' > $@
+	curl -qLfs 'https://www.planning.data.gov.uk/entity.geojson?dataset=built-up-area&limit=500&geometry_curie=statistical-geography:$(basename $(@F))' > $@
 
 var/region.json:
 	curl -qLfs 'https://www.planning.data.gov.uk/entity.json?dataset=local-planning-authority&field=name&field=reference&field=end-date&limit=100&geometry_curie=statistical-geography:$(REGION)' > $@
