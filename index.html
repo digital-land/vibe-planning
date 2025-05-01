@@ -405,11 +405,17 @@
             <div class="govuk-!-margin-top-6">
             <div class="govuk-width-container">
                 <div class="govuk-form-group">
-                    <div class="govuk-checkboxes govuk-checkboxes--small">
+                    <div class="govuk-checkboxes govuk-checkboxes--small govuk-checkboxes--inline">
                         <div class="govuk-checkboxes__item">
                             <input class="govuk-checkboxes__input" id="toggle-green-belt" name="toggle-green-belt" type="checkbox" checked onchange="toggleGreenBelt(this.checked)">
                             <label class="govuk-label govuk-checkboxes__label" for="toggle-green-belt">
-                                <strong>Hide Green Belt areas</strong>
+                                <strong>Hide Green Belt</strong>
+                            </label>
+                        </div>
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" id="toggle-built-up" name="toggle-built-up" type="checkbox" onchange="toggleBuiltUpAreas(this.checked)">
+                            <label class="govuk-label govuk-checkboxes__label" for="toggle-built-up">
+                                <strong>Show Built-up Areas</strong>
                             </label>
                         </div>
                     </div>
@@ -589,7 +595,9 @@
         let gridData = null;
         let highlightEnabled = true;
         let hideGreenBelt = true; // Default to hiding green belt
+        let showBuiltUpAreas = false; // Default to not show built-up areas
         let selectedCategory = 'housing'; // Default selected category
+        let selectedFeatureIds = []; // Store selected feature IDs
         
         // Setup event listener for category selection
         document.addEventListener('DOMContentLoaded', function() {
@@ -686,6 +694,21 @@
                     break;
                 default:
                     style.fillColor = "#f3f2f1"; // Default to light grey
+            }
+            
+            // Show built-up areas if toggle is active
+            if (showBuiltUpAreas && feature.properties['built-up-area'] > 0) {
+                // Use GOV.UK negative red with a pattern
+                style.fillColor = "#d4351c"; // GOV.UK negative red
+                style.fillOpacity = 0.8;
+                style.weight = 1;
+                style.opacity = 0.8;
+                style.color = "#b10e1e"; // Darker red for the border
+                
+                // Add proportional opacity based on built-up area percentage
+                // Higher built-up areas will be more opaque
+                const builtUpPercentage = feature.properties['built-up-area'] / 10000;
+                style.fillOpacity = Math.max(0.4, Math.min(0.9, builtUpPercentage));
             }
             
             return style;
@@ -1092,6 +1115,7 @@
                 );
             }
             
+            // Create a new GeoJSON layer with the current style settings
             gridLayer = L.geoJSON(dataToRender, {
                 style: styleFeature,
                 onEachFeature: onEachFeature
@@ -1102,6 +1126,11 @@
             if (initialMapLoad && !isSelection) {
                 map.fitBounds(gridLayer.getBounds());
                 initialMapLoad = false;
+            }
+            
+            // Log a message when built-up areas toggle is active
+            if (showBuiltUpAreas) {
+                console.log('Built-up areas display is active');
             }
         }
         
@@ -1202,7 +1231,7 @@
 
     <script>
     // --- Multi-select state ---
-    let selectedFeatureIds = [];
+    // selectedFeatureIds is declared globally above
     let isShiftDown = false;
 
     document.addEventListener('keydown', function(e) {
@@ -1266,6 +1295,11 @@
     // --- Toggle Green Belt function ---
     function toggleGreenBelt(checked) {
         hideGreenBelt = checked;
+        updateGridLayer(false); // Not a selection, but a filter change
+    }
+    // --- Toggle Built-up Areas function ---
+    function toggleBuiltUpAreas(checked) {
+        showBuiltUpAreas = checked;
         updateGridLayer(false); // Not a selection, but a filter change
     }
     
