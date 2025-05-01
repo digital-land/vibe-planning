@@ -4,9 +4,19 @@ CACHE_DIR=var/cache/
 
 REGION=E12000003
 
-# Yorkshire and Humberside
+# In and around Leeds, for now ..
 GRIDS=\
-	grid/E60000070.geojson
+	grid/E60000070.geojson\
+	grid/E60000071.geojson\
+	grid/E60000072.geojson\
+	grid/E60000056.geojson\
+	grid/E60000064.geojson\
+	grid/E60000065.geojson\
+	grid/E60000068.geojson\
+	grid/E60000052.geojson\
+	grid/E60000336.geojson
+
+
 
 all:: 	$(GRIDS)
 
@@ -34,6 +44,10 @@ $(CACHE_DIR)statistical-geography/%.geojson:
 $(CACHE_DIR)green-belt/%.geojson:
 	@mkdir -p $(dir $@)
 	curl -qLfs 'https://www.planning.data.gov.uk/entity.geojson?dataset=green-belt&geometry_curie=statistical-geography:$(basename $(@F))' > $@
+
+var/region.json:
+	curl -qLfs 'https://www.planning.data.gov.uk/entity.json?dataset=local-planning-authority&field=name&field=reference&field=end-date&limit=100&geometry_curie=statistical-geography:$(REGION)' > $@
+
 
 init::
 	pip3 install -r requirements.txt
