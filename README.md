@@ -6,7 +6,14 @@
 
 Can we enable "vibe planning"?
 
-# Roadmap
+# Demo roadmap
+- a free text box below with the title Explain why you chose this plan
+- Submit button
+- Help text to say: Submitting your plan will add it to the list of plans created by the public 
+- fake button saying See other plans - to a blank page that just says something like: Here you would be able to see, comment on and up vote other people’s suggested plans
+- Something to suggest how to extend other scearios from the LPA or the community
+
+# Data roadmap
 
 * <s>build grid for an LPAs</s>
 * <s>add area of green-belt in each cell</s>
