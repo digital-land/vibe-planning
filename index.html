@@ -157,6 +157,27 @@
             vertical-align: middle;
         }
         
+        /* Compact radio buttons to fit on a single line */
+        .govuk-radios--inline-compact {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 10px;
+        }
+        
+        .govuk-radios--inline-compact .govuk-radios__item {
+            margin-right: 10px;
+            margin-bottom: 0;
+            font-size: 14px;
+        }
+        
+        .govuk-radios--inline-compact .govuk-radios__label {
+            padding: 3px 5px;
+            font-size: 14px;
+            line-height: 1.2;
+        }
+        
         /* GOV.UK style for leaflet popups */
         .leaflet-popup-content-wrapper {
             border-radius: 0;
@@ -379,7 +400,13 @@
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
                             <h3 class="govuk-heading-s">Select category to apply</h3>
                         </legend>
-                        <div class="govuk-radios govuk-radios--small govuk-radios--inline" id="category-selector">
+                        <div class="govuk-radios govuk-radios--small govuk-radios--inline govuk-radios--inline-compact" id="category-selector">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="category-housing" name="selected-category" type="radio" value="housing" checked>
+                                <label class="govuk-label govuk-radios__label" for="category-housing">
+                                    <span style="background-color:#1d70b8;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Housing
+                                </label>
+                            </div>
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" id="category-green-belt" name="selected-category" type="radio" value="green-belt">
                                 <label class="govuk-label govuk-radios__label" for="category-green-belt">
@@ -387,21 +414,27 @@
                                 </label>
                             </div>
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="category-non-green-belt" name="selected-category" type="radio" value="non-green-belt" checked>
+                                <input class="govuk-radios__input" id="category-non-green-belt" name="selected-category" type="radio" value="non-green-belt">
                                 <label class="govuk-label govuk-radios__label" for="category-non-green-belt">
                                     <span style="background-color:#ffdd00;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Non-Green Belt
                                 </label>
                             </div>
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="category-housing" name="selected-category" type="radio" value="housing">
-                                <label class="govuk-label govuk-radios__label" for="category-housing">
-                                    <span style="background-color:#1d70b8;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Housing
+                                <input class="govuk-radios__input" id="category-commercial" name="selected-category" type="radio" value="commercial">
+                                <label class="govuk-label govuk-radios__label" for="category-commercial">
+                                    <span style="background-color:#942514;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Retail and Employment
                                 </label>
                             </div>
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="category-commercial" name="selected-category" type="radio" value="commercial">
-                                <label class="govuk-label govuk-radios__label" for="category-commercial">
-                                    <span style="background-color:#942514;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Commercial
+                                <input class="govuk-radios__input" id="category-primary-school" name="selected-category" type="radio" value="primary-school">
+                                <label class="govuk-label govuk-radios__label" for="category-primary-school">
+                                    <span style="background-color:#28a197;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Primary School
+                                </label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="category-gp-practice" name="selected-category" type="radio" value="gp-practice">
+                                <label class="govuk-label govuk-radios__label" for="category-gp-practice">
+                                    <span style="background-color:#5694ca;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>GP Practice
                                 </label>
                             </div>
                         </div>
@@ -535,7 +568,7 @@
         let gridData = null;
         let highlightEnabled = true;
         let hideGreenBelt = true; // Default to hiding green belt
-        let selectedCategory = 'non-green-belt'; // Default selected category
+        let selectedCategory = 'housing'; // Default selected category
         
         // Setup event listener for category selection
         document.addEventListener('DOMContentLoaded', function() {
@@ -548,8 +581,8 @@
                 });
             });
             
-            // Default select the non-green-belt option
-            document.getElementById('category-non-green-belt').checked = true;
+            // Default select the housing option
+            document.getElementById('category-housing').checked = true;
         });
         
         // Get DOM elements
@@ -1026,7 +1059,13 @@
         <form id="mass-update-form">
           <fieldset class="govuk-fieldset">
             <legend class="govuk-fieldset__legend">Set new category:</legend>
-            <div class="govuk-radios govuk-radios--small">
+            <div class="govuk-radios govuk-radios--small govuk-radios--inline-compact">
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="mass-status-housing" name="mass-status" type="radio" value="housing" checked>
+                <label class="govuk-label govuk-radios__label" for="mass-status-housing">
+                  <span style="background-color:#1d70b8;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Housing
+                </label>
+              </div>
               <div class="govuk-radios__item">
                 <input class="govuk-radios__input" id="mass-status-green-belt" name="mass-status" type="radio" value="green-belt">
                 <label class="govuk-label govuk-radios__label" for="mass-status-green-belt">
@@ -1040,15 +1079,21 @@
                 </label>
               </div>
               <div class="govuk-radios__item">
-                <input class="govuk-radios__input" id="mass-status-housing" name="mass-status" type="radio" value="housing">
-                <label class="govuk-label govuk-radios__label" for="mass-status-housing">
-                  <span style="background-color:#1d70b8;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Housing
+                <input class="govuk-radios__input" id="mass-status-commercial" name="mass-status" type="radio" value="commercial">
+                <label class="govuk-label govuk-radios__label" for="mass-status-commercial">
+                  <span style="background-color:#942514;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Retail and Employment
                 </label>
               </div>
               <div class="govuk-radios__item">
-                <input class="govuk-radios__input" id="mass-status-commercial" name="mass-status" type="radio" value="commercial">
-                <label class="govuk-label govuk-radios__label" for="mass-status-commercial">
-                  <span style="background-color:#942514;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Commercial
+                <input class="govuk-radios__input" id="mass-status-primary-school" name="mass-status" type="radio" value="primary-school">
+                <label class="govuk-label govuk-radios__label" for="mass-status-primary-school">
+                  <span style="background-color:#28a197;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Primary School
+                </label>
+              </div>
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="mass-status-gp-practice" name="mass-status" type="radio" value="gp-practice">
+                <label class="govuk-label govuk-radios__label" for="mass-status-gp-practice">
+                  <span style="background-color:#5694ca;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>GP Practice
                 </label>
               </div>
             </div>
