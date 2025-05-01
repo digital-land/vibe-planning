@@ -302,9 +302,24 @@
                 </div>
             </div>
             
-            <div class="govuk-!-margin-top-6" id="map-container">
-                <div id="map"></div>
+            <div class="govuk-!-margin-top-6">
+            <div class="govuk-width-container">
+                <div class="govuk-form-group">
+                    <div class="govuk-checkboxes govuk-checkboxes--small">
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" id="toggle-green-belt" name="toggle-green-belt" type="checkbox" checked onchange="toggleGreenBelt(this.checked)">
+                            <label class="govuk-label govuk-checkboxes__label" for="toggle-green-belt">
+                                <strong>Hide Green Belt areas</strong>
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+        
+        <div id="map-container" class="govuk-!-margin-top-4">
+            <div id="map"></div>
+        </div>
 
             <!-- Plan submission section -->
             <div class="govuk-width-container govuk-!-margin-top-6 govuk-!-margin-bottom-6">
@@ -382,7 +397,7 @@
                     <a
                         class="govuk-footer__link govuk-footer__copyright-logo"
                         href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/"
-                    >© Crown copyright</a>
+                    > Crown copyright</a>
                 </div>
             </div>
         </div>
@@ -406,7 +421,7 @@
         // Add base layers
         const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
-            attribution: '© OpenStreetMap contributors'
+            attribution: ' OpenStreetMap contributors'
         }).addTo(map);
         
         const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -426,6 +441,7 @@
         let gridLayer = null;
         let gridData = null;
         let highlightEnabled = true;
+        let hideGreenBelt = true; // Default to hiding green belt
         
         // Get DOM elements
         const thresholdSlider = document.getElementById('coverage-threshold');
@@ -439,14 +455,23 @@
         function getFillColor(status) {
             switch(status) {
                 case 'green-belt': return "#00703c";
-                case 'non-green-belt': return "#f3f2f1";
+                case 'non-green-belt': return "#ffdd00"; // Changed to GOV.UK yellow for better visibility
                 case 'housing': return "#1d70b8";
                 case 'commercial': return "#942514";
-                default: return "#f3f2f1";
+                default: return "#ffdd00"; // Default also changed to match non-green-belt
             }
         }
         // Function to style GeoJSON features
         function styleFeature(feature) {
+            // Hide green belt areas if toggle is active
+            if (hideGreenBelt && feature.properties.status === 'green-belt') {
+                return {
+                    fillOpacity: 0,
+                    opacity: 0,
+                    interactive: false // Make these squares non-interactive
+                };
+            }
+            
             // Highlight if selected
             if (selectedFeatureIds && selectedFeatureIds.includes(feature.properties.id)) {
                 return {
@@ -481,7 +506,8 @@
                     style.fillColor = "#00703c"; // GOV.UK green
                     break;
                 case 'non-green-belt':
-                    style.fillColor = "#f3f2f1"; // GOV.UK light grey
+                    style.fillColor = "#ffdd00"; // GOV.UK yellow - better visibility
+                    style.fillOpacity = 0.5; // Slightly transparent to indicate it can be modified
                     break;
                 case 'housing':
                     style.fillColor = "#1d70b8"; // GOV.UK blue
@@ -530,7 +556,7 @@
                     } else {
                         selectedFeatureIds = selectedFeatureIds.filter(id => id !== feature.properties.id);
                     }
-                    updateGridLayer();
+                    updateGridLayer(true); // This is a selection update
                     // Show mass update button if >0
                     if (selectedFeatureIds.length > 0) {
                         massUpdateBtn.style.display = 'block';
@@ -542,7 +568,7 @@
                     // Clear selection if not shift
                     selectedFeatureIds = [];
                     massUpdateBtn.style.display = 'none';
-                    updateGridLayer();
+                    updateGridLayer(true); // This is a selection update
 
                     // --- Popup logic (single click, not shift) ---
                     if (feature.properties) {
@@ -570,7 +596,7 @@
                         // Radio buttons for each possible status
                         const statuses = [
                             {value: 'green-belt', label: 'Green Belt', color: '#00703c'},
-                            {value: 'non-green-belt', label: 'Non-Green Belt', color: '#f3f2f1'},
+                            {value: 'non-green-belt', label: 'Non-Green Belt', color: '#ffdd00'},
                             {value: 'housing', label: 'Housing', color: '#1d70b8'},
                             {value: 'commercial', label: 'Commercial', color: '#942514'}
                         ];
@@ -631,7 +657,7 @@
                     // Radio buttons for each possible status
                     const statuses = [
                         {value: 'green-belt', label: 'Green Belt', color: '#00703c'},
-                        {value: 'non-green-belt', label: 'Non-Green Belt', color: '#f3f2f1'},
+                        {value: 'non-green-belt', label: 'Non-Green Belt', color: '#ffdd00'},
                         {value: 'housing', label: 'Housing', color: '#1d70b8'},
                         {value: 'commercial', label: 'Commercial', color: '#942514'}
                     ];
@@ -694,7 +720,7 @@
                     feature.properties.status = newStatus;
                     
                     // Update the map
-                    updateGridLayer();
+                    updateGridLayer(true); // This is a selection update
                     
                     // Update the houses count
                     updateHousesCount();
@@ -887,17 +913,42 @@
         }
         
         // Update grid layer
-        function updateGridLayer() {
+        // Flag to track initial load
+        let initialMapLoad = true;
+        
+        // Function to update the grid layer with current data
+        function updateGridLayer(isSelection) {
             if (!gridData) return;
             
             if (gridLayer) {
                 map.removeLayer(gridLayer);
             }
             
-            gridLayer = L.geoJSON(gridData, {
+            // First, prepare a filtered version of the data when hiding green belt
+            // This creates a completely new GeoJSON structure without the green belt areas
+            let dataToRender = gridData;
+            
+            if (hideGreenBelt) {
+                // Deep clone the data to avoid modifying the original
+                dataToRender = JSON.parse(JSON.stringify(gridData));
+                // Filter out green belt features entirely
+                dataToRender.features = dataToRender.features.filter(feature => 
+                    !(feature.properties.status === 'green-belt' || 
+                      (feature.properties["green-belt"] >= 0.1 && !feature.properties.status))
+                );
+            }
+            
+            gridLayer = L.geoJSON(dataToRender, {
                 style: styleFeature,
                 onEachFeature: onEachFeature
+                // No filter function here - we've already filtered the data
             }).addTo(map);
+
+            // Only fit bounds on initial load (not for selections or updates)
+            if (initialMapLoad && !isSelection) {
+                map.fitBounds(gridLayer.getBounds());
+                initialMapLoad = false;
+            }
         }
         
         // Load GeoJSON data from file
@@ -907,7 +958,7 @@
             reader.onload = function(e) {
                 try {
                     gridData = JSON.parse(e.target.result);
-                    updateGridLayer();
+                    updateGridLayer(false); // Not a selection
                     
                     // Zoom to the data
                     if (gridLayer) {
@@ -922,16 +973,23 @@
             reader.readAsText(file);
         }
         
+        // Load the default GeoJSON data
         fetch('grid/E60000070.geojson')
             .then(response => response.json())
             .then(data => {
                 gridData = data;
-                updateGridLayer();
-                map.fitBounds(gridLayer.getBounds());
                 
-                // Initialize the houses count
+                // Initialize the hideGreenBelt flag before first render
+                // This ensures the checkbox state matches our hideGreenBelt variable
+                hideGreenBelt = document.getElementById('toggle-green-belt').checked;
+                
+                // Make sure green belt is properly hidden on initial load
+                // Force a false parameter to ensure it's not treated as a selection
+                updateGridLayer(false);
+                
+                // Update houses count
                 updateHousesCount();
-             })
+            })
             .catch(error => console.error('Error loading example data:', error));
     </script>
     <!-- Mass Update Modal -->
@@ -951,7 +1009,7 @@
               <div class="govuk-radios__item">
                 <input class="govuk-radios__input" id="mass-status-non-green-belt" name="mass-status" type="radio" value="non-green-belt">
                 <label class="govuk-label govuk-radios__label" for="mass-status-non-green-belt">
-                  <span style="background-color:#f3f2f1;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Non-Green Belt
+                  <span style="background-color:#ffdd00;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Non-Green Belt
                 </label>
               </div>
               <div class="govuk-radios__item">
@@ -1039,6 +1097,12 @@
         massUpdateStatus(newStatus.value);
         closeMassUpdateModal();
     };
+    // --- Toggle Green Belt function ---
+    function toggleGreenBelt(checked) {
+        hideGreenBelt = checked;
+        updateGridLayer(false); // Not a selection, but a filter change
+    }
+    
     // --- Mass update function ---
     function massUpdateStatus(newStatus) {
         if (!gridData) return;
@@ -1047,7 +1111,7 @@
                 f.properties.status = newStatus;
             }
         });
-        updateGridLayer();
+        updateGridLayer(true); // This is a selection update
         if (typeof updateHousesCount === 'function') updateHousesCount();
     }
     </script>
