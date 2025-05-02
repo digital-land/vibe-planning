@@ -784,43 +784,15 @@
 
     <div class="govuk-width-container">
         <main class="govuk-main-wrapper" id="main-content">
-    <details class="govuk-details">
-  <summary class="govuk-details__summary">
-    <span class="govuk-details__summary-text">
-        About this prototype
-    </span>
-  </summary>
-  <div class="govuk-details__text">
-    <p class="govuk-body">
-    This prototype was originally created for the "transforming public engagement" challenge at the
-    <a href="https://github.com/i-dot-ai/local-gov-hack">Local Government Hackday</a>, April 30 to May 1 2025.
+    <p class="govuk-body govuk-!-margin-bottom-8">
+    <strong class="govuk-tag">Demo</strong> This is a <a href="https://github.com/digital-land/vibe-planning/">prototype</a> to demonstrate an idea. It is not a real service.
     </p>
-    <ul class="govuk-list govuk-list--bullet">
-        <li>How could a local plan consultation be different in the age of open source and AI?
-        <li>Could we enable to community to play with the plan, contributing ideas, 
-            rather than just commenting on a plan proposed by planners.
-        <li>Could people use AI to help them generate better policies and site allocations?
-        <li>Maybe "vibe planning" could transform public consultations and make local plans faster!
-    </ul>
-    <p class="govuk-body">
-    The team built a <a href="hackathon.html">working prototype</a> in less than a day using 
-    Kirklees as an example using realistic but hyperthetical housing targets.
-    </p>
-    <img src="assets/hackathon.png" style="max-width: 100vw; max-height: 75vh; border: 2px solid black" alt="Screenshot of the prototype">
-    <p class="govuk-body">
-    <figcaption>Screenshot of the prototype <a href="hackathon.html">as demonstrated at the hackathon</a>.</figcaption>
-    </p>
-    <p class="govuk-body">
-    The code behind this prototype is open source available on <a href="https://github.com/digital-land/vibe-planning/">GitHub</a>.
-    We expect to develop the prototype further to help other people build similar applications using the
-    <a href="https://www.planning.data.gov.uk">Planning Data</a> platform.
-    </p>
-  </div>
-</details>
 
+            <h1 class="govuk-heading-xl">Vibe Planning</h1>
+            
             <!-- Scenario & Goals Section -->
             <div class="govuk-panel govuk-!-margin-bottom-6" style="background-color: #f3f2f1; color: #0b0c0c;">
-                <h2 class="govuk-panel__title govuk-heading-m govuk-!-text-align-left">Local Plan Goals</h2>
+                <h2 class="govuk-panel__title govuk-heading-m govuk-!-text-align-left">Planning Scenario Goals</h2>
                 
                 <div class="govuk-grid-row govuk-!-margin-top-6">
                     <!-- Development Needs -->
@@ -943,15 +915,27 @@
                                 </label>
                             </div>
                             <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="category-non-green-belt" name="selected-category" type="radio" value="non-green-belt">
+                                <label class="govuk-label govuk-radios__label" for="category-non-green-belt">
+                                    <span style="background-color:#ffdd00;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Non-Green Belt
+                                </label>
+                            </div>
+                            <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" id="category-commercial" name="selected-category" type="radio" value="commercial">
                                 <label class="govuk-label govuk-radios__label" for="category-commercial">
                                     <span style="background-color:#942514;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Retail and Employment
                                 </label>
                             </div>
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="category-non-green-belt" name="selected-category" type="radio" value="non-green-belt">
-                                <label class="govuk-label govuk-radios__label" for="category-non-green-belt">
-                                    <span style="background-color:#ffdd00;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Non-Green Belt
+                                <input class="govuk-radios__input" id="category-primary-school" name="selected-category" type="radio" value="primary-school">
+                                <label class="govuk-label govuk-radios__label" for="category-primary-school">
+                                    <span style="background-color:#28a197;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Primary School
+                                </label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="category-gp-practice" name="selected-category" type="radio" value="gp-practice">
+                                <label class="govuk-label govuk-radios__label" for="category-gp-practice">
+                                    <span style="background-color:#5694ca;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>GP Practice
                                 </label>
                             </div>
                         </div>
