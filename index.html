@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" class="govuk-template">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Vibe planning</title>
-    
-    <!-- Base URL script to handle both local and GitHub Pages environments -->
-    <script>
+  <meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.8.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Vibe planning</title><!-- Base URL script to handle both local and GitHub Pages environments -->
+
+  <script>
         // Determine the base URL for assets
         (function() {
             // This function sets a global baseUrl variable that can be used throughout the application
@@ -36,15 +36,10 @@
             
             console.log('Base URL detected:', window.baseUrl);
         })();
-    </script>
-    
-    <!-- GOV.UK Design System -->
-    <link rel="stylesheet" href="assets/govuk/govuk-frontend.min.css">
-    
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-    
-    <style>
+  </script><!-- GOV.UK Design System -->
+  <link rel="stylesheet" href="assets/govuk/govuk-frontend.min.css"><!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <style>
         body {
             margin: 0;
             padding: 0;
@@ -584,469 +579,347 @@
             color: #1d70b8;
             margin-bottom: 25px;
         }
-    </style>
+  </style>
 </head>
 <body class="govuk-template__body">
-    <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
-    
-    <!-- Celebration elements -->
-    <div id="celebration-banner" role="alert">
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Goal Achieved!</h2>
-        <p class="govuk-body">You've successfully found land for 1,000 homes for your community. Well done!</p>
-    </div>
-    <canvas id="confetti-canvas"></canvas>
-    
-    <!-- AI Feedback Modal -->
-    <div id="ai-feedback-modal">
-        <div id="ai-feedback-content">
-            <span id="ai-feedback-close" onclick="closeAiFeedback()">&times;</span>
-            <h2 id="ai-feedback-title" class="govuk-heading-l typing-effect">AI Plan Analysis</h2>
-            <div class="ai-feedback-section">
-                <p class="govuk-body fade-in" style="--delay: 1s;">After analyzing your current plan, I've evaluated how it balances different interests and needs within the development area.</p>
-                <p class="govuk-body fade-in" style="--delay: 2s;">Overall, your plan shows a good attempt at balancing various planning priorities. Here's my detailed assessment:</p>
-            </div>
-            <div class="ai-feedback-list improvements fade-in" style="--delay: 3.5s;">
-                <h3 class="govuk-heading-m">Areas for Improvement</h3>
-                <ul class="govuk-list govuk-list--bullet">
-                    <li>Housing is farther than the national average from schools, which may create accessibility issues for families</li>
-                    <li>Commercial space is too focused in one area and should be spread out to create multiple neighborhood centers</li>
-                    <li>Large areas focused solely on housing puts pressure on public services</li>
-                    <li>Green space connectivity could be improved to create wildlife corridors</li>
-                    <li>Some built-up areas appear to encroach on flood-prone zones</li>
-                </ul>
-            </div>
-            <div class="ai-feedback-list positives fade-in" style="--delay: 5s;">
-                <h3 class="govuk-heading-m">Positive Aspects</h3>
-                <ul class="govuk-list govuk-list--bullet">
-                    <li>Good overall housing density that meets development targets</li>
-                    <li>Effective preservation of most green belt areas</li>
-                    <li>Sensible placement of GP practices relative to population density</li>
-                    <li>Mixed-use development in central areas promotes walkability</li>
-                    <li>Retail spaces are generally accessible from residential areas</li>
-                </ul>
-            </div>
-            <div class="ai-feedback-section fade-in" style="--delay: 6.5s;">
-                <p class="govuk-body">Consider making adjustments to address the identified issues while maintaining the strengths of your current plan.</p>
-                <p class="govuk-body">This analysis is based on standard planning best practices and may not account for all local factors.</p>
-            </div>
-        </div>
-    </div>
-    
-    <!-- AI Suggestion Modal -->
-    <div id="ai-suggestion-modal">
-        <div id="ai-suggestion-content">
-            <span id="ai-suggestion-close" onclick="closeAiSuggestion()">&times;</span>
-            <h2 id="ai-suggestion-title" class="govuk-heading-l typing-effect">AI Alternative Plan Suggestion</h2>
-            
-            <div class="ai-suggestion-section">
-                <p class="govuk-body fade-in" style="--delay: 1s;">I've generated an alternative layout that optimizes your plan by grouping similar categories together. This creates more efficient zones and improves access to services.</p>
-            </div>
-            
-            <div class="suggested-plan-details fade-in" style="--delay: 2s;">
-                <h3 class="govuk-heading-m">Features of this Alternative Plan:</h3>
-                <ul class="govuk-list govuk-list--bullet">
-                    <li><strong>Clustered Housing:</strong> Housing areas are grouped together with nearby amenities</li>
-                    <li><strong>Distributed Commercial:</strong> Retail and employment spaces are spread across multiple smaller hubs</li>
-                    <li><strong>Strategic Services:</strong> Schools and GP practices are positioned at optimal distances between housing clusters</li>
-                    <li><strong>Green Belt Preservation:</strong> Green belt areas maintained with improved ecological connectivity</li>
-                    <li><strong>Built-up Area Management:</strong> Development concentrated in appropriate zones</li>
-                </ul>
-            </div>
-            
-            <div class="fade-in" style="--delay: 3s;">
-                <h3 class="govuk-heading-m">Comparison to Current Plan:</h3>
-                <div class="plan-comparison">
-                    <div class="plan-stat">
-                        <h4>Housing</h4>
-                        <p>Same number of homes but in more efficient clusters with better access to services</p>
-                    </div>
-                    <div class="plan-stat">
-                        <h4>Commercial</h4>
-                        <p>Equal space distributed across 3 neighborhood centers instead of 1 concentrated area</p>
-                    </div>
-                    <div class="plan-stat">
-                        <h4>Services</h4>
-                        <p>Schools and GP practices relocated to serve more residents within shorter distances</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="plan-action-buttons fade-in" style="--delay: 4s;">
-                <button class="govuk-button" onclick="applyAiSuggestion()">Apply This Plan</button>
-                <button class="govuk-button govuk-button--secondary" onclick="closeAiSuggestion()">Keep Current Plan</button>
-            </div>
-            
-            <div class="ai-suggestion-section fade-in" style="--delay: 5s;">
-                <p class="govuk-body">Note: This is an AI-generated suggestion. You can apply it directly or use it as inspiration to adjust your current plan.</p>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Original Local Plan Modal -->
-    <div id="original-plan-modal">
-        <div id="original-plan-content">
-            <span id="original-plan-close" onclick="closeOriginalPlan()">&times;</span>
-            <h2 id="original-plan-title" class="govuk-heading-l">Original Local Plan</h2>
-            
-            <div class="govuk-grid-row">
-                <div class="govuk-grid-column-two-thirds">
-                    <div class="govuk-panel govuk-panel--confirmation">
-                        <h3 class="govuk-panel__title">Approved Local Plan 2023-2038</h3>
-                        <div class="govuk-panel__body">
-                            Strategic development framework for sustainable growth
-                        </div>
-                    </div>
-                    
-                    <h3 class="govuk-heading-m govuk-!-margin-top-6">Development Strategy</h3>
-                    <p class="govuk-body">The Local Plan provides a clear framework for future growth and development across the area up to 2038. It aims to meet the identified needs for new homes, jobs and infrastructure, while protecting the area's valuable natural and built environment.</p>
-                    
-                    <div class="govuk-inset-text">
-                        <p>The plan allocates land for 10,000 new homes, 500,000 sqm of employment space, and supporting infrastructure including schools, healthcare facilities, and transport improvements.</p>
-                    </div>
-                    
-                    <h3 class="govuk-heading-m">Key Development Principles</h3>
-                    <ul class="govuk-list govuk-list--bullet">
-                        <li>Focus development in and around existing urban centers to maximize sustainability</li>
-                        <li>Protect green belt land while allowing strategic releases where necessary</li>
-                        <li>Create mixed-use neighborhoods with good access to services</li>
-                        <li>Provide a range of housing types and tenures to meet diverse needs</li>
-                        <li>Deliver employment opportunities alongside residential development</li>
-                        <li>Ensure timely provision of infrastructure to support new growth</li>
-                    </ul>
-                </div>
-                
-                <div class="govuk-grid-column-one-third">
-                    <div class="govuk-!-padding-5" style="background-color: #f3f2f1;">
-                        <h3 class="govuk-heading-s">Housing</h3>
-                        <p class="govuk-body-s">10,000 new homes across the plan period</p>
-                        
-                        <h3 class="govuk-heading-s">Employment</h3>
-                        <p class="govuk-body-s">500,000 sqm of commercial and retail space</p>
-                        
-                        <h3 class="govuk-heading-s">Education</h3>
-                        <p class="govuk-body-s">5 new primary schools and 1 secondary school</p>
-                        
-                        <h3 class="govuk-heading-s">Healthcare</h3>
-                        <p class="govuk-body-s">3 new GP practices and extended hospital facilities</p>
-                        
-                        <h3 class="govuk-heading-s">Green Space</h3>
-                        <p class="govuk-body-s">20% of development area reserved for green space</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="govuk-!-margin-top-6">
-                <button class="govuk-button" onclick="applyOriginalPlan()">Apply Original Plan</button>
-                <button class="govuk-button govuk-button--secondary" onclick="closeOriginalPlan()">Close</button>
-            </div>
-        </div>
-    </div>
-    
-
-
-    <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
-
-    <header class="govuk-header" role="banner" data-module="govuk-header">
-        <div class="govuk-header__container govuk-width-container">
-            </div>
-            <div class="govuk-header__content">
-                <a href="/" class="govuk-header__link govuk-header__service-name">
-                    Vibe Planning
-                </a>
-            </div>
-        </div>
-    </header>
-
-    <div class="govuk-width-container">
-        <main class="govuk-main-wrapper" id="main-content">
-    <details class="govuk-details">
-  <summary class="govuk-details__summary">
-    <span class="govuk-details__summary-text">
-        About this prototype
-    </span>
-  </summary>
-
-  <div class="govuk-details__text">
-    <p class="govuk-body">
-    This prototype was originally created for the "transforming public engagement" challenge at the
-    <a href="https://github.com/i-dot-ai/local-gov-hack">Local Government Hackday</a>, April 30 to May 1 2025.
-    </p>
-    <ul class="govuk-list govuk-list--bullet">
-        <li>How could a local plan consultation be different in the age of open source and AI?
-        <li>Could we enable to community to play with the plan, contributing ideas, 
-            rather than just commenting on a plan proposed by planners.
-        <li>Could people use AI to help them generate better policies and site allocations?
-        <li>Maybe "vibe planning" could transform public consultations and make local plans faster!
-    </ul>
-    <p class="govuk-body">
-    The team built a <a href="hackathon.html">working prototype</a> in less than a day using 
-    Kirklees as an example using hyperthetical housing targets.
-    </p>
-    <img src="assets/hackathon.png" style="max-width: 100vw; max-height: 75vh; border: 2px solid black" alt="Screenshot of the prototype">
-    <p class="govuk-body">
-    <figcaption>Screenshot of the prototype <a href="hackathon.html">as demonstrated at the hackathon</a>.</figcaption>
-    </p>
-    <p class="govuk-body">
-    The code behind this prototype is open source available on <a href="https://github.com/digital-land/vibe-planning/">GitHub</a>.
-    We expect to develop the prototype further to help people understand the idea, and build similar applications using the
-    <a href="https://www.planning.data.gov.uk">Planning Data</a> platform.
-    </p>
+  <script>
+  document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
+  </script> <!-- Celebration elements -->
+  <div id="celebration-banner" role="alert">
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Goal Achieved!</h2>
+    <p class="govuk-body">You've successfully found land for 1,000 homes for your community. Well done!</p>
   </div>
-  </details>
-
-    <h1 class="govuk-heading-l">Local plan consultation</h1>
-    <p class="govuk-body">
-    We need houses for our growing population, more school places for the next generation, and space for businesses to create jobs
-    for our community.
-    </p>
-
-            <!-- Scenario & Goals Section -->
-            <div class="govuk-panel govuk-!-margin-bottom-6" style="background-color: #f3f2f1; color: #0b0c0c;">
-                <div class="govuk-grid-row govuk-!-margin-top-0">
-                    <!-- Development Needs -->
-                    <div class="govuk-grid-column-one-half">
-                        <div class="govuk-!-text-align-left">
-                            <h3 class="govuk-heading-m">Development</h3>
-                            <ul class="govuk-list govuk-body">
-                                <li><strong>1000</strong> new homes, 200 of which will be affordable</li>
-                                <li><strong>14,000 sq m</strong> of new employment and retail space</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <!-- Infrastructure Needs -->
-                    <div class="govuk-grid-column-one-half">
-                        <div class="govuk-!-text-align-left">
-                            <h3 class="govuk-heading-m">Infrastructure</h3>
-                            <ul class="govuk-list govuk-body">
-                                <li><strong>1</strong> new primary school</li>
-                                <li><strong>1</strong> new GP practice</li>
-                                <li>Capacity for <strong>1,500</strong> new car journeys</li>
-                                <li><strong>16,000 sq m</strong> of parks (10% of space)</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-<details class="govuk-details">
-  <summary class="govuk-details__summary">
-    <span class="govuk-details__summary-text">
-        About these targets
-    </span>
-  </summary>
-  <div class="govuk-details__text">
-    <p class="govuk-body">
-    These are hyperthetical housing and other targets for one year.
-    </p>
-  </div>
-</details>
-
-    <p class="govuk-body">
-    Have your say on where these new homes and businesses should be built.
-    </p>
-<div>
-<hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-    <fieldset class="govuk-fieldset">
-  <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-    <h3 class="govuk-fieldset__heading">
-      Choose a starting proposal
-    </h3>
-  </legend>
-  <label class="govuk-label" for="sort">
-    The official proposal
-  </label>
-            <button id="original-plan-button" class="govuk-button govuk-button--secondary" onclick="showOriginalPlan()">
-                The emerging local plan
-            </button>
-            <div class="govuk-form-group">
-  <label class="govuk-label" for="sort">
-    A community proposal
-  </label>
-  <select class="govuk-select" id="sort" name="sort">
-    <option value="published">Recently published</option>
-    <option value="updated" selected>Recently updated</option>
-    <option value="views">Most views</option>
-    <option value="comments">Most comments</option>
-  </select>
-</div>
-  <label class="govuk-label" for="sort">
-    Or chat with our AI to create a new proposal
-  </label>
-<button id="ai-suggestion-button" class="govuk-button" onclick="showAiSuggestion()">
-                Vibe with our AI 
-            </button>
-    </fieldset>
+  <canvas id="confetti-canvas"></canvas><!-- AI Feedback Modal -->
+  <div id="ai-feedback-modal">
+    <div id="ai-feedback-content">
+      <span id="ai-feedback-close" onclick="closeAiFeedback()">×</span>
+      <h2 id="ai-feedback-title" class="govuk-heading-l typing-effect">AI Plan Analysis</h2>
+      <div class="ai-feedback-section">
+        <p class="govuk-body fade-in" style="--delay: 1s;">After analyzing your current plan, I've evaluated how it balances different interests and needs within the development area.</p>
+        <p class="govuk-body fade-in" style="--delay: 2s;">Overall, your plan shows a good attempt at balancing various planning priorities. Here's my detailed assessment:</p>
+      </div>
+      <div class="ai-feedback-list improvements fade-in" style="--delay: 3.5s;">
+        <h3 class="govuk-heading-m">Areas for Improvement</h3>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>Housing is farther than the national average from schools, which may create accessibility issues for families</li>
+          <li>Commercial space is too focused in one area and should be spread out to create multiple neighborhood centers</li>
+          <li>Large areas focused solely on housing puts pressure on public services</li>
+          <li>Green space connectivity could be improved to create wildlife corridors</li>
+          <li>Some built-up areas appear to encroach on flood-prone zones</li>
+        </ul>
+      </div>
+      <div class="ai-feedback-list positives fade-in" style="--delay: 5s;">
+        <h3 class="govuk-heading-m">Positive Aspects</h3>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>Good overall housing density that meets development targets</li>
+          <li>Effective preservation of most green belt areas</li>
+          <li>Sensible placement of GP practices relative to population density</li>
+          <li>Mixed-use development in central areas promotes walkability</li>
+          <li>Retail spaces are generally accessible from residential areas</li>
+        </ul>
+      </div>
+      <div class="ai-feedback-section fade-in" style="--delay: 6.5s;">
+        <p class="govuk-body">Consider making adjustments to address the identified issues while maintaining the strengths of your current plan.</p>
+        <p class="govuk-body">This analysis is based on standard planning best practices and may not account for all local factors.</p>
+      </div>
+    </div>
+  </div><!-- AI Suggestion Modal -->
+  <div id="ai-suggestion-modal">
+    <div id="ai-suggestion-content">
+      <span id="ai-suggestion-close" onclick="closeAiSuggestion()">×</span>
+      <h2 id="ai-suggestion-title" class="govuk-heading-l typing-effect">AI Alternative Plan Suggestion</h2>
+      <div class="ai-suggestion-section">
+        <p class="govuk-body fade-in" style="--delay: 1s;">I've generated an alternative layout that optimizes your plan by grouping similar categories together. This creates more efficient zones and improves access to services.</p>
+      </div>
+      <div class="suggested-plan-details fade-in" style="--delay: 2s;">
+        <h3 class="govuk-heading-m">Features of this Alternative Plan:</h3>
+        <ul class="govuk-list govuk-list--bullet">
+          <li><strong>Clustered Housing:</strong> Housing areas are grouped together with nearby amenities</li>
+          <li><strong>Distributed Commercial:</strong> Retail and employment spaces are spread across multiple smaller hubs</li>
+          <li><strong>Strategic Services:</strong> Schools and GP practices are positioned at optimal distances between housing clusters</li>
+          <li><strong>Green Belt Preservation:</strong> Green belt areas maintained with improved ecological connectivity</li>
+          <li><strong>Built-up Area Management:</strong> Development concentrated in appropriate zones</li>
+        </ul>
+      </div>
+      <div class="fade-in" style="--delay: 3s;">
+        <h3 class="govuk-heading-m">Comparison to Current Plan:</h3>
+        <div class="plan-comparison">
+          <div class="plan-stat">
+            <h4>Housing</h4>
+            <p>Same number of homes but in more efficient clusters with better access to services</p>
+          </div>
+          <div class="plan-stat">
+            <h4>Commercial</h4>
+            <p>Equal space distributed across 3 neighborhood centers instead of 1 concentrated area</p>
+          </div>
+          <div class="plan-stat">
+            <h4>Services</h4>
+            <p>Schools and GP practices relocated to serve more residents within shorter distances</p>
+          </div>
         </div>
-
-<hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-
-        <h2 class="govuk-heading-l">
-            Make the proposal better
-    </h2>
-
-            <!-- Scenario & Goals Section -->
-            <div class="govuk-panel govuk-!-margin-bottom-6" style="background-color: #f3f2f1; color: #0b0c0c;">
-                <div class="govuk-grid-row govuk-!-margin-top-0">
-                <!-- Overall Progress Bar -->
-                <div class="govuk-grid-row">
-                    <div class="govuk-grid-column-full">
-                        <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-4" style="background-color: #1d70b8; color: white;">
-                            <p class="govuk-heading-m govuk-!-margin-bottom-0" style="color: white;">Overall Progress: <span id="progress-percentage" style="color: white;">0</span>%</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- All Statistics in One Line -->
-                <div class="govuk-grid-row govuk-!-margin-top-4 govuk-!-margin-bottom-6">
-                    <div class="govuk-grid-column-one-quarter">
-                        <div class="govuk-!-padding-top-0">
-                            <p class="govuk-body govuk-!-margin-bottom-0">Housing</p>
-                            <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-bottom-2">
-                                <p class="govuk-heading-l govuk-!-margin-bottom-0" style="color: #1d70b8;"><span id="houses-count">0</span></p>
-                                <p class="govuk-body-s govuk-!-margin-bottom-0">homes of 1,000</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="govuk-grid-column-one-quarter">
-                        <div class="govuk-!-padding-top-0">
-                            <p class="govuk-body govuk-!-margin-bottom-0">Retail & Employment</p>
-                            <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-bottom-2">
-                                <p class="govuk-heading-l govuk-!-margin-bottom-0" style="color: #942514;"><span id="retail-count">0</span></p>
-                                <p class="govuk-body-s govuk-!-margin-bottom-0">sq m of 14,000</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="govuk-grid-column-one-quarter">
-                        <div class="govuk-!-padding-top-0">
-                            <p class="govuk-body govuk-!-margin-bottom-0">Primary Schools</p>
-                            <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-bottom-2">
-                                <p class="govuk-heading-l govuk-!-margin-bottom-0" style="color: #28a197;"><span id="school-count">0</span></p>
-                                <p class="govuk-body-s govuk-!-margin-bottom-0">of 1 required</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="govuk-grid-column-one-quarter">
-                        <div class="govuk-!-padding-top-0">
-                            <p class="govuk-body govuk-!-margin-bottom-0">GP Practices</p>
-                            <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-bottom-2">
-                                <p class="govuk-heading-l govuk-!-margin-bottom-0" style="color: #5694ca;"><span id="gp-count">0</span></p>
-                                <p class="govuk-body-s govuk-!-margin-bottom-0">of 1 required</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      </div>
+      <div class="plan-action-buttons fade-in" style="--delay: 4s;">
+        <button class="govuk-button" onclick="applyAiSuggestion()">Apply This Plan</button> <button class="govuk-button govuk-button--secondary" onclick="closeAiSuggestion()">Keep Current Plan</button>
+      </div>
+      <div class="ai-suggestion-section fade-in" style="--delay: 5s;">
+        <p class="govuk-body">Note: This is an AI-generated suggestion. You can apply it directly or use it as inspiration to adjust your current plan.</p>
+      </div>
+    </div>
+  </div><!-- Original Local Plan Modal -->
+  <div id="original-plan-modal">
+    <div id="original-plan-content">
+      <span id="original-plan-close" onclick="closeOriginalPlan()">×</span>
+      <h2 id="original-plan-title" class="govuk-heading-l">Original Local Plan</h2>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <div class="govuk-panel govuk-panel--confirmation">
+            <h3 class="govuk-panel__title">Approved Local Plan 2023-2038</h3>
+            <div class="govuk-panel__body">
+              Strategic development framework for sustainable growth
             </div>
-
+          </div>
+          <h3 class="govuk-heading-m govuk-!-margin-top-6">Development Strategy</h3>
+          <p class="govuk-body">The Local Plan provides a clear framework for future growth and development across the area up to 2038. It aims to meet the identified needs for new homes, jobs and infrastructure, while protecting the area's valuable natural and built environment.</p>
+          <div class="govuk-inset-text">
+            <p>The plan allocates land for 10,000 new homes, 500,000 sqm of employment space, and supporting infrastructure including schools, healthcare facilities, and transport improvements.</p>
+          </div>
+          <h3 class="govuk-heading-m">Key Development Principles</h3>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>Focus development in and around existing urban centers to maximize sustainability</li>
+            <li>Protect green belt land while allowing strategic releases where necessary</li>
+            <li>Create mixed-use neighborhoods with good access to services</li>
+            <li>Provide a range of housing types and tenures to meet diverse needs</li>
+            <li>Deliver employment opportunities alongside residential development</li>
+            <li>Ensure timely provision of infrastructure to support new growth</li>
+          </ul>
+        </div>
+        <div class="govuk-grid-column-one-third">
+          <div class="govuk-!-padding-5" style="background-color: #f3f2f1;">
+            <h3 class="govuk-heading-s">Housing</h3>
+            <p class="govuk-body-s">10,000 new homes across the plan period</p>
+            <h3 class="govuk-heading-s">Employment</h3>
+            <p class="govuk-body-s">500,000 sqm of commercial and retail space</p>
+            <h3 class="govuk-heading-s">Education</h3>
+            <p class="govuk-body-s">5 new primary schools and 1 secondary school</p>
+            <h3 class="govuk-heading-s">Healthcare</h3>
+            <p class="govuk-body-s">3 new GP practices and extended hospital facilities</p>
+            <h3 class="govuk-heading-s">Green Space</h3>
+            <p class="govuk-body-s">20% of development area reserved for green space</p>
+          </div>
+        </div>
+      </div>
+      <div class="govuk-!-margin-top-6">
+        <button class="govuk-button" onclick="applyOriginalPlan()">Apply Original Plan</button> <button class="govuk-button govuk-button--secondary" onclick="closeOriginalPlan()">Close</button>
+      </div>
+    </div>
+  </div><a href="#main-content" class="govuk-skip-link">Skip to main content</a>
+  <header class="govuk-header" role="banner" data-module="govuk-header">
+    <div class="govuk-header__container govuk-width-container"></div>
+    <div class="govuk-header__content">
+      <a href="/" class="govuk-header__link govuk-header__service-name">Vibe Planning</a>
+    </div>
+  </header>
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" id="main-content">
+      <details class="govuk-details">
+        <summary class="govuk-details__summary">
+          <span class="govuk-details__summary-text">About this prototype</span>
+        </summary>
+        <div class="govuk-details__text">
+          <p class="govuk-body">This prototype was originally created for the "transforming public engagement" challenge at the <a href="https://github.com/i-dot-ai/local-gov-hack">Local Government Hackday</a>, April 30 to May 1 2025.</p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>How could a local plan consultation be different in the age of open source and AI?</li>
+            <li>Could we enable to community to play with the plan, contributing ideas, rather than just commenting on a plan proposed by planners.</li>
+            <li>Could people use AI to help them generate better policies and site allocations?</li>
+            <li>Maybe "vibe planning" could transform public consultations and make local plans faster!</li>
+          </ul>
+          <p class="govuk-body">The team built a <a href="hackathon.html">working prototype</a> in less than a day using Kirklees as an example using hyperthetical housing targets.</p><img src="assets/hackathon.png" style="max-width: 100vw; max-height: 75vh; border: 2px solid black" alt="Screenshot of the prototype">
+          <p class="govuk-body"></p>
+          <figcaption>
+            Screenshot of the prototype <a href="hackathon.html">as demonstrated at the hackathon</a>.
+          </figcaption>
+          <p class="govuk-body">The code behind this prototype is open source available on <a href="https://github.com/digital-land/vibe-planning/">GitHub</a>. We expect to develop the prototype further to help people understand the idea, and build similar applications using the <a href="https://www.planning.data.gov.uk">Planning Data</a> platform.</p>
+        </div>
+      </details>
+      <h1 class="govuk-heading-l">Local plan consultation</h1>
+      <p class="govuk-body">We need houses for our growing population, more school places for the next generation, and space for businesses to create jobs for our community.</p><!-- Scenario & Goals Section -->
+      <div class="govuk-panel govuk-!-margin-bottom-6" style="background-color: #f3f2f1; color: #0b0c0c;">
+        <div class="govuk-grid-row govuk-!-margin-top-0">
+          <!-- Development Needs -->
+          <div class="govuk-grid-column-one-half">
+            <div class="govuk-!-text-align-left">
+              <h3 class="govuk-heading-m">Development</h3>
+              <ul class="govuk-list govuk-body">
+                <li><strong>1000</strong> new homes, 200 of which will be affordable</li>
+                <li><strong>14,000 sq m</strong> of new employment and retail space</li>
+              </ul>
+            </div>
+          </div><!-- Infrastructure Needs -->
+          <div class="govuk-grid-column-one-half">
+            <div class="govuk-!-text-align-left">
+              <h3 class="govuk-heading-m">Infrastructure</h3>
+              <ul class="govuk-list govuk-body">
+                <li><strong>1</strong> new primary school</li>
+                <li><strong>1</strong> new GP practice</li>
+                <li>Capacity for <strong>1,500</strong> new car journeys</li>
+                <li><strong>16,000 sq m</strong> of parks (10% of space)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <details class="govuk-details">
+        <summary class="govuk-details__summary">
+          <span class="govuk-details__summary-text">About these targets</span>
+        </summary>
+        <div class="govuk-details__text">
+          <p class="govuk-body">These are hyperthetical housing and other targets for one year.</p>
+        </div>
+      </details>
+      <p class="govuk-body">Have your say on where these new homes and businesses should be built.</p>
+      <div>
+        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+        <fieldset class="govuk-fieldset">
+          <h3 class="govuk-fieldset__heading"><legend class="govuk-fieldset__legend govuk-fieldset__legend--l">Choose a starting proposal</legend></h3><label class="govuk-label" for="sort">The official proposal</label> <button id="original-plan-button" class="govuk-button govuk-button--secondary" onclick="showOriginalPlan()">The emerging local plan</button>
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="sort">A community proposal</label> <select class="govuk-select" id="sort" name="sort">
+              <option value="published">
+                Recently published
+              </option>
+              <option value="updated" selected>
+                Recently updated
+              </option>
+              <option value="views">
+                Most views
+              </option>
+              <option value="comments">
+                Most comments
+              </option>
+            </select>
+          </div><label class="govuk-label" for="sort">Or chat with our AI to create a new proposal</label> <button id="ai-suggestion-button" class="govuk-button" onclick="showAiSuggestion()">Vibe with our AI</button>
+        </fieldset>
+      </div>
+      <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+      <h2 class="govuk-heading-l">Make the proposal better</h2><!-- Scenario & Goals Section -->
+      <div class="govuk-panel govuk-!-margin-bottom-6" style="background-color: #f3f2f1; color: #0b0c0c;">
+        <div class="govuk-grid-row govuk-!-margin-top-0">
+          <!-- Overall Progress Bar -->
+          <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+              <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-4" style="background-color: #1d70b8; color: white;">
+                <p class="govuk-heading-m govuk-!-margin-bottom-0" style="color: white;">Overall Progress: <span id="progress-percentage" style="color: white;">0</span>%</p>
+              </div>
+            </div>
+          </div><!-- All Statistics in One Line -->
+          <div class="govuk-grid-row govuk-!-margin-top-4 govuk-!-margin-bottom-6">
+            <div class="govuk-grid-column-one-quarter">
+              <div class="govuk-!-padding-top-0">
+                <p class="govuk-body govuk-!-margin-bottom-0">Housing</p>
+                <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-bottom-2">
+                  <p class="govuk-heading-l govuk-!-margin-bottom-0" style="color: #1d70b8;"><span id="houses-count">0</span></p>
+                  <p class="govuk-body-s govuk-!-margin-bottom-0">homes of 1,000</p>
+                </div>
+              </div>
+            </div>
+            <div class="govuk-grid-column-one-quarter">
+              <div class="govuk-!-padding-top-0">
+                <p class="govuk-body govuk-!-margin-bottom-0">Retail & Employment</p>
+                <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-bottom-2">
+                  <p class="govuk-heading-l govuk-!-margin-bottom-0" style="color: #942514;"><span id="retail-count">0</span></p>
+                  <p class="govuk-body-s govuk-!-margin-bottom-0">sq m of 14,000</p>
+                </div>
+              </div>
+            </div>
+            <div class="govuk-grid-column-one-quarter">
+              <div class="govuk-!-padding-top-0">
+                <p class="govuk-body govuk-!-margin-bottom-0">Primary Schools</p>
+                <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-bottom-2">
+                  <p class="govuk-heading-l govuk-!-margin-bottom-0" style="color: #28a197;"><span id="school-count">0</span></p>
+                  <p class="govuk-body-s govuk-!-margin-bottom-0">of 1 required</p>
+                </div>
+              </div>
+            </div>
+            <div class="govuk-grid-column-one-quarter">
+              <div class="govuk-!-padding-top-0">
+                <p class="govuk-body govuk-!-margin-bottom-0">GP Practices</p>
+                <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-bottom-2">
+                  <p class="govuk-heading-l govuk-!-margin-bottom-0" style="color: #5694ca;"><span id="gp-count">0</span></p>
+                  <p class="govuk-body-s govuk-!-margin-bottom-0">of 1 required</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div id="map-container" class="govuk-!-margin-top-4">
-            <div id="map"></div>
+          <div id="map"></div>
         </div>
-
-            <div class="govuk-!-margin-top-6">
-            <div class="govuk-width-container">
-                <div class="govuk-form-group">
-                    <div class="govuk-checkboxes govuk-checkboxes--small govuk-checkboxes--inline">
-                        <div class="govuk-checkboxes__item">
-                            <input class="govuk-checkboxes__input" id="toggle-green-belt" name="toggle-green-belt" type="checkbox" checked onchange="toggleGreenBelt(this.checked)">
-                            <label class="govuk-label govuk-checkboxes__label" for="toggle-green-belt">
-                                <strong>Exclude the Green Belt</strong>
-                            </label>
-                        </div>
-                        <div class="govuk-checkboxes__item">
-                            <input class="govuk-checkboxes__input" id="toggle-built-up" name="toggle-built-up" type="checkbox" onchange="toggleBuiltUpAreas(this.checked)">
-                            <label class="govuk-label govuk-checkboxes__label" for="toggle-built-up">
-                                <strong>Exclude built-up areas</strong>
-                            </label>
-                        </div>
-                    </div>
+        <div class="govuk-!-margin-top-6">
+          <div class="govuk-width-container">
+            <div class="govuk-form-group">
+              <div class="govuk-checkboxes govuk-checkboxes--small govuk-checkboxes--inline">
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="toggle-green-belt" name="toggle-green-belt" type="checkbox" checked onchange="toggleGreenBelt(this.checked)"> <label class="govuk-label govuk-checkboxes__label" for="toggle-green-belt"><strong>Exclude the Green Belt</strong></label>
                 </div>
-                
-                <!-- Category Selection Toolbar -->
-                <div class="govuk-form-group govuk-!-margin-top-4">
-                    <fieldset class="govuk-fieldset">
-                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                            <h3 class="govuk-heading-s">Select category to apply</h3>
-                        </legend>
-                        <div class="govuk-radios govuk-radios--small govuk-radios--inline govuk-radios--inline-compact" id="category-selector">
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="category-housing" name="selected-category" type="radio" value="housing" checked>
-                                <label class="govuk-label govuk-radios__label" for="category-housing">
-                                    <span style="background-color:#1d70b8;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Housing
-                                </label>
-                            </div>
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="category-commercial" name="selected-category" type="radio" value="commercial">
-                                <label class="govuk-label govuk-radios__label" for="category-commercial">
-                                    <span style="background-color:#942514;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Retail and Employment
-                                </label>
-                            </div>
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="category-non-green-belt" name="selected-category" type="radio" value="non-green-belt">
-                                <label class="govuk-label govuk-radios__label" for="category-non-green-belt">
-                                    <span style="background-color:#ffdd00;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Non-Green Belt
-                                </label>
-                            </div>
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="category-green-belt" name="selected-category" type="radio" value="green-belt">
-                                <label class="govuk-label govuk-radios__label" for="category-green-belt">
-                                    <span style="background-color:#505a5f;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Green Belt
-                                </label>
-                            </div>
-                        </div>
-                    </fieldset>
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="toggle-built-up" name="toggle-built-up" type="checkbox" onchange="toggleBuiltUpAreas(this.checked)"> <label class="govuk-label govuk-checkboxes__label" for="toggle-built-up"><strong>Exclude built-up areas</strong></label>
                 </div>
+              </div>
+            </div><!-- Category Selection Toolbar -->
+            <div class="govuk-form-group govuk-!-margin-top-4">
+              <fieldset class="govuk-fieldset">
+                <h3 class="govuk-heading-s"><legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Select category to apply</legend></h3>
+                <div class="govuk-radios govuk-radios--small govuk-radios--inline govuk-radios--inline-compact" id="category-selector">
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="category-housing" name="selected-category" type="radio" value="housing" checked> <label class="govuk-label govuk-radios__label" for="category-housing">Housing</label>
+                  </div>
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="category-commercial" name="selected-category" type="radio" value="commercial"> <label class="govuk-label govuk-radios__label" for="category-commercial">Retail and Employment</label>
+                  </div>
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="category-non-green-belt" name="selected-category" type="radio" value="non-green-belt"> <label class="govuk-label govuk-radios__label" for="category-non-green-belt">Non-Green Belt</label>
+                  </div>
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="category-green-belt" name="selected-category" type="radio" value="green-belt"> <label class="govuk-label govuk-radios__label" for="category-green-belt">Green Belt</label>
+                  </div>
+                </div>
+              </fieldset>
             </div>
+          </div>
         </div>
-            </div>
-        
-<hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+      </div>
+      <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+      <h2 class="govuk-heading-l">Submit your proposal for others to see</h2><!-- Plan submission section -->
+      <div class="govuk-width-container govuk-!-margin-top-6 govuk-!-margin-bottom-6">
+        <form id="plan-submit-form" class="govuk-form-group" autocomplete="off" style="max-width: 700px" name="plan-submit-form">
+          <h2 class="govuk-heading-m">Explain your proposal</h2>
+          <div class="govuk-hint">
+            Help people understand why your proposal is better than the current plan
+          </div>
+          <textarea class="govuk-textarea" id="plan-explanation" name="plan-explanation" rows="5" style="margin-bottom: 20px;"></textarea>
+          <div class="govuk-button-group">
+            <button type="submit" class="govuk-button">Submit your proposal</button>
+          </div>
+        </form>
+      </div>
+      <div class="govuk-grid-column-two-thirds" style="background-color: #f3f2f1; color: #0b0c0c;">
+        <h2 class="govuk-heading-m">What happens next</h2>
+        <p class="govuk-body">Your proposal will be visible for other people to see, support and use to create their own proposals.</p>
+        <p class="govuk-body">All of the proposals will be reviewed by the planning team before being incorporated into the new local plan.</p>
+        <p class="govuk-body">The final plan will be examined by the Planning Inspectorate, and if found sound will be adopted by the end of the year.</p>
+      </div>
+    </main>
+  </div><!-- Leaflet JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script> <!-- GOV.UK JavaScript -->
+   
+  <script src="/assets/govuk/govuk-frontend.min.js"></script> 
+  <script>
 
-        <h2 class="govuk-heading-l">
-    Submit your proposal for others to see
-    </h2>
-
-            <!-- Plan submission section -->
-            <div class="govuk-width-container govuk-!-margin-top-6 govuk-!-margin-bottom-6">
-                <form id="plan-submit-form" class="govuk-form-group" autocomplete="off" style="max-width: 700px">
-                    <h2 class="govuk-heading-m">Explain your proposal</h2>
-                    <div class="govuk-hint">Help people understand why your proposal is better than the current plan</div>
-                    <textarea class="govuk-textarea" id="plan-explanation" name="plan-explanation" rows="5" style="margin-bottom: 20px;"></textarea>
-                    <div class="govuk-button-group">
-                        <button type="submit" class="govuk-button">Submit your proposal</button>
-                    </div>
-                </form>
-            </div>
-
-    <div class="govuk-grid-column-two-thirds" style="background-color: #f3f2f1; color: #0b0c0c;">
-      <h2 class="govuk-heading-m">What happens next</h2>
-      <p class="govuk-body">
-        Your proposal will be visible for other people to see, support and use to create their own proposals.
-      <p class="govuk-body">
-        All of the proposals will be reviewed by the planning team before being incorporated into the new local plan.
-      </p>
-      <p class="govuk-body">
-        The final plan will be examined by the Planning Inspectorate, and if found sound will be adopted by the end of the year.
-      </p>
-    </div>
-    </div>
-
-</main>
-</div>
-
-    
-    <!-- Leaflet JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-    
-    <!-- GOV.UK JavaScript -->
-    <script src="/assets/govuk/govuk-frontend.min.js"></script>
-    <script>
         window.GOVUKFrontend.initAll();
-    </script>
-    
-    <!-- Leaflet JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-    
-    <script>
+  </script> <!-- Leaflet JS -->
+   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script> 
+  <script>
+
         // Initialize the map with doubleClickZoom disabled
         const map = L.map('map', {
             doubleClickZoom: false // Disable double click zoom completely
@@ -1655,62 +1528,41 @@
                 updateHousesCount();
             })
             .catch(error => console.error('Error loading example data:', error));
-    </script>
-    <!-- Mass Update Modal -->
-    <div id="mass-update-modal" class="govuk-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:20000; align-items:center; justify-content:center;">
-      <div style="background:white; padding:32px; border-radius:8px; min-width:320px; max-width:90vw; margin:auto;">
-        <h2 class="govuk-heading-m">Update Category for Selected Boxes</h2>
-        <form id="mass-update-form">
-          <fieldset class="govuk-fieldset">
-            <legend class="govuk-fieldset__legend">Set new category:</legend>
-            <div class="govuk-radios govuk-radios--small govuk-radios--inline-compact">
-              <div class="govuk-radios__item">
-                <input class="govuk-radios__input" id="mass-status-housing" name="mass-status" type="radio" value="housing" checked>
-                <label class="govuk-label govuk-radios__label" for="mass-status-housing">
-                  <span style="background-color:#1d70b8;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Housing
-                </label>
-              </div>
-              <div class="govuk-radios__item">
-                <input class="govuk-radios__input" id="mass-status-green-belt" name="mass-status" type="radio" value="green-belt">
-                <label class="govuk-label govuk-radios__label" for="mass-status-green-belt">
-                  <span style="background-color:#505a5f;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Green Belt
-                </label>
-              </div>
-              <div class="govuk-radios__item">
-                <input class="govuk-radios__input" id="mass-status-non-green-belt" name="mass-status" type="radio" value="non-green-belt">
-                <label class="govuk-label govuk-radios__label" for="mass-status-non-green-belt">
-                  <span style="background-color:#ffdd00;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Non-Green Belt
-                </label>
-              </div>
-              <div class="govuk-radios__item">
-                <input class="govuk-radios__input" id="mass-status-commercial" name="mass-status" type="radio" value="commercial">
-                <label class="govuk-label govuk-radios__label" for="mass-status-commercial">
-                  <span style="background-color:#942514;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Retail and Employment
-                </label>
-              </div>
-              <div class="govuk-radios__item">
-                <input class="govuk-radios__input" id="mass-status-primary-school" name="mass-status" type="radio" value="primary-school">
-                <label class="govuk-label govuk-radios__label" for="mass-status-primary-school">
-                  <span style="background-color:#28a197;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Primary School
-                </label>
-              </div>
-              <div class="govuk-radios__item">
-                <input class="govuk-radios__input" id="mass-status-gp-practice" name="mass-status" type="radio" value="gp-practice">
-                <label class="govuk-label govuk-radios__label" for="mass-status-gp-practice">
-                  <span style="background-color:#5694ca;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>GP Practice
-                </label>
-              </div>
+  </script> <!-- Mass Update Modal -->
+  <div id="mass-update-modal" class="govuk-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:20000; align-items:center; justify-content:center;">
+    <div style="background:white; padding:32px; border-radius:8px; min-width:320px; max-width:90vw; margin:auto;">
+      <h2 class="govuk-heading-m">Update Category for Selected Boxes</h2>
+      <form id="mass-update-form" name="mass-update-form">
+        <fieldset class="govuk-fieldset">
+          <legend class="govuk-fieldset__legend">Set new category:</legend>
+          <div class="govuk-radios govuk-radios--small govuk-radios--inline-compact">
+            <div class="govuk-radios__item">
+              <input class="govuk-radios__input" id="mass-status-housing" name="mass-status" type="radio" value="housing" checked> <label class="govuk-label govuk-radios__label" for="mass-status-housing">Housing</label>
             </div>
-          </fieldset>
-          <div style="margin-top:20px;">
-            <button type="submit" class="govuk-button govuk-!-margin-right-2">Update Selected</button>
-            <button type="button" class="govuk-button govuk-button--secondary" onclick="closeMassUpdateModal()">Cancel</button>
+            <div class="govuk-radios__item">
+              <input class="govuk-radios__input" id="mass-status-green-belt" name="mass-status" type="radio" value="green-belt"> <label class="govuk-label govuk-radios__label" for="mass-status-green-belt">Green Belt</label>
+            </div>
+            <div class="govuk-radios__item">
+              <input class="govuk-radios__input" id="mass-status-non-green-belt" name="mass-status" type="radio" value="non-green-belt"> <label class="govuk-label govuk-radios__label" for="mass-status-non-green-belt">Non-Green Belt</label>
+            </div>
+            <div class="govuk-radios__item">
+              <input class="govuk-radios__input" id="mass-status-commercial" name="mass-status" type="radio" value="commercial"> <label class="govuk-label govuk-radios__label" for="mass-status-commercial">Retail and Employment</label>
+            </div>
+            <div class="govuk-radios__item">
+              <input class="govuk-radios__input" id="mass-status-primary-school" name="mass-status" type="radio" value="primary-school"> <label class="govuk-label govuk-radios__label" for="mass-status-primary-school">Primary School</label>
+            </div>
+            <div class="govuk-radios__item">
+              <input class="govuk-radios__input" id="mass-status-gp-practice" name="mass-status" type="radio" value="gp-practice"> <label class="govuk-label govuk-radios__label" for="mass-status-gp-practice">GP Practice</label>
+            </div>
           </div>
-        </form>
-      </div>
+        </fieldset>
+        <div style="margin-top:20px;">
+          <button type="submit" class="govuk-button govuk-!-margin-right-2">Update Selected</button> <button type="button" class="govuk-button govuk-button--secondary" onclick="closeMassUpdateModal()">Cancel</button>
+        </div>
+      </form>
     </div>
-
-    <script>
+  </div>
+  <script>
     // --- Multi-select state ---
     // selectedFeatureIds is declared globally above
     let isShiftDown = false;
@@ -2247,6 +2099,6 @@
             originalStoreGridState();
         };
     });
-    </script>
+  </script>
 </body>
 </html>
