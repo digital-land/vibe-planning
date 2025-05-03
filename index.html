@@ -713,12 +713,19 @@
   </div><a href="#main-content" class="govuk-skip-link">Skip to main content</a>
   <header class="govuk-header" role="banner" data-module="govuk-header">
     <div class="govuk-header__container govuk-width-container"></div>
-    <div class="govuk-header__content">
-      <a href="/" class="govuk-header__link govuk-header__service-name">Vibe Planning</a>
-    </div>
   </header>
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" id="main-content">
+          <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+  <div class="govuk-notification-banner__header">
+    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+        Notice
+    </h2>
+  </div>
+  <div class="govuk-notification-banner__content">
+    <p class="govuk-notification-banner__heading">
+    This is a prototype
+    </p>
       <details class="govuk-details">
         <summary class="govuk-details__summary">
           <span class="govuk-details__summary-text">About this prototype</span>
@@ -739,6 +746,8 @@
           <p class="govuk-body">The code behind this prototype is open source available on <a href="https://github.com/digital-land/vibe-planning/">GitHub</a>. We expect to develop the prototype further to help people understand the idea, and build similar applications using the <a href="https://www.planning.data.gov.uk">Planning Data</a> platform.</p>
         </div>
       </details>
+  </div>
+</div>
       <h1 class="govuk-heading-l">Local plan consultation</h1>
       <p class="govuk-body">We need houses for our growing population, more school places for the next generation, and space for businesses to create jobs for our community.</p><!-- Scenario & Goals Section -->
       <div class="govuk-panel govuk-!-margin-bottom-6" style="background-color: #f3f2f1; color: #0b0c0c;">
@@ -777,8 +786,13 @@
       <p class="govuk-body">Have your say on where these new homes and businesses should be built.</p>
       <div>
         <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
         <fieldset class="govuk-fieldset">
-          <h3 class="govuk-fieldset__heading"><legend class="govuk-fieldset__legend govuk-fieldset__legend--l">Choose a proposal</legend></h3><label class="govuk-label" for="sort">Use the official emerging local plan</label> <button id="original-plan-button" class="govuk-button govuk-button--secondary" onclick="showOriginalPlan()">Emerging local plan</button>
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h3 class="govuk-fieldset__heading govuk-!-margin-bottom-4">
+                  Choose a proposal
+              </h3></legend>
+              <label class="govuk-label" for="sort">Use the official emerging local plan</label> <button id="original-plan-button" class="govuk-button govuk-button--secondary" onclick="showOriginalPlan()">Emerging local plan</button>
           <div class="govuk-form-group">
             <label class="govuk-label" for="sort">Choose a proposal submitted by the community</label> <select class="govuk-select" id="sort" name="sort">
               <option value="published">
@@ -798,7 +812,7 @@
         </fieldset>
       </div>
       <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-      <h1 class="govuk-heading-l">Make the proposal better</h1>
+      <h1 class="govuk-heading-l">Improve the proposal</h1>
       <div class="govuk-panel govuk-!-margin-bottom-6" style="background-color: #f3f2f1; color: #0b0c0c;">
         <div class="govuk-grid-row govuk-!-margin-top-0">
           <!-- Overall Progress Bar -->
