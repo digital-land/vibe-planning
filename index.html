@@ -377,12 +377,9 @@
         
         #ai-button {
             padding: 12px 25px;
-            background: linear-gradient(135deg, #1d70b8 70%, #4c2c92 100%);
             color: white;
             border: none;
-            border-radius: 4px;
             cursor: pointer;
-            font-family: "GDS Transport", arial, sans-serif;
             font-weight: bold;
             font-size: 16px;
             display: inline-flex;
@@ -431,21 +428,6 @@
         }
         
         #ai-suggestion-button {
-            padding: 12px 25px;
-            background: linear-gradient(135deg, #00703c 70%, #4c2c92 100%);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: "GDS Transport", arial, sans-serif;
-            font-weight: bold;
-            font-size: 16px;
-            display: inline-flex;
-            align-items: center;
-            box-shadow: 0 4px 12px rgba(0, 112, 60, 0.3);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
         }
         
         #ai-suggestion-button::after {
@@ -876,17 +858,37 @@
   </div>
 </div>
 
-        <div id="ai-buttons-container" class="govuk-width-container">
+<div>
+    <fieldset class="govuk-fieldset">
+  <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+    <h3 class="govuk-fieldset__heading">
+      Select one of the following options
+    </h3>
+  </legend>
+  <label class="govuk-label" for="sort">
+    An official proposal
+  </label>
             <button id="original-plan-button" class="govuk-button govuk-button--secondary" onclick="showOriginalPlan()">
-                Current Local Plan
+                The emerging local plan
             </button>
-            <button id="original-plan-button" class="govuk-button govuk-button--secondary" onclick="showOriginalPlan()">
-                Emerging Local Plan
-            </button>
-            <a href="other-plans.html" class="govuk-button govuk-button--secondary" style="margin-left: 10px;">Community proposal</a>
-            <button id="ai-suggestion-button" class="govuk-button" onclick="showAiSuggestion()">
+            <div class="govuk-form-group">
+  <label class="govuk-label" for="sort">
+    A community proposal
+  </label>
+  <select class="govuk-select" id="sort" name="sort">
+    <option value="published">Recently published</option>
+    <option value="updated" selected>Recently updated</option>
+    <option value="views">Most views</option>
+    <option value="comments">Most comments</option>
+  </select>
+</div>
+  <label class="govuk-label" for="sort">
+    Chat with our AI to create a new proposal
+  </label>
+<button id="ai-suggestion-button" class="govuk-button" onclick="showAiSuggestion()">
                 Vibe with our AI 
             </button>
+    </fieldset>
         </div>
 
   <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
