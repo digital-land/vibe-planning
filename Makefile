@@ -1,6 +1,6 @@
 CACHE_DIR=var/cache/
 
-.PRECIOUS: *
+.PRECIOUS:
 
 REGION=E12000003
 
@@ -18,8 +18,10 @@ GRIDS=\
 GRIDS=\
 	grid/E60000070.geojson
 
+BOUNDARIES=$(patsubst grid/%,boundary/%,$(GRIDS))
 
-all:: 	$(GRIDS)
+
+all:: 	$(GRIDS) $(BOUNDARIES)
 
 # brutally remove all spaces to reduce size
 grid/%.geojson: var/grid/$(notdir %).geojson
@@ -40,6 +42,9 @@ var/grid/%.geojson:	\
 		       var/cache/built-up-area/$(notdir $@) \
 		--output $@ \
 
+boundary/%: $(CACHE_DIR)statistical-geography/%
+	@mkdir -p $(dir $@)
+	cp $< $@
 
 # download LPA and other boundaries
 $(CACHE_DIR)statistical-geography/%.geojson: 
@@ -66,4 +71,4 @@ clean::
 	rm -rf var 
 
 clobber::
-	rm -rf grid
+	rm -rf grid boundary

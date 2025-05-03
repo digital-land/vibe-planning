@@ -121,7 +121,7 @@
             border-radius: 0;
             cursor: pointer;
             margin-top: 5px;
-            font-family: "GDS Transport", arial, sans-serif;
+            font-family: arial, sans-serif;
             font-weight: 400;
             font-size: 16px;
             line-height: 1.1875;
@@ -182,7 +182,7 @@
         .leaflet-popup-content {
             margin: 0;
             padding: 15px;
-            font-family: "GDS Transport", arial, sans-serif;
+            font-family: arial, sans-serif;
             font-size: 16px;
             line-height: 1.5;
         }
@@ -292,7 +292,7 @@
             max-width: 800px;
             border-radius: 5px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            font-family: "GDS Transport", arial, sans-serif;
+            font-family: arial, sans-serif;
             max-height: 80vh;
             overflow-y: auto;
         }
@@ -478,7 +478,7 @@
             max-width: 800px;
             border-radius: 5px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            font-family: "GDS Transport", arial, sans-serif;
+            font-family: arial, sans-serif;
             max-height: 80vh;
             overflow-y: auto;
         }
@@ -562,7 +562,7 @@
             max-width: 1000px;
             border-radius: 5px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            font-family: "GDS Transport", arial, sans-serif;
+            font-family: arial, sans-serif;
             max-height: 80vh;
             overflow-y: auto;
         }
@@ -1501,6 +1501,14 @@
             
             reader.readAsText(file);
         }
+
+        fetch('boundary/E60000070.geojson')
+            .then(response => response.json())
+            .then(data => {
+                boundaryLayer = L.geoJSON(data, {}).addTo(map);
+            })
+            .catch(error => console.error('Error loading boundary:', error));
+                
         
         // Load the default GeoJSON data
         fetch('grid/E60000070.geojson')
