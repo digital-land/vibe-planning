@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Vibe planning</title><!-- Base URL script to handle both local and GitHub Pages environments -->
+  <title>Vibe planning prototype</title><!-- Base URL script to handle both local and GitHub Pages environments -->
 
   <script>
         // Determine the base URL for assets
@@ -853,67 +853,91 @@
             </div>
           </div>
         </div>
-        <div id="map-container" class="govuk-!-margin-top-4">
-          <div id="map"></div>
-        </div>
-        <div class="govuk-!-margin-top-6">
-          <div class="govuk-width-container">
-            <div class="govuk-form-group">
-              <div class="govuk-checkboxes govuk-checkboxes--small govuk-checkboxes--inline">
-                <div class="govuk-checkboxes__item">
-                  <input class="govuk-checkboxes__input" id="toggle-green-belt" name="toggle-green-belt" type="checkbox" checked onchange="toggleGreenBelt(this.checked)"> <label class="govuk-label govuk-checkboxes__label" for="toggle-green-belt"><strong>Exclude the Green Belt</strong></label>
+      </div>
+      <div id="map-container" class="govuk-!-margin-top-4">
+        <div id="map"></div>
+      </div>
+      <div class="govuk-!-margin-top-6">
+        <div class="govuk-width-container">
+          <div class="govuk-form-group">
+            <div class="govuk-checkboxes govuk-checkboxes--small govuk-checkboxes--inline">
+              <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input" id="toggle-green-belt" name="toggle-green-belt" type="checkbox" checked onchange="toggleGreenBelt(this.checked)"> <label class="govuk-label govuk-checkboxes__label" for="toggle-green-belt"><strong>Exclude the Green Belt</strong></label>
+              </div>
+              <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input" id="toggle-built-up" name="toggle-built-up" type="checkbox" onchange="toggleBuiltUpAreas(this.checked)"> <label class="govuk-label govuk-checkboxes__label" for="toggle-built-up"><strong>Exclude built-up areas</strong></label>
+              </div>
+            </div>
+          </div><!-- Category Selection Toolbar -->
+          <div class="govuk-form-group govuk-!-margin-top-4">
+            <fieldset class="govuk-fieldset">
+              <h3 class="govuk-heading-s"><legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Select category to apply</legend></h3>
+              <div class="govuk-radios govuk-radios--small govuk-radios--inline govuk-radios--inline-compact" id="category-selector">
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="category-housing" name="selected-category" type="radio" value="housing" checked> <label class="govuk-label govuk-radios__label" for="category-housing">Housing</label>
                 </div>
-                <div class="govuk-checkboxes__item">
-                  <input class="govuk-checkboxes__input" id="toggle-built-up" name="toggle-built-up" type="checkbox" onchange="toggleBuiltUpAreas(this.checked)"> <label class="govuk-label govuk-checkboxes__label" for="toggle-built-up"><strong>Exclude built-up areas</strong></label>
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="category-commercial" name="selected-category" type="radio" value="commercial"> <label class="govuk-label govuk-radios__label" for="category-commercial">Retail and Employment</label>
+                </div>
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="category-non-green-belt" name="selected-category" type="radio" value="non-green-belt"> <label class="govuk-label govuk-radios__label" for="category-non-green-belt">Non-Green Belt</label>
+                </div>
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="category-green-belt" name="selected-category" type="radio" value="green-belt"> <label class="govuk-label govuk-radios__label" for="category-green-belt">Green Belt</label>
                 </div>
               </div>
-            </div><!-- Category Selection Toolbar -->
-            <div class="govuk-form-group govuk-!-margin-top-4">
-              <fieldset class="govuk-fieldset">
-                <h3 class="govuk-heading-s"><legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Select category to apply</legend></h3>
-                <div class="govuk-radios govuk-radios--small govuk-radios--inline govuk-radios--inline-compact" id="category-selector">
-                  <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="category-housing" name="selected-category" type="radio" value="housing" checked> <label class="govuk-label govuk-radios__label" for="category-housing">Housing</label>
-                  </div>
-                  <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="category-commercial" name="selected-category" type="radio" value="commercial"> <label class="govuk-label govuk-radios__label" for="category-commercial">Retail and Employment</label>
-                  </div>
-                  <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="category-non-green-belt" name="selected-category" type="radio" value="non-green-belt"> <label class="govuk-label govuk-radios__label" for="category-non-green-belt">Non-Green Belt</label>
-                  </div>
-                  <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="category-green-belt" name="selected-category" type="radio" value="green-belt"> <label class="govuk-label govuk-radios__label" for="category-green-belt">Green Belt</label>
-                  </div>
+            </fieldset>
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+            <h1 class="govuk-heading-l">Submit your proposal</h1>
+            <div class="govuk-width-container govuk-!-margin-top-6 govuk-!-margin-bottom-6">
+              <form id="plan-submit-form" class="govuk-form-group" autocomplete="off" style="max-width: 700px" name="plan-submit-form">
+                <h2 class="govuk-heading-m">Explain your proposal</h2>
+                <div class="govuk-hint">
+                  Help people understand how your proposal is better than the current plan
                 </div>
-              </fieldset>
+                <textarea class="govuk-textarea" id="plan-explanation" name="plan-explanation" rows="5" style="margin-bottom: 20px;"></textarea>
+                <div class="govuk-button-group">
+                  <button type="submit" class="govuk-button">Submit your proposal</button>
+                </div>
+              </form>
             </div>
+            <details class="govuk-details">
+              <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">What happens next</span>
+              </summary>
+              <div class="govuk-details__text">
+                <p class="govuk-body">Your proposal will be visible for other people to see, and use to create their own proposals.</p>
+                <p class="govuk-body">All proposals will be reviewed by our planners and used to inform the emerging local plan.</p>
+                <p class="govuk-body">The final plan will be submitted for examination by the Planning Inspectorate before being adopted.</p>
+              </div>
+            </details>
           </div>
         </div>
       </div>
-      <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-      <h1 class="govuk-heading-l">Submit your proposal</h1>
-      <div class="govuk-width-container govuk-!-margin-top-6 govuk-!-margin-bottom-6">
-        <form id="plan-submit-form" class="govuk-form-group" autocomplete="off" style="max-width: 700px" name="plan-submit-form">
-          <h2 class="govuk-heading-m">Explain your proposal</h2>
-          <div class="govuk-hint">
-            Help people understand why your proposal is better than the current plan
-          </div>
-          <textarea class="govuk-textarea" id="plan-explanation" name="plan-explanation" rows="5" style="margin-bottom: 20px;"></textarea>
-          <div class="govuk-button-group">
-            <button type="submit" class="govuk-button">Submit your proposal</button>
-          </div>
-        </form>
-      </div>
-      <div class="govuk-grid-column-two-thirds" style="background-color: #f3f2f1; color: #0b0c0c;">
-        <h2 class="govuk-heading-m">What happens next</h2>
-        <p class="govuk-body">Your proposal will be visible for other people to see, and use to create their own proposals.</p>
-        <p class="govuk-body">All proposals will be reviewed by our planners and used to inform the emerging local plan.</p>
-        <p class="govuk-body">The final plan will be submitted for examination by the Planning Inspectorate before being adopted.</p>
-      </div>
     </main>
-  </div><!-- Leaflet JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script> <!-- GOV.UK JavaScript -->
-   
+  </div>
+  <footer class="govuk-footer app-footer">
+    <div class="govuk-width-container app-width-container">
+      <div class="govuk-footer__meta">
+        <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+          <h2 class="govuk-visually-hidden">Support links</h2>
+          <ul class="govuk-footer__inline-list">
+            <li class="govuk-footer__inline-list-item">
+              <a class="govuk-footer__link" href="https://github.com/digital-land/vibe-planning">Source code</a>
+            </li>
+            <li class="govuk-footer__inline-list-item">
+              <a class="govuk-footer__link" href="https://www.planning.data.gov.uk">Planning data</a>
+            </li>
+          </ul><svg aria-hidden="true" class="govuk-footer__licence-logo" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 483.2 195.7" height="17" width="41">
+          <path fill="currentColor" d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145"></path></svg> <span class="govuk-footer__licence-description">All content is available under the <a class="govuk-footer__link" href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence v3.0</a>, except where otherwise stated</span>
+        </div>
+        <div class="govuk-footer__meta-item">
+          <a class="govuk-footer__link govuk-footer__copyright-logo" href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/">© Crown copyright</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script> 
   <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script> 
   <script>
 
