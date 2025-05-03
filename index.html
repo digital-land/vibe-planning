@@ -39,7 +39,7 @@
   </script><!-- GOV.UK Design System -->
   <link rel="stylesheet" href="assets/govuk/govuk-frontend.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-  <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
+  <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet'>
   <style>
         body {
             margin: 0;
@@ -716,38 +716,34 @@
   </header>
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" id="main-content">
-          <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
-  <div class="govuk-notification-banner__header">
-    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-        Notice
-    </h2>
-  </div>
-  <div class="govuk-notification-banner__content">
-    <p class="govuk-notification-banner__heading">
-    This is a prototype
-    </p>
-      <details class="govuk-details">
-        <summary class="govuk-details__summary">
-          <span class="govuk-details__summary-text">About this prototype</span>
-        </summary>
-        <div class="govuk-details__text">
-          <p class="govuk-body">This prototype was originally created for the "transforming public engagement" challenge at the <a href="https://github.com/i-dot-ai/local-gov-hack">Local Government Hackday</a>, April 30 to May 1 2025.</p>
-          <ul class="govuk-list govuk-list--bullet">
-            <li>How could a local plan consultation be different in the age of open source and AI?</li>
-            <li>Could we enable to community to play with the plan, contributing ideas, rather than just commenting on a plan proposed by planners.</li>
-            <li>Could people use AI to help them generate better policies and site allocations?</li>
-            <li>Maybe "vibe planning" could transform public consultations and make local plans faster!</li>
-          </ul>
-          <p class="govuk-body">The team built a <a href="hackathon.html">working prototype</a> in less than a day using Kirklees as an example using hyperthetical housing targets.</p><img src="assets/hackathon.png" style="max-width: 100vw; max-height: 75vh; border: 2px solid black" alt="Screenshot of the prototype">
-          <p class="govuk-body"></p>
-          <figcaption>
-            Screenshot of the prototype <a href="hackathon.html">as demonstrated at the hackathon</a>.
-          </figcaption>
-          <p class="govuk-body">The code behind this prototype is open source available on <a href="https://github.com/digital-land/vibe-planning/">GitHub</a>. We expect to develop the prototype further to help people understand the idea, and build similar applications using the <a href="https://www.planning.data.gov.uk">Planning Data</a> platform.</p>
+      <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+        <div class="govuk-notification-banner__header">
+          <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Notice</h2>
         </div>
-      </details>
-  </div>
-</div>
+        <div class="govuk-notification-banner__content">
+          <p class="govuk-notification-banner__heading">This is a prototype</p>
+          <details class="govuk-details">
+            <summary class="govuk-details__summary">
+              <span class="govuk-details__summary-text">About this prototype</span>
+            </summary>
+            <div class="govuk-details__text">
+              <p class="govuk-body">This prototype was originally created for the "transforming public engagement" challenge at the <a href="https://github.com/i-dot-ai/local-gov-hack">Local Government Hackday</a>, April 30 to May 1 2025.</p>
+              <ul class="govuk-list govuk-list--bullet">
+                <li>How could a local plan consultation be different in the age of open source and AI?</li>
+                <li>Could we enable to community to play with the plan, contributing ideas, rather than just commenting on a plan proposed by planners.</li>
+                <li>Could people use AI to help them generate better policies and site allocations?</li>
+                <li>Maybe "vibe planning" could transform public consultations and make local plans faster!</li>
+              </ul>
+              <p class="govuk-body">The team built a <a href="hackathon.html">working prototype</a> in less than a day using Kirklees as an example using hyperthetical housing targets.</p><img src="assets/hackathon.png" style="max-width: 100vw; max-height: 75vh; border: 2px solid black" alt="Screenshot of the prototype">
+              <p class="govuk-body"></p>
+              <figcaption>
+                Screenshot of the prototype <a href="hackathon.html">as demonstrated at the hackathon</a>.
+              </figcaption>
+              <p class="govuk-body">The code behind this prototype is open source available on <a href="https://github.com/digital-land/vibe-planning/">GitHub</a>. We expect to develop the prototype further to help people understand the idea, and build similar applications using the <a href="https://www.planning.data.gov.uk">Planning Data</a> platform.</p>
+            </div>
+          </details>
+        </div>
+      </div>
       <h1 class="govuk-heading-l">Local plan consultation</h1>
       <p class="govuk-body">We need houses for our growing population, more school places for the next generation, and space for businesses to create jobs for our community.</p><!-- Scenario & Goals Section -->
       <div class="govuk-panel govuk-!-margin-bottom-6" style="background-color: #f3f2f1; color: #0b0c0c;">
@@ -786,13 +782,8 @@
       <p class="govuk-body">Have your say on where these new homes and businesses should be built.</p>
       <div>
         <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-
         <fieldset class="govuk-fieldset">
-              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-              <h3 class="govuk-fieldset__heading govuk-!-margin-bottom-4">
-                  Choose a proposal
-              </h3></legend>
-              <label class="govuk-label" for="sort">Use the official emerging local plan</label> <button id="original-plan-button" class="govuk-button govuk-button--secondary" onclick="showOriginalPlan()">Emerging local plan</button>
+          <h3 class="govuk-fieldset__heading govuk-!-margin-bottom-4"><legend class="govuk-fieldset__legend govuk-fieldset__legend--l">Choose a proposal</legend></h3><label class="govuk-label" for="sort">Use the official emerging local plan</label> <button id="original-plan-button" class="govuk-button govuk-button--secondary" onclick="showOriginalPlan()">Emerging local plan</button>
           <div class="govuk-form-group">
             <label class="govuk-label" for="sort">Choose a proposal submitted by the community</label> <select class="govuk-select" id="sort" name="sort">
               <option value="published">
@@ -922,8 +913,11 @@
     </main>
   </div><!-- Leaflet JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script> <!-- GOV.UK JavaScript -->
-  <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+   
+  <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script> 
   <script>
+
+
 
         // Initialize the map with doubleClickZoom disabled
         const map = L.map('map', {

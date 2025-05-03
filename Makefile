@@ -64,6 +64,9 @@ var/region.json:
 	curl -qLfs 'https://www.planning.data.gov.uk/entity.json?dataset=local-planning-authority&field=name&field=reference&field=end-date&limit=100&geometry_curie=statistical-geography:$(REGION)' > $@
 
 
+tidy:
+	tidy -qmi -w 0 index.html
+
 init::
 	pip3 install -r requirements.txt
 
