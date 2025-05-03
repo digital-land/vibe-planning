@@ -37,8 +37,9 @@
             console.log('Base URL detected:', window.baseUrl);
         })();
   </script><!-- GOV.UK Design System -->
-  <link rel="stylesheet" href="assets/govuk/govuk-frontend.min.css"><!-- Leaflet CSS -->
+  <link rel="stylesheet" href="assets/govuk/govuk-frontend.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
   <style>
         body {
             margin: 0;
@@ -627,12 +628,12 @@
   <div id="ai-suggestion-modal">
     <div id="ai-suggestion-content">
       <span id="ai-suggestion-close" onclick="closeAiSuggestion()">×</span>
-      <h2 id="ai-suggestion-title" class="govuk-heading-l typing-effect">AI Alternative Plan Suggestion</h2>
+      <h2 id="ai-suggestion-title" class="govuk-heading-l typing-effect">AI proposal</h2>
       <div class="ai-suggestion-section">
         <p class="govuk-body fade-in" style="--delay: 1s;">I've generated an alternative layout that optimizes your plan by grouping similar categories together. This creates more efficient zones and improves access to services.</p>
       </div>
       <div class="suggested-plan-details fade-in" style="--delay: 2s;">
-        <h3 class="govuk-heading-m">Features of this Alternative Plan:</h3>
+        <h3 class="govuk-heading-m">Features of this proposal:</h3>
         <ul class="govuk-list govuk-list--bullet">
           <li><strong>Clustered Housing:</strong> Housing areas are grouped together with nearby amenities</li>
           <li><strong>Distributed Commercial:</strong> Retail and employment spaces are spread across multiple smaller hubs</li>
@@ -642,7 +643,7 @@
         </ul>
       </div>
       <div class="fade-in" style="--delay: 3s;">
-        <h3 class="govuk-heading-m">Comparison to Current Plan:</h3>
+        <h3 class="govuk-heading-m">Comparison to the emerging plan:</h3>
         <div class="plan-comparison">
           <div class="plan-stat">
             <h4>Housing</h4>
@@ -659,10 +660,7 @@
         </div>
       </div>
       <div class="plan-action-buttons fade-in" style="--delay: 4s;">
-        <button class="govuk-button" onclick="applyAiSuggestion()">Apply This Plan</button> <button class="govuk-button govuk-button--secondary" onclick="closeAiSuggestion()">Keep Current Plan</button>
-      </div>
-      <div class="ai-suggestion-section fade-in" style="--delay: 5s;">
-        <p class="govuk-body">Note: This is an AI-generated suggestion. You can apply it directly or use it as inspiration to adjust your current plan.</p>
+        <button class="govuk-button" onclick="applyAiSuggestion()">Use this proposal</button> <button class="govuk-button govuk-button--secondary" onclick="closeAiSuggestion()">Use this proposal</button>
       </div>
     </div>
   </div><!-- Original Local Plan Modal -->
@@ -780,9 +778,9 @@
       <div>
         <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
         <fieldset class="govuk-fieldset">
-          <h3 class="govuk-fieldset__heading"><legend class="govuk-fieldset__legend govuk-fieldset__legend--l">Choose a starting proposal</legend></h3><label class="govuk-label" for="sort">The official proposal</label> <button id="original-plan-button" class="govuk-button govuk-button--secondary" onclick="showOriginalPlan()">The emerging local plan</button>
+          <h3 class="govuk-fieldset__heading"><legend class="govuk-fieldset__legend govuk-fieldset__legend--l">Choose a proposal</legend></h3><label class="govuk-label" for="sort">Use the official emerging local plan</label> <button id="original-plan-button" class="govuk-button govuk-button--secondary" onclick="showOriginalPlan()">Emerging local plan</button>
           <div class="govuk-form-group">
-            <label class="govuk-label" for="sort">A community proposal</label> <select class="govuk-select" id="sort" name="sort">
+            <label class="govuk-label" for="sort">Choose a proposal submitted by the community</label> <select class="govuk-select" id="sort" name="sort">
               <option value="published">
                 Recently published
               </option>
@@ -800,7 +798,7 @@
         </fieldset>
       </div>
       <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-      <h2 class="govuk-heading-l">Make the proposal better</h2><!-- Scenario & Goals Section -->
+      <h1 class="govuk-heading-l">Make the proposal better</h1>
       <div class="govuk-panel govuk-!-margin-bottom-6" style="background-color: #f3f2f1; color: #0b0c0c;">
         <div class="govuk-grid-row govuk-!-margin-top-0">
           <!-- Overall Progress Bar -->
@@ -888,7 +886,7 @@
         </div>
       </div>
       <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-      <h2 class="govuk-heading-l">Submit your proposal for others to see</h2><!-- Plan submission section -->
+      <h1 class="govuk-heading-l">Submit your proposal</h1>
       <div class="govuk-width-container govuk-!-margin-top-6 govuk-!-margin-bottom-6">
         <form id="plan-submit-form" class="govuk-form-group" autocomplete="off" style="max-width: 700px" name="plan-submit-form">
           <h2 class="govuk-heading-m">Explain your proposal</h2>
@@ -910,18 +908,12 @@
     </main>
   </div><!-- Leaflet JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script> <!-- GOV.UK JavaScript -->
-   
-  <script src="/assets/govuk/govuk-frontend.min.js"></script> 
-  <script>
-
-        window.GOVUKFrontend.initAll();
-  </script> <!-- Leaflet JS -->
-   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script> 
+  <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
   <script>
 
         // Initialize the map with doubleClickZoom disabled
         const map = L.map('map', {
+            fullscreenControl: true,
             doubleClickZoom: false // Disable double click zoom completely
         }).setView([0, 0], 2);
         
@@ -1695,8 +1687,8 @@
         const planActionButtons = document.querySelector('.plan-action-buttons');
         if (planActionButtons) {
             planActionButtons.innerHTML = `
-                <button class="govuk-button" onclick="applyAiSuggestion()">Apply This Plan</button>
-                <button class="govuk-button govuk-button--secondary" onclick="closeAiSuggestion()">Keep Current Plan</button>
+                <button class="govuk-button" onclick="applyAiSuggestion()">Use this proposal</button>
+                <button class="govuk-button govuk-button--secondary" onclick="closeAiSuggestion()">Discard</button>
             `;
         }
     }
