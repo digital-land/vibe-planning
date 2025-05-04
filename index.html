@@ -50,7 +50,7 @@
         #map-container {
             position: relative;
             width: 100%;
-            height: 100vh;
+            height: 80vh;
             margin-bottom: 30px;
             margin-top: 30px;
             border: 2px solid #0b0c0c;
@@ -371,91 +371,6 @@
             to { opacity: 1; }
         }
         
-        #ai-button {
-            padding: 12px 25px;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
-            display: inline-flex;
-            align-items: center;
-            box-shadow: 0 4px 12px rgba(76, 44, 146, 0.3);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        #ai-button::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(60deg, transparent, rgba(255,255,255,0.2), transparent);
-            transform: rotate(30deg);
-            transition: 0.5s;
-            opacity: 0;
-        }
-        
-        #ai-button:hover {
-            background: linear-gradient(135deg, #003078 70%, #2e1a58 100%);
-            box-shadow: 0 6px 16px rgba(76, 44, 146, 0.4);
-        }
-        
-        #ai-button:hover::after {
-            left: 100%;
-            opacity: 1;
-        }
-        
-        #ai-button svg {
-            margin-right: 10px;
-            width: 24px;
-            height: 24px;
-            filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
-        }
-        
-        /* AI Suggestion Button Styles */
-        #ai-buttons-container {
-            display: flex;
-            gap: 20px;
-            margin: 20px 0 40px 0;
-        }
-        
-        #ai-suggestion-button {
-        }
-        
-        #ai-suggestion-button::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(60deg, transparent, rgba(255,255,255,0.2), transparent);
-            transform: rotate(30deg);
-            transition: 0.5s;
-            opacity: 0;
-        }
-        
-        #ai-suggestion-button:hover {
-            background: linear-gradient(135deg, #00582e 70%, #2e1a58 100%);
-            box-shadow: 0 6px 16px rgba(0, 112, 60, 0.4);
-        }
-        
-        #ai-suggestion-button:hover::after {
-            left: 100%;
-            opacity: 1;
-        }
-        
-        #ai-suggestion-button svg {
-            margin-right: 10px;
-            width: 24px;
-            height: 24px;
-            filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
-        }
-        
         /* AI Plan Suggestion Modal Styles */
         #ai-suggestion-modal {
             display: none;
@@ -580,6 +495,21 @@
             color: #1d70b8;
             margin-bottom: 25px;
         }
+        .numberCircle {
+  display: inline-block;
+  line-height: 0px;
+  border-radius: 50%;
+  border: 2px solid;
+  font-size: 32px;
+}
+
+.numberCircle span {
+  display: inline-block;
+  padding-top: 50%;
+  padding-bottom: 50%;
+  margin-left: 8px;
+  margin-right: 8px;
+}
   </style>
 </head>
 <body class="govuk-template__body">
@@ -596,7 +526,7 @@
       <span id="ai-feedback-close" onclick="closeAiFeedback()">×</span>
       <h2 id="ai-feedback-title" class="govuk-heading-l typing-effect">AI Plan Analysis</h2>
       <div class="ai-feedback-section">
-        <p class="govuk-body fade-in" style="--delay: 1s;">After analyzing your current plan, I've evaluated how it balances different interests and needs within the development area.</p>
+        <p class="govuk-body fade-in" style="--delay: 1s;">After analysing your current plan, I've evaluated how it balances different interests and needs within the development area.</p>
         <p class="govuk-body fade-in" style="--delay: 2s;">Overall, your plan shows a good attempt at balancing various planning priorities. Here's my detailed assessment:</p>
       </div>
       <div class="ai-feedback-list improvements fade-in" style="--delay: 3.5s;">
@@ -744,28 +674,30 @@
           </details>
         </div>
       </div>
-      <h1 class="govuk-heading-l">Local plan consultation</h1>
-      <p class="govuk-body">We need houses for our growing population, more school places for the next generation, and space for businesses to create jobs for our community.</p><!-- Scenario & Goals Section -->
+      <h1 class="govuk-heading-xl">Local plan review</h1>
+      <p class="govuk-body">We need houses for our growing population, more school places for the next generation, and space for businesses to create jobs for our community.</p>
       <div class="govuk-panel govuk-!-margin-bottom-6" style="background-color: #f3f2f1; color: #0b0c0c;">
         <div class="govuk-grid-row govuk-!-margin-top-0">
           <!-- Development Needs -->
           <div class="govuk-grid-column-one-half">
             <div class="govuk-!-text-align-left">
               <h3 class="govuk-heading-m">Development</h3>
+              <p class="govuk-body">We need enough land to build:</p>
               <ul class="govuk-list govuk-body">
-                <li><strong>1000</strong> new homes, 200 of which will be affordable</li>
-                <li><strong>14,000 sq m</strong> of new employment and retail space</li>
+                <li><strong>1000</strong> new homes, more than 200 of which will be affordable</li>
+                <li><strong>14,000 sq m</strong> of additional business and retail spaces</li>
               </ul>
             </div>
           </div><!-- Infrastructure Needs -->
           <div class="govuk-grid-column-one-half">
             <div class="govuk-!-text-align-left">
               <h3 class="govuk-heading-m">Infrastructure</h3>
+              <p class="govuk-body">Some of that land will be needed to create:</p>
               <ul class="govuk-list govuk-body">
                 <li><strong>1</strong> new primary school</li>
                 <li><strong>1</strong> new GP practice</li>
                 <li>Capacity for <strong>1,500</strong> new car journeys</li>
-                <li><strong>16,000 sq m</strong> of parks (10% of space)</li>
+                <li><strong>1.6 hectares</strong> of accessible green space</li>
               </ul>
             </div>
           </div>
@@ -779,13 +711,16 @@
           <p class="govuk-body">These are hyperthetical housing and other targets for one year.</p>
         </div>
       </details>
-      <p class="govuk-body">Have your say on where these new homes and businesses should be built.</p>
       <div>
+        <h1 class="govuk-heading-l">Have your say</h1>
+        <p class="govuk-body">Help us decide where these new homes and businesses should be built.</p>
         <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
         <fieldset class="govuk-fieldset">
-          <h3 class="govuk-fieldset__heading govuk-!-margin-bottom-6"><legend class="govuk-fieldset__legend govuk-fieldset__legend--l">Choose a proposal</legend></h3><label class="govuk-label" for="sort">Use the official emerging local plan</label> <button id="original-plan-button" class="govuk-button govuk-button--secondary" onclick="showOriginalPlan()">Emerging local plan</button>
+          <h3 class="govuk-fieldset__heading govuk-!-margin-bottom-6">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">Select a proposal</legend></h3>
+          <label class="govuk-label" for="sort">Start with the emerging local plan</label> <button id="original-plan-button" class="govuk-button govuk-button--secondary" onclick="showOriginalPlan()">Emerging local plan</button>
           <div class="govuk-form-group">
-            <label class="govuk-label" for="sort">Choose a proposal submitted by the community</label> <select class="govuk-select" id="sort" name="sort">
+            <label class="govuk-label" for="sort">or use a proposal submitted by the community</label> <select class="govuk-select" id="sort" name="sort">
               <option value="published">
                 Recently published
               </option>
@@ -799,8 +734,16 @@
                 Most comments
               </option>
             </select>
-          </div><label class="govuk-label" for="sort">Or chat with our AI to create a new proposal</label> <button id="ai-suggestion-button" class="govuk-button" onclick="showAiSuggestion()">Vibe with our AI</button>
+          </div><label class="govuk-label" for="sort">or chat with our AI to create a new proposal</label> <button id="ai-suggestion-button" class="govuk-button" onclick="showAiSuggestion()">Vibe with our AI</button>
         </fieldset>
+      <details class="govuk-details">
+        <summary class="govuk-details__summary">
+          <span class="govuk-details__summary-text">About these options</span>
+        </summary>
+        <div class="govuk-details__text">
+          <p class="govuk-body">Selecting one of these options will change the tiles on the map to show how the proposal allocates land for development.</p>
+        </div>
+      </details>
       </div>
       <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
       <h1 class="govuk-heading-l">Improve the proposal</h1>
@@ -828,7 +771,7 @@
               <div class="govuk-!-padding-top-0">
                 <p class="govuk-body govuk-!-margin-bottom-0">Retail & Employment</p>
                 <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-bottom-2">
-                  <p class="govuk-heading-l govuk-!-margin-bottom-0" style="color: #942514;"><span id="retail-count">0</span></p>
+                  <p class="govuk-heading-l govuk-!-margin-bottom-0"><span id="retail-count">0</span></p>
                   <p class="govuk-body-s govuk-!-margin-bottom-0">sq m of 14,000</p>
                 </div>
               </div>
@@ -837,7 +780,7 @@
               <div class="govuk-!-padding-top-0">
                 <p class="govuk-body govuk-!-margin-bottom-0">Primary Schools</p>
                 <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-bottom-2">
-                  <p class="govuk-heading-l govuk-!-margin-bottom-0" style="color: #28a197;"><span id="school-count">0</span></p>
+                  <p class="govuk-heading-l govuk-!-margin-bottom-0"><span id="school-count">0</span></p>
                   <p class="govuk-body-s govuk-!-margin-bottom-0">of 1 required</p>
                 </div>
               </div>
@@ -846,7 +789,7 @@
               <div class="govuk-!-padding-top-0">
                 <p class="govuk-body govuk-!-margin-bottom-0">GP Practices</p>
                 <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-bottom-2">
-                  <p class="govuk-heading-l govuk-!-margin-bottom-0" style="color: #5694ca;"><span id="gp-count">0</span></p>
+                  <p class="govuk-heading-l govuk-!-margin-bottom-0"><span id="gp-count">0</span></p>
                   <p class="govuk-body-s govuk-!-margin-bottom-0">of 1 required</p>
                 </div>
               </div>
@@ -854,6 +797,7 @@
           </div>
         </div>
       </div>
+      <button id="ai-button" class="govuk-button" onclick="showAiFeedback()">AI generated analysis</button>
       <div id="map-container" class="govuk-!-margin-top-4">
         <div id="map"></div>
       </div>
@@ -862,10 +806,10 @@
           <div class="govuk-form-group">
             <div class="govuk-checkboxes govuk-checkboxes--small govuk-checkboxes--inline">
               <div class="govuk-checkboxes__item">
-                <input class="govuk-checkboxes__input" id="toggle-green-belt" name="toggle-green-belt" type="checkbox" checked onchange="toggleGreenBelt(this.checked)"> <label class="govuk-label govuk-checkboxes__label" for="toggle-green-belt"><strong>Exclude the Green Belt</strong></label>
+                <input class="govuk-checkboxes__input" id="toggle-green-belt" name="toggle-green-belt" type="checkbox" onchange="toggleGreenBelt(this.checked)"> <label class="govuk-label govuk-checkboxes__label" for="toggle-green-belt"><strong>Exclude the Green Belt</strong></label>
               </div>
               <div class="govuk-checkboxes__item">
-                <input class="govuk-checkboxes__input" id="toggle-built-up" name="toggle-built-up" type="checkbox" onchange="toggleBuiltUpAreas(this.checked)"> <label class="govuk-label govuk-checkboxes__label" for="toggle-built-up"><strong>Exclude built-up areas</strong></label>
+                <input class="govuk-checkboxes__input" id="toggle-built-up" name="toggle-built-up" type="checkbox" checked onchange="toggleBuiltUpAreas(this.checked)"> <label class="govuk-label govuk-checkboxes__label" for="toggle-built-up"><strong>Exclude built-up areas</strong></label>
               </div>
             </div>
           </div><!-- Category Selection Toolbar -->
@@ -962,7 +906,7 @@
         
         // Add layer control
         const baseLayers = {
-            "OpenStreetMap": osm,
+            "Map": osm,
             "Satellite": satellite
         };
         
