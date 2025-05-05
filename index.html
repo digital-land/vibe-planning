@@ -501,15 +501,15 @@
   border-radius: 50%;
   border: 2px solid;
   font-size: 32px;
-}
+  }
 
-.numberCircle span {
+  .numberCircle span {
   display: inline-block;
   padding-top: 50%;
   padding-bottom: 50%;
   margin-left: 8px;
   margin-right: 8px;
-}
+  }
   </style>
 </head>
 <body class="govuk-template__body">
@@ -716,34 +716,19 @@
         <p class="govuk-body">Help us decide where these new homes and businesses should be built.</p>
         <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
         <fieldset class="govuk-fieldset">
-          <h3 class="govuk-fieldset__heading govuk-!-margin-bottom-6">
-              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">Select a proposal</legend></h3>
-          <label class="govuk-label" for="sort">Start with the emerging local plan</label> <button id="original-plan-button" class="govuk-button govuk-button--secondary" onclick="showOriginalPlan()">Emerging local plan</button>
+          <h3 class="govuk-fieldset__heading govuk-!-margin-bottom-6"><legend class="govuk-fieldset__legend govuk-fieldset__legend--l">Select a proposal</legend></h3><label class="govuk-label" for="sort">Start with the emerging local plan</label> <button id="original-plan-button" class="govuk-button govuk-button--secondary" onclick="showOriginalPlan()">Emerging local plan</button>
           <div class="govuk-form-group">
-            <label class="govuk-label" for="sort">or use a proposal submitted by the community</label> <select class="govuk-select" id="sort" name="sort">
-              <option value="published">
-                Recently published
-              </option>
-              <option value="updated" selected>
-                Recently updated
-              </option>
-              <option value="views">
-                Most views
-              </option>
-              <option value="comments">
-                Most comments
-              </option>
-            </select>
-          </div><label class="govuk-label" for="sort">or chat with our AI to create a new proposal</label> <button id="ai-suggestion-button" class="govuk-button" onclick="showAiSuggestion()">Vibe with our AI</button>
+            <label class="govuk-label" for="sort">Use a propsal from the community</label> <button id="community-proposal-button" class="govuk-button govuk-button--secondary" onclick="showOriginalPlan()">Community proposal</button> <label class="govuk-label" for="sort">or chat with our AI to create a new proposal</label> <button id="ai-suggestion-button" class="govuk-button" onclick="showAiSuggestion()">Vibe with our AI</button>
+            <details class="govuk-details">
+              <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">About these options</span>
+              </summary>
+              <div class="govuk-details__text">
+                <p class="govuk-body">Selecting one of these options will change the tiles on the map to show how the proposal allocates land for development.</p>
+              </div>
+            </details>
+          </div>
         </fieldset>
-      <details class="govuk-details">
-        <summary class="govuk-details__summary">
-          <span class="govuk-details__summary-text">About these options</span>
-        </summary>
-        <div class="govuk-details__text">
-          <p class="govuk-body">Selecting one of these options will change the tiles on the map to show how the proposal allocates land for development.</p>
-        </div>
-      </details>
       </div>
       <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
       <h1 class="govuk-heading-l">Improve the proposal</h1>
@@ -796,8 +781,7 @@
             </div>
           </div>
         </div>
-      </div>
-      <button id="ai-button" class="govuk-button" onclick="showAiFeedback()">AI generated analysis</button>
+      </div><button id="ai-button" class="govuk-button" onclick="showAiFeedback()">AI generated analysis</button>
       <div id="map-container" class="govuk-!-margin-top-4">
         <div id="map"></div>
       </div>
@@ -884,6 +868,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script> 
   <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script> 
   <script>
+
+
 
 
 
